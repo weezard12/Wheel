@@ -1,4 +1,6 @@
-﻿namespace Wheel
+﻿using Wheel.Pages.MainPages.Home;
+
+namespace Wheel
 {
     public partial class MainPage : ContentPage
     {
@@ -7,6 +9,7 @@
         public MainPage()
         {
             InitializeComponent();
+            
         }
 
         private void OnCounterClicked(object sender, EventArgs e)
@@ -19,6 +22,7 @@
                 CounterBtn.Text = $"Clicked {count} times";
 
             SemanticScreenReader.Announce(CounterBtn.Text);
+            Shell.Current.GoToAsync(nameof(HomePage));
         }
     }
 

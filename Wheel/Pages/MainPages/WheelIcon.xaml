@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Wheel.Pages.MainPages.WheelIcon"
+             xmlns:local="clr-namespace:Wheel"
+             xmlns:namespace="clr-namespace:Wheel">
+    <ContentView.Resources>
+        <LinearGradientBrush x:Key="GradientBrush">
+            <GradientStop Color="Red" Offset="0" />
+            <GradientStop Color="Blue" Offset="1" />
+        </LinearGradientBrush>
+    </ContentView.Resources>
+    <Grid>
+        <Ellipse
+            WidthRequest="80" HeightRequest="80" 
+            StrokeThickness="10"
+            Fill="{Binding Source={StaticResource GradientBrush}}">
+        </Ellipse>
+
+        <Label
+            Text="W"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            FontSize="Large"/>
+    </Grid>
+    
+</ContentView>

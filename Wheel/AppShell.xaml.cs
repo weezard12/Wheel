@@ -1,10 +1,14 @@
-﻿namespace Wheel
+﻿using Wheel.Pages.MainPages.Home;
+
+namespace Wheel
 {
     public partial class AppShell : Shell
     {
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(AndroidStudioTemplate), typeof(AndroidStudioTemplate));
+            Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
         }
     }
 }
