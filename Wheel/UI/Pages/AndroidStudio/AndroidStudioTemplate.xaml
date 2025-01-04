@@ -3,10 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Wheel.UI.AndroidStudioTemplate"
              Title="AndroidStudioTemplate">
-    <VerticalStackLayout x:Name="EntriesStackLayout">
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label x:Name="ProjectName" 
+            Text="Current Project: Unknown"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" FontSize="Large"/>
+
+            <VerticalStackLayout x:Name="EntriesStackLayout" Margin="10">
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+    </ScrollView>
 </ContentPage>

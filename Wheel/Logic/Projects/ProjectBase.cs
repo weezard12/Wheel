@@ -29,6 +29,7 @@ namespace Wheel.Logic.Projects
         protected void AddEntry(ProjectValueEntryView entryView)
         {
             entries.Add(entryView);
+            entryView.Margin = 5;
             ProjectPage.FindByName<VerticalStackLayout>("EntriesStackLayout").Add(entryView);
         }
     }
