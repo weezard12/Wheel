@@ -1,4 +1,4 @@
-﻿using Wheel.Pages.MainPages.Home;
+﻿using Wheel.UI;
 
 namespace Wheel
 {

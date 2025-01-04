@@ -1,4 +1,4 @@
-namespace Wheel.Pages.MainPages;
+namespace Wheel.UI;
 
 public partial class WheelIcon : ContentView
 {

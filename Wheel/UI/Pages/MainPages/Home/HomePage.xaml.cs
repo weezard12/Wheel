@@ -1,4 +1,4 @@
-namespace Wheel.Pages.MainPages.Home;
+namespace Wheel.UI;
 
 public partial class HomePage : ContentPage
 {
