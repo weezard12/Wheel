@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Wheel.UI.AndroidStudioTemplate"
-             Title="AndroidStudioTemplate">
+             Title="AndroidStudioTemplate"
+             xmlns:local="clr-namespace:Wheel.UI.Views">
     <ScrollView>
         <VerticalStackLayout>
             <Label x:Name="ProjectName" 
@@ -10,6 +11,8 @@
             VerticalOptions="Center"
             HorizontalOptions="Center" FontSize="Large"/>
 
+            <local:LoadFolderView x:Name="UploadProjectXml"/>
+            
             <VerticalStackLayout x:Name="EntriesStackLayout" Margin="10">
 
             </VerticalStackLayout>
