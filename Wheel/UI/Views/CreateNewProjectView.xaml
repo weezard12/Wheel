@@ -8,7 +8,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Entry x:Name="NameEntry"/>
-        <Picker x:Name="ProjectType" SelectedIndex="0">
+        <Picker x:Name="ProjectType">
             <Picker.Items>
                 <x:String>Android Studio</x:String>
             </Picker.Items>

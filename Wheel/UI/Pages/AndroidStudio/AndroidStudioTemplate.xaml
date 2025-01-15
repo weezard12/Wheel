@@ -12,7 +12,7 @@
             HorizontalOptions="Center" FontSize="Large"/>
 
             <local:LoadFolderView x:Name="UploadProjectXml"/>
-            
+
             <VerticalStackLayout x:Name="EntriesStackLayout" Margin="10">
 
             </VerticalStackLayout>

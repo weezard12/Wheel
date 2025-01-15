@@ -7,6 +7,7 @@ public partial class CreateNewProjectView : ContentView
 	public CreateNewProjectView()
 	{
 		InitializeComponent();
+        ProjectType.SelectedIndex = 0;
 	}
 
     private void CreateProject_Clicked(object sender, EventArgs e)
