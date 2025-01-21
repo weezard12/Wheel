@@ -92,7 +92,10 @@
 	  <MauiXaml Update="UI\Views\ProjectActionView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Views\ProjectValueEntryView.xaml">
+	  <MauiXaml Update="UI\Views\ProjectViews\DataPageView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UI\Views\ProjectViews\ProjectValueEntryView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\WheelIcon.xaml">

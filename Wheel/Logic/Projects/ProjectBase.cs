@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Wheel.UI;
+using Wheel.UI.Views.ProjectViews;
 
 namespace Wheel.Logic.Projects
 {
@@ -13,7 +14,7 @@ namespace Wheel.Logic.Projects
     {
         [ObservableProperty]
         string name;
-
+        List<DataPageView> dataPages
         private List<ProjectValueEntryView> entries = new List<ProjectValueEntryView>();
 
         public ContentPage ProjectPage { get; set; }
