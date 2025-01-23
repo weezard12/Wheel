@@ -14,8 +14,10 @@ namespace Wheel.Logic.Projects
     {
         [ObservableProperty]
         string name;
-        List<DataPageView> dataPages
+        List<DataPageView> DataPages { get; set; }
+
         private List<ProjectValueEntryView> entries = new List<ProjectValueEntryView>();
+
 
         public ContentPage ProjectPage { get; set; }
         public ProjectBase()

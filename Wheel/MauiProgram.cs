@@ -5,6 +5,7 @@ namespace Wheel
 {
     public static class MauiProgram
     {
+        public static readonly string TempPath = Path.Combine(Path.GetTempPath(),"Wheel");
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();

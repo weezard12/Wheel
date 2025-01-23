@@ -16,6 +16,8 @@
             <VerticalStackLayout x:Name="EntriesStackLayout" Margin="10">
 
             </VerticalStackLayout>
+            
+            
         </VerticalStackLayout>
 
     </ScrollView>

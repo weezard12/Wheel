@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Wheel.Logic
+{
+    internal static class MyUtils
+    {
+        public static string FileFromTemp(string filename)
+        {
+            return Path.Combine(MauiProgram.TempPath, filename);
+        }
+
+        public static void CreateFolderIfDoesntExist(string path, bool clearDirectory = false)
+        {
+            //just in case
+            if (path.Equals("Program Files") || Path.GetDirectoryName(path).Equals("C:\\") || path.Length < 15)
+                return;
+
+            try
+            {
+                //if the path is to a file it will call the method again but with the file folder as path
+                if (Path.HasExtension(path))
+                {
+                    CreateFolderIfDoesntExist(Path.GetDirectoryName(path), clearDirectory);
+                    return;
+                }
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                    return;
+                }
+                if (clearDirectory)
+                {
+                    Directory.Delete(path, true);
+                    Directory.CreateDirectory(path);
+                }
+            }
+            catch
+            {
+                try
+                {
+                    Directory.CreateDirectory(path);
+                }
+                catch
+                {
+                    File.Delete(path);
+                    CreateFolderIfDoesntExist(path, clearDirectory);
+                }
+            }
+        }
+        public static void CreateFileIfDoesntExist(string path, string content = "")
+        {
+            try
+            {
+                // If the path contains a directory structure, ensure it exists
+                string directoryPath = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(directoryPath))
+                {
+                    CreateFolderIfDoesntExist(directoryPath);
+                }
+
+                // Check if the file already exists
+                if (!File.Exists(path))
+                {
+                    // Create the file and close the stream immediately
+                    File.WriteAllText(path, content);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw; // Optionally rethrow the exception if needed
+            }
+        }
+    }
+}

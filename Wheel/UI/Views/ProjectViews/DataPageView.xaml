@@ -4,7 +4,7 @@
              x:Class="Wheel.UI.Views.ProjectViews.DataPageView">
     <Grid>
 
-        <Label x:Name="PageName" Text="Main Page"/>
+        <Label x:Name="PageNameXml" Text="Main Page"/>
         <VerticalStackLayout x:Name="EntriesLayout">
             
         </VerticalStackLayout>

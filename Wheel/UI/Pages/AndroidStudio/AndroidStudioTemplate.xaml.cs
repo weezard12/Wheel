@@ -1,3 +1,5 @@
+using Microsoft.Msagl.Drawing;
+using SvgLayerSample.Svg;
 using Wheel.Logic.CodeParser.Base;
 using Wheel.Logic.Graphs;
 using Wheel.Logic.Projects;
@@ -38,9 +40,12 @@ public partial class AndroidStudioTemplate : ContentPage
         List<ClassFile> classNames = GetClassNames(sourceCodePath);
         SetExtensionList(classNames);
 
-        SvgLayerSample.Svg.Diagram doc = GraphsUtils.GetScreenDiagram(classNames);
-        //GraphsUtils.SaveSvgStringAsPng(Path.Combine(MauiProgram.TestingFolder, "graphImage"), doc.ToString());
+        Graph graph = GraphsUtils.GetScreenGraph(classNames);
+        Diagram doc = GraphsUtils.GetScreenDiagram(classNames);
+        GraphsUtils.SaveSvg(Path.Combine(Path.GetTempPath(),"Wheel\\screens_diagram.svg"), doc.ToString());
 
+        Project.SetupProjectClasses(classNames);
+        EntriesStackLayout.Children.Add(new FlowDiagramView("screens_diagram.svg", graph));
     }
 
 }

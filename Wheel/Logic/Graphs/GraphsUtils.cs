@@ -24,14 +24,20 @@ namespace Wheel.Logic.Graphs
         /// <returns></returns>
         public static Diagram GetScreenDiagram(List<ClassFile> classFiles)
         {
+            var doc = new Diagram(GetScreenGraph(classFiles));
+            doc.Run();
+            return doc;
+        }
+        public static Graph GetScreenGraph(List<ClassFile> classFiles)
+        {
             var drawingGraph = new Graph();
             foreach (var classFile in classFiles)
             {
                 if (classFile.ExtentsFrom.Contains(new SourceClass("AppCompatActivity")))
                 {
                     if (drawingGraph.FindNode(classFile.Name) == null)
-                        drawingGraph.AddNode(new ComponentNode(classFile.Name,technology: "extends AppCompatActivity"));
-                    
+                        drawingGraph.AddNode(new ComponentNode(classFile.Name, technology: "extends AppCompatActivity"));
+
                     List<string> strings = GetIntentsFromClass(classFile.Content);
                     foreach (string s in strings)
                     {
@@ -44,10 +50,9 @@ namespace Wheel.Logic.Graphs
                 }
             }
 
-            var doc = new Diagram(drawingGraph);
-            doc.Run();
-            return doc;
+            return drawingGraph;
         }
+
         /// <summary>
         /// Extracts the class names of all intents from a Java class string.
         /// </summary>
@@ -89,21 +94,10 @@ namespace Wheel.Logic.Graphs
             var sr = new StreamReader(ms);
             return sr.ReadToEnd();
         }
-        public static void SaveSvgStringAsPng(string exportPath, Graph drawingGraph)
-        {
-            SaveSvgStringAsPng(exportPath, GetSvgAsString(drawingGraph));
-        }
-        public static void SaveSvgStringAsPng(string exportPath, string svgString)
-        {
-            string svgPath = Path.Combine(Path.GetDirectoryName(exportPath), "graph.svg");
 
-            File.WriteAllText(svgPath, svgString);
-/*            var svgDocument = SvgDocument.Open(svgPath);
-            var bitmap = svgDocument.Draw();
-
-            if (!Path.HasExtension(exportPath))
-                exportPath += ".png";
-            bitmap.Save(exportPath, ImageFormat.Png);*/
+        public static void SaveSvg(string exportPath, string svgString)
+        {
+            MyUtils.CreateFileIfDoesntExist(exportPath, svgString);
         }
 
 
