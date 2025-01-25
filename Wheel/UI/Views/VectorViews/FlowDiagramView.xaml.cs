@@ -7,26 +7,35 @@ namespace Wheel.UI;
 public partial class FlowDiagramView : ContentView
 {
 	private string _graphName;
-	private Graph _graph;
+	public Graph Graph { get; private set; }
 
 	// list of all of the nodes in the graph.
-	List<DiagramConnectionView> ConnectionsNodes;
+	List<DiagramNodeView> ConnectionsNodes;
 	public FlowDiagramView(string graphName, Graph graph)
 	{
 		InitializeComponent();
 
 		_graphName = graphName;
-		_graph = graph;
+		Graph = graph;
 
 		VectorDisplay.Source = FileFromTemp(graphName);
 
-        ConnectionsNodes = new List<DiagramConnectionView>();
-		
-		foreach (Node node in _graph.Nodes)
-		{
-			ConnectionsNodes.Add(new DiagramConnectionView(node));
+		SetNodesBasedOnDiagram();
+    }
+	public void SetNodesBasedOnDiagram()
+	{
+        ConnectionsNodes = new List<DiagramNodeView>();
+        foreach (Node node in Graph.Nodes)
+        {
+            DiagramNodeView diagramNode = new DiagramNodeView(this, node);
+            ConnectionsNodes.Add(diagramNode);
 
+			ConnectionNodesXml.Children.Add(diagramNode);
         }
+    }
 
+    public void SetDiagramBasedOnNodes()
+    {
+		
     }
 }

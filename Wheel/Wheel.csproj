@@ -75,8 +75,11 @@
 	  <Compile Update="UI\Views\LoadFolderView.xaml.cs">
 	    <DependentUpon>LoadFolderView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="UI\Views\VectorViews\DiagramConnectionVIew.xaml.cs">
-	    <DependentUpon>DiagramConnectionView.xaml</DependentUpon>
+	  <Compile Update="UI\Views\VectorViews\DiagramEdgeView.xaml.cs">
+	    <DependentUpon>DiagramEdgeView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="UI\Views\VectorViews\DiagramNodeView.xaml.cs">
+	    <DependentUpon>DiagramNodeView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -99,10 +102,10 @@
 	  <MauiXaml Update="UI\Views\ProjectViews\DataPageView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Views\VectorViews\ConnectionPart.xaml">
+	  <MauiXaml Update="UI\Views\VectorViews\DiagramEdgeView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Views\VectorViews\DiagramConnectionView.xaml">
+	  <MauiXaml Update="UI\Views\VectorViews\DiagramNodeView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\VectorViews\FlowDiagramView.xaml">

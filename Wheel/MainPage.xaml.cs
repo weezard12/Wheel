@@ -8,7 +8,9 @@ namespace Wheel
         public MainPage()
         {
             InitializeComponent();
-            
+
+            //for testing
+            Shell.Current.GoToAsync(nameof(HomePage));
         }
 
         private void OnCounterClicked(object sender, EventArgs e)

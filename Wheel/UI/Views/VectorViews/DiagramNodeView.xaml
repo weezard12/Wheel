@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Wheel.UI.DiagramNodeView">
+    <VerticalStackLayout>
+        <HorizontalStackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Text="X" Grid.Column="0"/>
+                <Entry x:Name="NodeName" Grid.Column="1"/>
+                <Button Text="+" Grid.Column="2"/>
+            </Grid>
+        </HorizontalStackLayout>
+        <VerticalStackLayout x:Name="Connections" Margin="10">
+
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+
+</ContentView>

@@ -4,11 +4,24 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <VerticalStackLayout>
-        <WebView
-            x:Name="VectorDisplay"
-            HeightRequest="500"
-            WidthRequest="900" />
-
-        <VerticalStackLayout x:Name="ConnectionNodesXml" />
+        <Border Margin="20">
+            <VerticalStackLayout>
+                <WebView
+                    x:Name="VectorDisplay"
+                    HeightRequest="500"
+                    WidthRequest="900"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start" />
+                
+                <VerticalStackLayout
+                    x:Name="ConnectionNodesXml"
+                    Spacing="10"
+                    Padding="10"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="FillAndExpand" />
+                <Button Text="New Node"/>
+            </VerticalStackLayout>
+        </Border>
     </VerticalStackLayout>
 </ContentView>
+
