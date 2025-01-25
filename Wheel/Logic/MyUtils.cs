@@ -63,12 +63,9 @@ namespace Wheel.Logic
                     CreateFolderIfDoesntExist(directoryPath);
                 }
 
-                // Check if the file already exists
-                if (!File.Exists(path))
-                {
-                    // Create the file and close the stream immediately
-                    File.WriteAllText(path, content);
-                }
+                File.WriteAllText(path, content);
+
+
             }
             catch (Exception ex)
             {

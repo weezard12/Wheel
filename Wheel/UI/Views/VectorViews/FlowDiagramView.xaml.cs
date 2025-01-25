@@ -1,5 +1,6 @@
 using Microsoft.Msagl.Drawing;
 using SvgLayerSample.Svg;
+using Wheel.Logic.Graphs;
 using static Wheel.Logic.MyUtils;
 
 namespace Wheel.UI;
@@ -25,6 +26,7 @@ public partial class FlowDiagramView : ContentView
 	public void SetNodesBasedOnDiagram()
 	{
         ConnectionsNodes = new List<DiagramNodeView>();
+        ConnectionNodesXml.Children.Clear();
         foreach (Node node in Graph.Nodes)
         {
             DiagramNodeView diagramNode = new DiagramNodeView(this, node);
@@ -34,8 +36,18 @@ public partial class FlowDiagramView : ContentView
         }
     }
 
-    public void SetDiagramBasedOnNodes()
-    {
+	public void UpdateVectorDisplay()
+	{
+		Diagram doc = new Diagram(Graph);
+        doc.Run();
+        GraphsUtils.SaveSvg(Path.Combine(Path.GetTempPath(), Path.Combine("Wheel", _graphName)), doc.ToString());
+
+        VectorDisplay.Source = FileFromTemp(_graphName);
+        VectorDisplay.Reload();
 		
+    }
+    private void OnWebViewNavigated(object sender, WebNavigatedEventArgs e)
+    {
+
     }
 }
