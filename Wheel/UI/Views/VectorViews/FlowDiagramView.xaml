@@ -14,7 +14,7 @@
                     VerticalOptions="Start" />
                 <HorizontalStackLayout>
                     <Label Text="Search:" />
-                    <Entry />
+                    <Entry x:Name="SearchEntry" TextChanged="SearchEntry_TextChanged"/>
                 </HorizontalStackLayout>
                 <VerticalStackLayout
                     x:Name="ConnectionNodesXml"
@@ -22,7 +22,7 @@
                     HorizontalOptions="Fill"
                     Spacing="10"
                     VerticalOptions="FillAndExpand" />
-                <Button Text="New Node" Clicked="NewNode_Clicked"/>
+                <Button Clicked="NewNode_Clicked" Text="New Node" />
             </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>

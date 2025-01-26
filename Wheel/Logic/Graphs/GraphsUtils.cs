@@ -162,5 +162,18 @@ namespace Wheel.Logic.Graphs
         {
             return GetAllPossibleConnections(edge.SourceNode, graph);
         }
+
+        public static Microsoft.Msagl.Drawing.Edge? GetOtherSideEdge(this Microsoft.Msagl.Drawing.Edge edge, Graph graph)
+        {
+            foreach (Microsoft.Msagl.Drawing.Node node in graph.Nodes)
+            {
+                foreach (Microsoft.Msagl.Drawing.Edge otherEdge in node.Edges)
+                {
+                    if(otherEdge.Target.Equals(edge.Source) && otherEdge.Source.Equals(edge.Target))
+                        return otherEdge;
+                }
+            }
+            return null;
+        }
     }
 }

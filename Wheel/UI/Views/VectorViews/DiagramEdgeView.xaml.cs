@@ -8,6 +8,8 @@ public partial class DiagramEdgeView : ContentView, IFlowDiagram
 {
     private Edge _edge;
 
+    private Edge _doubleSideEdge;
+
     private bool _initialized;
 
     public FlowDiagramView FlowDiagram { get; set; }
@@ -35,7 +37,9 @@ public partial class DiagramEdgeView : ContentView, IFlowDiagram
         // Adds other nodes as an option for an edge
         foreach (var nodeId in _edge.GetAllPossibleConnections(DiagramGraph))
             EdgeTo.Items.Add(nodeId);
-        
+
+
+        UpdateOtherSideNode();
     }
 
     private void RemoveEdge_Clicked(object sender, EventArgs e)
@@ -59,5 +63,28 @@ public partial class DiagramEdgeView : ContentView, IFlowDiagram
 
         FlowDiagram.UpdateVectorDisplay();
         FlowDiagram.SetNodesBasedOnDiagram();
+    }
+
+    private void DoubleSideEdge_Clicked(object sender, EventArgs e)
+    {
+        if (_doubleSideEdge == null)
+        {
+            DiagramGraph.AddEdge(_edge.Target, _edge.Source);
+        }
+        else
+        {
+            DiagramGraph.RemoveEdge(_doubleSideEdge);
+        }
+        FlowDiagram.UpdateVectorDisplay();
+        FlowDiagram.SetNodesBasedOnDiagram();
+    }
+
+    private void UpdateOtherSideNode()
+    {
+        _doubleSideEdge = _edge.GetOtherSideEdge(DiagramGraph);
+        if (_doubleSideEdge == null)
+            DoubleSideEdge.Text = "-->";
+        else
+            DoubleSideEdge.Text = "<-->";
     }
 }

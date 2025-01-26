@@ -24,18 +24,36 @@ public partial class FlowDiagramView : ContentView
 
 		VectorDisplay.Source = FileFromTemp(graphName);
 
-		SetNodesBasedOnDiagram();
+        SetNodesBasedOnDiagram();
     }
-	public void SetNodesBasedOnDiagram()
+    
+    
+    public void SetNodesBasedOnDiagram()
 	{
         ConnectionsNodes = new List<DiagramNodeView>();
         ConnectionNodesXml.Children.Clear();
         foreach (Node node in Graph.Nodes)
         {
-            DiagramNodeView diagramNode = new DiagramNodeView(this, node);
-            ConnectionsNodes.Add(diagramNode);
 
-			ConnectionNodesXml.Children.Add(diagramNode);
+            if (SearchEntry == null || SearchEntry.Text == null)
+            {
+                DiagramNodeView diagramNode = new DiagramNodeView(this, node);
+                ConnectionsNodes.Add(diagramNode);
+
+                ConnectionNodesXml.Children.Add(diagramNode);
+            }
+            else 
+            {
+                if (node.Id.ToLower().Contains(SearchEntry.Text.ToLower()))
+                {
+                    DiagramNodeView diagramNode = new DiagramNodeView(this, node);
+                    ConnectionsNodes.Add(diagramNode);
+
+                    ConnectionNodesXml.Children.Add(diagramNode);
+                }
+            }
+
+
         }
     }
 
@@ -72,5 +90,10 @@ public partial class FlowDiagramView : ContentView
             this.DebugAlert(ex.Message);
         }
 
+    }
+
+    private void SearchEntry_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        SetNodesBasedOnDiagram();
     }
 }

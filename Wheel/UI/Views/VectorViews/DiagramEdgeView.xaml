@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Wheel.UI.DiagramEdgeView">
+<ContentView
+    x:Class="Wheel.UI.DiagramEdgeView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <HorizontalStackLayout>
-        <Button x:Name="RemoveEdge" Text="X" Clicked="RemoveEdge_Clicked"/>
-        <Button x:Name="DoubleSideEdge"/>
+        <Button
+            x:Name="RemoveEdge"
+            Clicked="RemoveEdge_Clicked"
+            Text="X" />
+        <Button x:Name="DoubleSideEdge" Clicked="DoubleSideEdge_Clicked" />
         <Picker x:Name="EdgeTo" SelectedIndexChanged="EdgeTo_SelectedIndexChanged">
             <Picker.Items>
                 <x:String>Not Loaded</x:String>
