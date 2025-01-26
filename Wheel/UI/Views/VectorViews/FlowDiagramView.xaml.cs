@@ -1,6 +1,9 @@
+using CommunityToolkit.Maui.Views;
 using Microsoft.Msagl.Drawing;
 using SvgLayerSample.Svg;
+using Wheel.Logic;
 using Wheel.Logic.Graphs;
+using Wheel.UI.Views.ProjectViews;
 using static Wheel.Logic.MyUtils;
 
 namespace Wheel.UI;
@@ -48,6 +51,26 @@ public partial class FlowDiagramView : ContentView
     }
     private void OnWebViewNavigated(object sender, WebNavigatedEventArgs e)
     {
+
+    }
+
+    private async void NewNode_Clicked(object sender, EventArgs e)
+    {
+        EntryPopup entryPopup = new EntryPopup();
+
+        try
+        {
+            string newNodeName = (string)await this.GetParentPage().ShowPopupAsync(entryPopup);
+
+            Graph.AddNode(new ComponentNode(newNodeName));
+            
+            UpdateVectorDisplay();
+            SetNodesBasedOnDiagram();
+        }
+        catch (Exception ex)
+        {
+            this.DebugAlert(ex.Message);
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Views;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Msagl.Drawing;
+using Wheel.Logic;
 using Wheel.Logic.CodeParser.enums;
 using Wheel.UI.Views.ProjectViews;
 using Wheel.UI.Views.VectorViews;
@@ -28,9 +29,9 @@ public partial class DiagramNodeView : ContentView, IFlowDiagram, INameable
 		NodeName.Text = _node.LabelText;
 
 		foreach (Edge edge in _node.Edges)
-		{
-            Connections.Children.Add(new DiagramEdgeView(view, edge));
-        }
+            if(!_node.Id.Equals(edge.Target))
+                Connections.Children.Add(new DiagramEdgeView(view, edge));
+        
         
 
     }
@@ -55,30 +56,22 @@ public partial class DiagramNodeView : ContentView, IFlowDiagram, INameable
         _node.Id = name;
         
         
-        GetParentPage().DisplayAlert("debug",DiagramGraph.FindNode(_node.Id).Id,"a");
         FlowDiagram.UpdateVectorDisplay();
         FlowDiagram.SetNodesBasedOnDiagram();
     }
 
-    private void NodeName_Clicked(object sender, EventArgs e)
-    {
-        var popup = new EntryPopup(this);
-        
-        // Get the parent Page (e.g., ContentPage)
-        Page parentPage = this.GetParentPage();
 
-        // Show the popup
-        parentPage?.ShowPopup(popup);
-    }
-    private Page GetParentPage()
+    private async void NewEdge_Clicked(object sender, EventArgs e)
     {
-        Element current = this;
-        while (current != null)
-        {
-            if (current is Page page)
-                return page;
-            current = current.Parent;
-        }
-        return null; // Parent Page not found
+
+
+        PickerPopup entryPopup = new PickerPopup(_node.Edges
+        .Select(edge => edge.TargetNode.Id)
+        .Distinct().ToArray());
+
+        string newEdgeName = (string) await this.GetParentPage().ShowPopupAsync(entryPopup);
+
+        FlowDiagram.UpdateVectorDisplay();
+        FlowDiagram.SetNodesBasedOnDiagram();
     }
 }

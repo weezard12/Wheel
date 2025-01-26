@@ -5,7 +5,7 @@
     <HorizontalStackLayout>
         <Button x:Name="RemoveEdge" Text="X" Clicked="RemoveEdge_Clicked"/>
         <Button x:Name="DoubleSideEdge"/>
-        <Picker x:Name="EdgeTo">
+        <Picker x:Name="EdgeTo" SelectedIndexChanged="EdgeTo_SelectedIndexChanged">
             <Picker.Items>
                 <x:String>Not Loaded</x:String>
             </Picker.Items>

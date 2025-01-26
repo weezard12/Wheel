@@ -8,6 +8,7 @@ namespace Wheel.Logic
 {
     internal static class MyUtils
     {
+        #region Files Utils
         public static string FileFromTemp(string filename)
         {
             return Path.Combine(MauiProgram.TempPath, filename);
@@ -72,5 +73,36 @@ namespace Wheel.Logic
                 throw; // Optionally rethrow the exception if needed
             }
         }
+
+        #endregion
+
+        #region Views Utils
+
+        public static Page GetParentPage(this View contentView, bool recursive = false)
+        {
+            Element current = contentView;
+
+            while (current != null)
+            {
+                if (current is Page page)
+                    return page;
+
+                if (recursive && current.Parent is ContentView parentContentView)
+                {
+                    // Use recursion to check for the parent of the parent
+                    return parentContentView.GetParentPage(true);
+                }
+
+                current = current.Parent;
+            }
+
+            return null; // Parent Page not found
+        }
+
+        public static void DebugAlert(this View view, string message)
+        {
+            GetParentPage(view,true).DisplayAlert("Debug Message", message, "OK");
+        }
+        #endregion
     }
 }

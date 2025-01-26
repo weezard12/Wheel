@@ -22,7 +22,7 @@
                     HorizontalOptions="Fill"
                     Spacing="10"
                     VerticalOptions="FillAndExpand" />
-                <Button Text="New Node" />
+                <Button Text="New Node" Clicked="NewNode_Clicked"/>
             </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>

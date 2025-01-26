@@ -13,10 +13,19 @@ namespace Wheel.UI.Views.ProjectViews
         private INameable _value;
         private Entry _entry;
 
+        public EntryPopup()
+        {
+            SetupUI();
+        }
+
         public EntryPopup(INameable value)
         {
             _value = value;
+            SetupUI();
+        }
 
+        private void SetupUI()
+        {
             // Entry field for input
             _entry = new Entry
             {
@@ -51,11 +60,11 @@ namespace Wheel.UI.Views.ProjectViews
 
             Content = stackLayout; // Set the content of the popup
         }
-
         private void OnConfirmClicked(object sender, EventArgs e)
         {
-            _value.Name = _entry.Text; // Set the value to the entry text
-            Close();
+            if(_value != null)
+                _value.Name = _entry.Text; // Set the value to the entry text
+            Close(_entry.Text);
         }
     }
 }

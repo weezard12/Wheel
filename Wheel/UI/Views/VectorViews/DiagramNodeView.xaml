@@ -18,8 +18,11 @@
                 <Button
                     x:Name="NodeName"
                     Grid.Column="1"
-                    Clicked="NodeName_Clicked" />
-                <Button Grid.Column="2" Text="+" />
+                     />
+                <Button
+                    Grid.Column="2"
+                    Clicked="NewEdge_Clicked"
+                    Text="+" />
             </Grid>
         </HorizontalStackLayout>
         <VerticalStackLayout x:Name="Connections" Margin="10" />

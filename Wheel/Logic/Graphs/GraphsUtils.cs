@@ -8,6 +8,7 @@ using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Core.Layout;
 using Microsoft.Msagl.Drawing;
+using Microsoft.Msagl.GraphmapsWithMesh;
 using Microsoft.Msagl.Layout.Layered;
 using Microsoft.Msagl.Miscellaneous;
 using SvgLayerSample.Svg;
@@ -101,13 +102,61 @@ namespace Wheel.Logic.Graphs
         }
 
 
-        public static void MyAddNode(this Graph drawingGraph, string name)
+        public static void ReplaceNodeWithNewLabel(Graph graph, Microsoft.Msagl.Drawing.Node oldNode, string newNodeId, string newLabel)
         {
-            drawingGraph.AddNode(name);
-            var node = drawingGraph.FindNode(name);
-            node.Label.Width = 10;
-            node.Label.Height = 40;
 
+            if (oldNode == null)
+            {
+                throw new ArgumentException($"Node with ID '{oldNode}' not found in the graph.");
+            }
+
+            // Create a new node with the updated label
+            Microsoft.Msagl.Drawing.Node newNode = new Microsoft.Msagl.Drawing.Node(newNodeId)
+            {
+                LabelText = newLabel,
+                Attr = oldNode.Attr.Clone(), // Copy the attributes (like color, shape, etc.)
+                UserData = oldNode.UserData  // Copy user data, if any
+            };
+
+            // Add the new node to the graph
+            graph.AddNode(newNode);
+
+            // Copy all outgoing edges from the old node to the new node
+            foreach (Microsoft.Msagl.Drawing.Edge edge in graph.Edges)
+            {
+                if (edge.Source == oldNode.Id)
+                {
+                    graph.AddEdge(newNodeId, edge.LabelText, edge.Target);
+                }
+            }
+
+            // Copy all incoming edges to the new node
+            foreach (Microsoft.Msagl.Drawing.Edge edge in graph.Edges)
+            {
+                if (edge.Target == oldNode.Id)
+                {
+                    graph.AddEdge(edge.Source, edge.LabelText, newNodeId);
+                }
+            }
+
+            // Remove the old node
+            graph.RemoveNode(oldNode);
+        }
+
+        public static string[] GetAllPossibleConnections(this Microsoft.Msagl.Drawing.Edge edge, Graph graph)
+        {
+            // Use a HashSet for fast lookups of currentNodeEdges
+            var currentNodeEdgeSet = new HashSet<Microsoft.Msagl.Drawing.Node>(
+                edge.SourceNode.Edges.Select(e => e.TargetNode)
+            );
+
+            // Use LINQ to filter nodes not in the currentNodeEdgeSet
+            var result = graph.Nodes
+                .Where(node => !currentNodeEdgeSet.Contains(node))
+                .Select(node => node.Id)
+                .ToArray();
+
+            return result;
         }
     }
 }
