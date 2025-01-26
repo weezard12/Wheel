@@ -143,11 +143,11 @@ namespace Wheel.Logic.Graphs
             graph.RemoveNode(oldNode);
         }
 
-        public static string[] GetAllPossibleConnections(this Microsoft.Msagl.Drawing.Edge edge, Graph graph)
+        public static string[] GetAllPossibleConnections(this Microsoft.Msagl.Drawing.Node node, Graph graph)
         {
             // Use a HashSet for fast lookups of currentNodeEdges
             var currentNodeEdgeSet = new HashSet<Microsoft.Msagl.Drawing.Node>(
-                edge.SourceNode.Edges.Select(e => e.TargetNode)
+                node.Edges.Select(e => e.TargetNode)
             );
 
             // Use LINQ to filter nodes not in the currentNodeEdgeSet
@@ -157,6 +157,10 @@ namespace Wheel.Logic.Graphs
                 .ToArray();
 
             return result;
+        }
+        public static string[] GetAllPossibleConnections(this Microsoft.Msagl.Drawing.Edge edge, Graph graph)
+        {
+            return GetAllPossibleConnections(edge.SourceNode, graph);
         }
     }
 }

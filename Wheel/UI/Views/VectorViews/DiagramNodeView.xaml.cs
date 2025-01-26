@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Msagl.Drawing;
 using Wheel.Logic;
 using Wheel.Logic.CodeParser.enums;
+using Wheel.Logic.Graphs;
 using Wheel.UI.Views.ProjectViews;
 using Wheel.UI.Views.VectorViews;
 using Page = Microsoft.Maui.Controls.Page;
@@ -63,13 +64,10 @@ public partial class DiagramNodeView : ContentView, IFlowDiagram, INameable
 
     private async void NewEdge_Clicked(object sender, EventArgs e)
     {
-
-
-        PickerPopup entryPopup = new PickerPopup(_node.Edges
-        .Select(edge => edge.TargetNode.Id)
-        .Distinct().ToArray());
+        PickerPopup entryPopup = new PickerPopup(_node.GetAllPossibleConnections(DiagramGraph));
 
         string newEdgeName = (string) await this.GetParentPage().ShowPopupAsync(entryPopup);
+        DiagramGraph.AddEdge(_node.Id, newEdgeName);
 
         FlowDiagram.UpdateVectorDisplay();
         FlowDiagram.SetNodesBasedOnDiagram();

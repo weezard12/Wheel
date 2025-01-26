@@ -13,9 +13,10 @@ namespace Wheel.UI.Views.ProjectViews
 
         public string[] PickerValues { get; set; }
 
-        public PickerPopup(string[] values) : base()
+        public PickerPopup(string[] values)
         {
             PickerValues = values;
+            SetupUI();
         }
 
         protected override void SetupUI()
@@ -23,22 +24,17 @@ namespace Wheel.UI.Views.ProjectViews
             // Entry field for input
             _picker = new Picker
             {
-                SelectedIndex = 0,
                 WidthRequest = 250,
                 HorizontalOptions = LayoutOptions.Center
             };
 
-            if (PickerValues == null)
+            if (PickerValues != null)
             {
-                Close();
-                return;
+                foreach (var value in PickerValues)
+                    _picker.Items.Add(value);
             }
-                
-            foreach (var value in PickerValues)
-                _picker.Items.Add(value);
-            
+            _picker.SelectedIndex = 0;
             PopupLayout.Add(_picker);
-
             base.SetupUI();
         }
 

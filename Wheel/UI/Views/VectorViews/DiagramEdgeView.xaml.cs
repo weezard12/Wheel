@@ -1,6 +1,7 @@
 namespace Wheel.UI;
 
 using Microsoft.Msagl.Drawing;
+using Wheel.Logic.Graphs;
 using Wheel.UI.Views.VectorViews;
 
 public partial class DiagramEdgeView : ContentView, IFlowDiagram
@@ -32,14 +33,8 @@ public partial class DiagramEdgeView : ContentView, IFlowDiagram
         EdgeTo.SelectedIndex = 0;
 
         // Adds other nodes as an option for an edge
-        Node[] currentNodeEdges = _edge.SourceNode.Edges
-        .Select(edge => edge.TargetNode)
-        .Distinct()                      
-        .ToArray();            
-        
-        foreach (var node in DiagramGraph.Nodes)
-            if (!currentNodeEdges.Contains(node))
-                EdgeTo.Items.Add(node.LabelText);
+        foreach (var nodeId in _edge.GetAllPossibleConnections(DiagramGraph))
+            EdgeTo.Items.Add(nodeId);
         
     }
 

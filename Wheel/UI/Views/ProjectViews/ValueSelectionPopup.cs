@@ -9,11 +9,11 @@ namespace Wheel.UI.Views.ProjectViews
 {
     internal class ValueSelectionPopup : Popup
     {
-        protected VerticalStackLayout PopupLayout { get; set; }
+        protected VerticalStackLayout PopupLayout { get; set; } = new VerticalStackLayout();
 
         public ValueSelectionPopup()
         {
-            SetupUI();
+            
         }
         protected virtual void OnConfirmClicked(object sender, EventArgs e)
         {
@@ -38,7 +38,9 @@ namespace Wheel.UI.Views.ProjectViews
                 Text = "Close",
                 HorizontalOptions = LayoutOptions.Center
             };
+
             closeButton.Clicked += (s, e) => Close();
+            confirmButton.Clicked += OnConfirmClicked;
 
             PopupLayout.Add(closeButton);
             PopupLayout.Add(confirmButton);
