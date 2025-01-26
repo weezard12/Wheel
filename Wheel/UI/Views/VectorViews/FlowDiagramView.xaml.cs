@@ -15,7 +15,7 @@ public partial class FlowDiagramView : ContentView
 	public FlowDiagramView(string graphName, Graph graph)
 	{
 		InitializeComponent();
-
+		
 		_graphName = graphName;
 		Graph = graph;
 
