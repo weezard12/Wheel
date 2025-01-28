@@ -1,35 +1,33 @@
-using Microsoft.Msagl.Drawing;
-using SvgLayerSample.Svg;
-using Wheel.Logic.CodeParser.Base;
-using Wheel.Logic.Graphs;
 using Wheel.Logic.Projects;
-using static Wheel.Logic.CodeParser.AndroidStudioParser;
+using static Wheel.Logic.Projects.AndroidStudioProject;
 
-namespace Wheel.UI;
+namespace Wheel.UI.Pages.AndroidStudio;
 
-public partial class AndroidStudioTemplate : TabbedPage
+public partial class MainProjectPage : ContentPage
 {
-    public AndroidStudioTemplate()
-    {
-        InitializeComponent();
-
+	public MainProjectPage()
+	{
+		InitializeComponent();
+        UploadProjectXml.OnSelectedFileSet = new Action<Exception?>(OnProjectFolderUploaded);
     }
     protected override void OnAppearing()
     {
         base.OnAppearing();
-    }
 
+        ProjectName.Text = $"Current Project: {CurrentProject.Name}";
+    }
     private void OnProjectFolderUploaded(Exception? ex)
     {
-/*        if (ex != null)
+        if (ex != null)
         {
             DisplayAlert("Cant load project file",ex.Message,"OK");
             return;
         }
 
-        DisplayAlert("Project Loaded", "Flow diagram is being generated", "OK");
+        DisplayAlert("Project Loading", "Enjoy the Auto Generated Project", "W! OK");
 
-        // generate the svg
+        CurrentProject.SetupAllProjectFiles(UploadProjectXml.SelectedFolderPath);
+/*        // generate the svg
         string projectPath = UploadProjectXml.SelectedFolderPath;
         string sourceCodePath = GetSourceCodePath(projectPath);
 
@@ -43,5 +41,4 @@ public partial class AndroidStudioTemplate : TabbedPage
         Project.SetupProjectClasses(classNames);
         EntriesStackLayout.Children.Add(new FlowDiagramView("screens_diagram.svg", graph));*/
     }
-
 }

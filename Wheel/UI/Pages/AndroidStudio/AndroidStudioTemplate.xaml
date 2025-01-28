@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Wheel.UI.AndroidStudioTemplate"
-             Title="AndroidStudioTemplate"
-             xmlns:local="clr-namespace:Wheel.UI.Views">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Label x:Name="ProjectName" 
-            Text="Current Project: Unknown"
-            VerticalOptions="Center"
-            HorizontalOptions="Center" FontSize="Large"/>
+<TabbedPage
+    x:Class="Wheel.UI.AndroidStudioTemplate"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Wheel.UI.Pages.AndroidStudio"
+    Title="AndroidStudioTemplate">
 
-            <local:LoadFolderView x:Name="UploadProjectXml"/>
+    <local:MainProjectPage Title="Project" />
+    <local:ClassesPage Title="Classes" />
+    <local:ScreensPage Title="Screens" />
+    <ContentPage Title="Final Product" />
 
-            <VerticalStackLayout x:Name="EntriesStackLayout" Margin="10">
-
-            </VerticalStackLayout>
-            
-            
-        </VerticalStackLayout>
-
-    </ScrollView>
-</ContentPage>
+</TabbedPage>

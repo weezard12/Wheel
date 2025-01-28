@@ -5,24 +5,19 @@ namespace Wheel.Logic.CodeParser.Base
     // load all the class names content and methods
     // setup the class extension list
     //
-    public class ClassFile : SourceClass, IContent
+    public class ClassFile : ContentProjectFile
     {
-        public string Content { get; set; }
-        public string Path { get; set; }
-
         List<Variable> Variables { get; set; } = new List<Variable>();
         List<Method> Methods { get; set; } = new List<Method>();
 
         /// <summary>
         /// List of all the classes that this class extends from.
         /// </summary>
-        public List<SourceClass> ExtentsFrom { get; set; }
+        public List<ProjectFile> ExtentsFrom { get; set; }
 
-
-        public ClassFile(string fileName, string content, string path) : base(fileName)
+        public ClassFile(string fileName, string content) : base(fileName, content)
         {
-            Content = content;
-            Path = path;
+            
         }
 
         public static ClassFile GetClassFromText(string fileContent)
@@ -37,7 +32,7 @@ namespace Wheel.Logic.CodeParser.Base
             string className = classNameMatch.Success ? classNameMatch.Groups[1].Value : "UnknownClass";
 
             // Create ClassFile instance
-            var classFile = new ClassFile(className, fileContent, "UnknownPath");
+            var classFile = new ClassFile(className, fileContent);
 
             // Variables
             var variableMatches = System.Text.RegularExpressions.Regex.Matches(fileContent, variablePattern);

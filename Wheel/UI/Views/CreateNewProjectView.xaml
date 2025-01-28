@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Wheel.UI.CreateNewProjectView">
+<ContentView
+    x:Class="Wheel.UI.CreateNewProjectView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <VerticalStackLayout>
-        <Label 
-            Text="Project Name:"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry x:Name="NameEntry"/>
-        <Picker x:Name="ProjectType">
-            <Picker.Items>
-                <x:String>Android Studio</x:String>
-            </Picker.Items>
-        </Picker>
-        
-        <Button Text="Create And Edit" Clicked="CreateProject_Clicked"/>
+        <HorizontalStackLayout>
+            <Label
+                HorizontalOptions="Center"
+                Text="Project Name:"
+                VerticalOptions="Center" />
+            <Entry x:Name="NameEntry" Text="Untitled" HorizontalOptions="Fill"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout>
+            <Label
+                HorizontalOptions="Center"
+                Text="Project Type:"
+                VerticalOptions="Center" />
+            <Picker x:Name="ProjectType">
+                <Picker.Items>
+                    <x:String>Android Studio</x:String>
+                </Picker.Items>
+            </Picker>
+        </HorizontalStackLayout>
+
+        <Button Clicked="CreateProject_Clicked" Text="Create And Edit" />
     </VerticalStackLayout>
 </ContentView>

@@ -15,7 +15,6 @@ public partial class CreateNewProjectView : ContentView
 		if (ProjectType.SelectedIndex == 0)
 		{
             AndroidStudioProject project = new AndroidStudioProject(NameEntry.Text);
-            AndroidStudioTemplate.Project = project;
             Shell.Current.GoToAsync(nameof(AndroidStudioTemplate));
         }
     }

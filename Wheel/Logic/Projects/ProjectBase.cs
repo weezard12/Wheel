@@ -5,35 +5,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wheel.Logic.CodeParser.Base;
+using Wheel.Logic.CodeParser.enums;
 using Wheel.UI;
 using Wheel.UI.Views.ProjectViews;
 
 namespace Wheel.Logic.Projects
 {
-    public abstract partial class ProjectBase : ObservableObject
+    public abstract partial class ProjectBase : INameable
     {
-        [ObservableProperty]
-        string name;
-        List<DataPageView> DataPages { get; set; }
+        public ProjectBase CurrentProject { get; protected set; }
 
-        private List<ProjectValueEntryView> entries = new List<ProjectValueEntryView>();
+        public string Name { get; set; }
 
+        public bool IsProjectLoaded { get; protected set; }
 
-        public ContentPage ProjectPage { get; set; }
-        public ProjectBase()
-        {
+        public List<ProjectFile> AllProjectFiles { get; set; } = new List<ProjectFile>();
+        public virtual List<ClassFile> ClassFiles { get; set; } = new List<ClassFile>();
+        public List<ContentProjectFile> ResourceFiles { get; set; } = new List<ContentProjectFile>();
 
-        }
         public ProjectBase(string ProjectName)
         {
-            this.name = ProjectName;
+            Name = ProjectName;
+            CurrentProject = this;
         }
-        public abstract void SetupUI();
-        protected void AddEntry(ProjectValueEntryView entryView)
-        {
-            entries.Add(entryView);
-            entryView.Margin = 5;
-            ProjectPage.FindByName<VerticalStackLayout>("EntriesStackLayout").Add(entryView);
-        }
+        public abstract void SetupAllProjectFiles(string folderPath);
     }
 }

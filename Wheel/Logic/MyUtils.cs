@@ -74,6 +74,16 @@ namespace Wheel.Logic
             }
         }
 
+        public static void DebugLog(params string[] message)
+        {
+            string sout = String.Empty;
+            foreach (string s in message)
+            {
+                sout += s +"\n";
+            }
+            CreateFileIfDoesntExist(FileFromTemp("log.txt"), sout);
+        }
+
         #endregion
 
         #region Views Utils
@@ -102,6 +112,10 @@ namespace Wheel.Logic
         public static void DebugAlert(this View view, string message)
         {
             GetParentPage(view,true).DisplayAlert("Debug Message", message, "OK");
+        }
+        public static void DebugAlert(this Page page, string message)
+        {
+            page.DisplayAlert("Debug Message", message, "OK");
         }
         #endregion
     }

@@ -19,7 +19,7 @@ namespace Wheel.Logic.CodeParser
             }
 
             List<ClassFile> classNames = new List<ClassFile>();
-            string[] javaFiles = Directory.GetFiles(projectPath, "*.java", SearchOption.AllDirectories);
+/*            string[] javaFiles = Directory.GetFiles(projectPath, "*.java", SearchOption.AllDirectories);
 
             Regex classRegex = new Regex(@"\bclass\s+(\w+)", RegexOptions.Compiled);
 
@@ -36,7 +36,7 @@ namespace Wheel.Logic.CodeParser
                     }
                 }
             }
-
+*/
             return classNames;
         }
 
@@ -51,7 +51,7 @@ namespace Wheel.Logic.CodeParser
                 // Initialize ExtentsFrom if not already done
                 if (classFile.ExtentsFrom == null)
                 {
-                    classFile.ExtentsFrom = new List<SourceClass>();
+                    classFile.ExtentsFrom = new List<ProjectFile>();
                 }
 
                 // Match the "extends" clause in the class content
@@ -62,7 +62,7 @@ namespace Wheel.Logic.CodeParser
                     string extenderName = match.Groups[1].Value;
 
                     // Find the extender class in the provided classes
-                    SourceClass extenderClass = classes.FirstOrDefault(c => c.Name == extenderName);
+                    ProjectFile extenderClass = classes.FirstOrDefault(c => c.Name == extenderName);
 
                     if (extenderClass == null)
                     {

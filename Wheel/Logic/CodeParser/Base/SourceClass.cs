@@ -7,26 +7,10 @@ using Wheel.Logic.CodeParser.enums;
 
 namespace Wheel.Logic.CodeParser.Base
 {
-    public class SourceClass : INameable
+    public class SourceClass : ProjectFile
     {
-        public string Name { get; set; }
-        public SourceClass(string name)
+        public SourceClass(string fileName) : base(fileName)
         {
-            Name = name;
-        }
-        public override string ToString()
-        {
-            return String.Format("Source Class, Name: {0}",Name);
-        }
-        public override bool Equals(object? obj)
-        {
-            if (obj != null)
-                if(obj is string)
-                    return Name.Equals(obj);
-            if(obj is SourceClass sourceClass)
-                return sourceClass.Name.Equals(this.Name);
-            
-            return base.Equals(obj);
         }
     }
 }

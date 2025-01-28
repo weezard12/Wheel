@@ -10,13 +10,15 @@ namespace Wheel.Logic.CodeParser
 {
     internal class AndroidScreen : ClassFile
     {
+        public AndroidScreen(string fileName, string content) : base(fileName, content)
+        {
+        }
+
         public string[] ClassesName { get; set; } = { "AppCompatActivity" };
 
         public List<AndroidScreen> ConectedScreens { get; set; }
         
 
-        public AndroidScreen(string fileName, string content, string path) : base(fileName, content, path)
-        {
-        }
+
     }
 }
