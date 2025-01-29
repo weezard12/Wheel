@@ -3,26 +3,35 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <VerticalStackLayout>
-        <Border Margin="0">
+        <Border Margin="10">
 
-            <VerticalStackLayout>
+            <VerticalStackLayout Padding="10">
                 <WebView
                     x:Name="VectorDisplay"
                     HeightRequest="500"
                     HorizontalOptions="FillAndExpand"
                     Navigated="OnWebViewNavigated"
                     VerticalOptions="Start" />
-                <HorizontalStackLayout>
-                    <Label Text="Search:" />
-                    <Entry x:Name="SearchEntry" TextChanged="SearchEntry_TextChanged"/>
-                </HorizontalStackLayout>
-                <VerticalStackLayout
-                    x:Name="ConnectionNodesXml"
-                    Padding="10"
-                    HorizontalOptions="Fill"
-                    Spacing="10"
-                    VerticalOptions="FillAndExpand" />
-                <Button Clicked="NewNode_Clicked" Text="New Node" />
+
+                <Button
+                    Margin="5"
+                    Clicked="ToggleEditing_Clicked"
+                    Text="Toggle Editing Mode" />
+
+                <VerticalStackLayout x:Name="EditingGraphLayout" IsVisible="False">
+                    <HorizontalStackLayout>
+                        <Label Text="Search:" />
+                        <Entry x:Name="SearchEntry" TextChanged="SearchEntry_TextChanged" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout
+                        x:Name="ConnectionNodesXml"
+                        Padding="10"
+                        HorizontalOptions="Fill"
+                        Spacing="10"
+                        VerticalOptions="FillAndExpand" />
+                    <Button Clicked="NewNode_Clicked" Text="New Node" />
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>

@@ -96,4 +96,9 @@ public partial class FlowDiagramView : ContentView
     {
         SetNodesBasedOnDiagram();
     }
+
+    private void ToggleEditing_Clicked(object sender, EventArgs e)
+    {
+        EditingGraphLayout.IsVisible = !EditingGraphLayout.IsVisible;
+    }
 }
