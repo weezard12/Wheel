@@ -14,6 +14,7 @@ namespace Wheel.Logic.Projects
         public static new AndroidStudioProject CurrentProject { get; private set; }
 
         public override List<ClassFile> ClassFiles { get => GetClassFiles(); set => base.ClassFiles = value; }
+        public List<ClassFile> Screens { get => GetScreens(); }
 
         public string Path { get; private set; }
         public string SourceCodePath { get; private set; }
@@ -65,6 +66,15 @@ namespace Wheel.Logic.Projects
                 }
             }
             return classes;
+        }
+
+        private List<ClassFile> GetScreens() {
+            List<ClassFile> screens = new List<ClassFile>();
+            foreach (ClassFile classFile in ClassFiles)
+                if(classFile.ExtentsFrom.Contains(new SourceClass("AppCompatActivity")))
+                    screens.Add(classFile);
+
+            return screens;
         }
     }
 }

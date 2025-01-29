@@ -11,7 +11,10 @@ namespace Wheel
             var builder = MauiApp.CreateBuilder();
             builder
             .UseMauiApp<App>()
-            .UseMauiCommunityToolkit() // Initialize the .NET MAUI Community Toolkit
+            .UseMauiCommunityToolkit(options =>
+            {
+                options.SetShouldEnableSnackbarOnWindows(true); // Enable Snackbar for Windows
+            })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

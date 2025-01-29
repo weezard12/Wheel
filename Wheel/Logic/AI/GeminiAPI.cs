@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,7 @@ namespace Wheel.Logic.AI
         private const string ApiKey = "";
         private const string ApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=YOUR_API_KEY";
 
-
-        private static async Task<string> GetGeminiResponse(string prompt)
+        public static async Task<string> GetGeminiResponse(string prompt)
         {
             using var client = new HttpClient();
             var requestBody = new
@@ -40,6 +40,27 @@ namespace Wheel.Logic.AI
             else
             {
                 return $"Error: {response.StatusCode} - {response.ReasonPhrase}";
+            }
+        }
+        public static string GetFullTextFromResponse(string response)
+        {
+            if (string.IsNullOrWhiteSpace(response))
+                return string.Empty;
+
+            try
+            {
+                var jsonObject = JObject.Parse(response);
+                var textParts = jsonObject["candidates"]?
+                    .SelectMany(candidate => candidate["content"]?["parts"] ?? Enumerable.Empty<JToken>())
+                    .Select(part => part["text"]?.ToString())
+                    .Where(text => !string.IsNullOrEmpty(text));
+
+                return textParts != null ? string.Join(" ", textParts) : string.Empty;
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine("Invalid JSON format: " + ex.Message);
+                return string.Empty;
             }
         }
     }
