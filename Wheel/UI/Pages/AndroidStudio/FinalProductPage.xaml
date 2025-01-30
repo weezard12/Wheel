@@ -5,6 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="FinalProductPage">
     <VerticalStackLayout>
-        <WebView Source="C:\Users\User1\AppData\Local\Temp\Wheel\final_product.docx" />
+        <ScrollView>
+            <WebView
+                x:Name="DocxView"
+                HeightRequest="2000"
+                WidthRequest="800" />
+        </ScrollView>
+
     </VerticalStackLayout>
 </ContentPage>

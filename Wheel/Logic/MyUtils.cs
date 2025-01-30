@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Aspose.Words;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Wheel.Logic
 {
@@ -118,5 +120,18 @@ namespace Wheel.Logic
             page.DisplayAlert("Debug Message", message, "OK");
         }
         #endregion
+
+        public static void ParseDocx(string inputDocxPath, string outputHtmlPath, SaveFormat format)
+        {
+            try
+            {
+                Document doc = new Document(inputDocxPath);
+                doc.Save(outputHtmlPath, format);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
     }
 }

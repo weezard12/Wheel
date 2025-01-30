@@ -1,0 +1,30 @@
+﻿{
+  "pages": [
+    {
+      "name": "Main Page",
+      "values": [
+        {
+          "name": "project_name",
+          "baseValue": "Untitled",
+          "currentValue": "Untitled"
+        },
+        {
+          "name": "publisher",
+          "baseValue": "Unknown",
+          "currentValue": "Unknown"
+        },
+        {
+          "name": "publisher_id",
+          "baseValue": "00000000",
+          "currentValue": "00000000"
+        },
+        {
+          "name": "teacher",
+          "baseValue": "רונית מרציאנו",
+          "currentValue": "רונית מרציאנו"
+        }
+      ]
+    }
+    
+  ]
+}
