@@ -6,11 +6,18 @@
     <Grid Padding="10">
         <!--  Fixed Header with Buttons  -->
         <Grid RowDefinitions="Auto, *">
+            <Label
+                x:Name="TitleXml"
+                FontSize="Medium"
+                IsVisible="False"
+                Text="" />
             <Border
+                Grid.Row="1"
                 Padding="5"
                 Stroke="Gray"
                 StrokeThickness="1">
                 <VerticalStackLayout>
+
                     <HorizontalStackLayout HorizontalOptions="Start">
                         <Button Clicked="Copy_Clicked" Text="Copy" />
                         <Button

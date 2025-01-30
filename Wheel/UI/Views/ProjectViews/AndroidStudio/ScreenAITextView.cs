@@ -13,10 +13,11 @@ namespace Wheel.UI.Views.ProjectViews.AndroidStudio
 
         private ClassFile ClassFile { get; set; }
 
-        public ScreenAITextView(ClassFile classFile)
+        public ScreenAITextView(ClassFile classFile) : base(classFile.Name)
         {
             this.ClassFile = classFile;
         }
+
 
         private string GetPrompt()
         {

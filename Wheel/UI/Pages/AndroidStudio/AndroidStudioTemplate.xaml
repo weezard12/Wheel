@@ -9,6 +9,6 @@
     <local:MainProjectPage Title="Project" />
     <local:ClassesPage Title="Classes" />
     <local:ScreensPage Title="Screens" />
-    <ContentPage Title="Final Product" />
+    <local:FinalProductPage Title="Final Product" />
 
 </TabbedPage>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wheel.UI.Pages.AndroidStudio.FinalProductPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="FinalProductPage">
+    <VerticalStackLayout>
+        <WebView Source="C:\Users\User1\AppData\Local\Temp\Wheel\final_product.docx" />
+    </VerticalStackLayout>
+</ContentPage>

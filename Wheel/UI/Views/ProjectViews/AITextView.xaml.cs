@@ -8,10 +8,16 @@ public partial class AITextView : ContentView
 {
     public virtual string Prompt { get; set; }
     public string AIResponse { get; set; }
+
+    public string Title { get => TitleXml.Text; set => SetTitle(value); }
 	public AITextView()
 	{
 		InitializeComponent();
 	}
+    public AITextView(string title) : this()
+    {
+        this.Title = title;
+    }
 
     private async void Copy_Clicked(object sender, EventArgs e)
     {
@@ -35,6 +41,19 @@ public partial class AITextView : ContentView
             return;
         }
         AIResponse = GeminiAPI.GetFullTextFromResponse(await GeminiAPI.GetGeminiResponse(Prompt));
-        OutputText.Text = AIResponse;
+        OutputText.Text = String.IsNullOrEmpty(AIResponse) ? "Error when getting AI response." : AIResponse;
+    }
+
+    private void SetTitle(string value)
+    {
+        if (value.Equals(String.Empty))
+        {
+            TitleXml.Text = "";
+            TitleXml.IsVisible = false;
+            return;
+        }
+        TitleXml.Text = value;
+        TitleXml.IsVisible = true;
+        
     }
 }
