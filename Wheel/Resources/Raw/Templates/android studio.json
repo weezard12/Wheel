@@ -2,23 +2,28 @@
   "pages": [
     {
       "name": "Main Page",
+      "idx" : 0,
       "values": [
         {
+          "display_name": "Product Name", 
           "name": "project_name",
           "baseValue": "Untitled",
           "currentValue": "Untitled"
         },
         {
+          "display_name": "Publisher",
           "name": "publisher",
           "baseValue": "Unknown",
           "currentValue": "Unknown"
         },
         {
+          "display_name": "Publisher ID",
           "name": "publisher_id",
           "baseValue": "00000000",
           "currentValue": "00000000"
         },
         {
+          "display_name": "Teacher",
           "name": "teacher",
           "baseValue": "רונית מרציאנו",
           "currentValue": "רונית מרציאנו"

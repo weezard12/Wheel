@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xceed.Words.NET;
 
 namespace Wheel.Logic.Docx
 {
@@ -58,5 +59,56 @@ namespace Wheel.Logic.Docx
             }
         }
         //public static List<string[]> GetAllEntriesOnPage()
+
+
+        static void CombineDocx(string firstDocx, string secondDocx, string outputDocx)
+        {
+            if (!File.Exists(firstDocx) || !File.Exists(secondDocx))
+            {
+                throw new FileNotFoundException("One or both input files do not exist.");
+            }
+
+            // Copy secondDocx as base document
+            File.Copy(secondDocx, outputDocx, true);
+
+            using (WordprocessingDocument mainDoc = WordprocessingDocument.Open(outputDocx, true))
+            {
+                MainDocumentPart mainPart = mainDoc.MainDocumentPart;
+                if (mainPart == null)
+                {
+                    throw new InvalidOperationException("The second document is not a valid .docx file.");
+                }
+
+                using (WordprocessingDocument docToAppend = WordprocessingDocument.Open(firstDocx, false))
+                {
+                    MainDocumentPart partToAppend = docToAppend.MainDocumentPart;
+                    if (partToAppend == null)
+                    {
+                        throw new InvalidOperationException("The first document is not a valid .docx file.");
+                    }
+
+                    // Get the body of both documents
+                    Body mainBody = mainPart.Document.Body;
+                    Body appendBody = partToAppend.Document.Body;
+
+                    if (appendBody != null)
+                    {
+                        // Add a page break before appending content
+                        mainBody.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+
+                        // Append the content
+                        foreach (var element in appendBody.Elements())
+                        {
+                            mainBody.Append(element.CloneNode(true));
+                        }
+
+                        // Save changes
+                        mainPart.Document.Save();
+                    }
+                }
+            }
+        }
+
+
     }
 }

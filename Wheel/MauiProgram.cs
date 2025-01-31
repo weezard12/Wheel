@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Wheel.Logic;
 
 namespace Wheel
 {
@@ -24,6 +25,9 @@ namespace Wheel
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            // My Logic
+            MyUtils.CreateFolderIfDoesntExist(TempPath); // creates the wheel folder (and for now clears it)
 
             return builder.Build();
         }
