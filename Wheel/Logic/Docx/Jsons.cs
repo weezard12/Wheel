@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static Wheel.Logic.Docx.DocxParser;
 using static Wheel.Logic.Projects.AndroidStudioProject;
+using static Wheel.Logic.MyUtils;
 
 namespace Wheel.Logic.Docx
 {
@@ -46,7 +47,10 @@ namespace Wheel.Logic.Docx
             {
 
                 foreach (var value in Values)
-                    DocxParser.SetEntryByName(path, value.Name,value.CurrentValue);
+                {
+                    value.SetValueInDocx(path);
+                }
+                    
                 
             }
         }
@@ -64,6 +68,16 @@ namespace Wheel.Logic.Docx
 
             [JsonPropertyName("currentValue")]
             public string CurrentValue { get; set; }
+
+            public void SetValueInDocx(string path)
+            {
+                if (CurrentValue.StartsWith("Path\\"))
+                {
+                    InsertAPicture(path, FileFromTemp(CurrentValue.Substring(5)));
+                    return;
+                }
+                DocxParser.SetEntryByName(path, Name, CurrentValue);
+            }
         }
     }
 }

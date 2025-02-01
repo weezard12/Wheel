@@ -6,6 +6,8 @@ using Wheel.Logic.Graphs;
 using Wheel.UI.Views.ProjectViews;
 using Wheel.UI.Views.ProjectViews.AndroidStudio;
 using static Wheel.Logic.Projects.AndroidStudioProject;
+using static Wheel.Logic.Docx.Jsons;
+using Page = Wheel.Logic.Docx.Jsons.Page;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
@@ -28,7 +30,18 @@ public partial class ScreensPage : ContentPage
             {
                 EntriesStackLayout.Children.Add(new ScreenAITextView(screen));
             }
-            
+            project.Root.Pages.Add(new Page()
+            {
+                Name = "Screens Diagram",
+                Values = new List<Value>()
+            {
+                new Value()
+                {
+                    CurrentValue = "Path\\screens_diagram.svg"
+                }
+            }
+            });
+            project.SaveConfig();
         };
     }
     protected override void OnAppearing()
