@@ -86,21 +86,16 @@ namespace Wheel.Logic
             CreateFileIfDoesntExist(FileFromTemp("log.txt"), sout);
         }
 
-        public static async Task<bool> CopyLocalFileAsync(string localFileName, string destinationPath )
+        public static async Task<bool> CopyLocalFileAsync(string localFileName, string destinationPath)
         {
             try
             {
-                // Read the file from the MAUI resource
-                using Stream fileStream = await FileSystem.OpenAppPackageFileAsync(localFileName);
-                using FileStream outputFileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write);
-
-                // Copy the contents to the destination
-                await fileStream.CopyToAsync(outputFileStream);
+                File.Copy(localFileName, destinationPath, true);
                 return true;
-
             }
             catch (Exception ex)
             {
+                MyUtils.DebugLog($"Error copying file: {ex}");
                 return false;
             }
         }

@@ -12,6 +12,8 @@ namespace Wheel.Logic.Docx
 {
     internal class DocxParser
     {
+        public static string GetLocalPagePath(string pageName) => Path.Combine("Templates\\Docx", pageName) + ".docx";
+
         /// <summary>
         /// Searches for "{WheelValue}" entries in a .docx document and retrieves the entry at the specified index.
         /// </summary>
@@ -58,8 +60,85 @@ namespace Wheel.Logic.Docx
                 return baseValue != null ? new[] { entryName, baseValue } : new[] { entryName };
             }
         }
-        //public static List<string[]> GetAllEntriesOnPage()
 
+        /// <summary>
+        /// Replaces the specified "{Wheel(entry_name)}" placeholder in a .docx file with the given value, 
+        /// preserving formatting and structure.
+        /// </summary>
+        /// <param name="path">The path to the .docx file.</param>
+        /// <param name="entryName">The entry name to replace inside "{Wheel(entry_name)}".</param>
+        /// <param name="entryValue">The value to insert in place of "{Wheel(entry_name)}".</param>
+        public static void SetEntryByName(string path, string entryName, string entryValue)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("The specified file does not exist.", path);
+
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
+            {
+                MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+                if (mainPart == null)
+                    throw new InvalidOperationException("The document does not contain a main part.");
+
+                var body = mainPart.Document.Body;
+                if (body == null)
+                    throw new InvalidOperationException("The document does not contain a body.");
+
+                string placeholder = $"{{WheelValue({entryName})}}";
+
+                foreach (var para in body.Descendants<Paragraph>())
+                {
+                    var runs = para.Elements<Run>().ToList();
+                    if (!runs.Any()) continue;
+
+                    string fullText = string.Join("", runs.Select(r => r.GetFirstChild<Text>()?.Text ?? ""));
+                    int placeholderIndex = fullText.IndexOf(placeholder);
+
+                    if (placeholderIndex != -1)
+                    {
+
+                        int currentIndex = 0;
+                        bool replaced = false;
+                        foreach (var run in runs)
+                        {
+                            var textElement = run.GetFirstChild<Text>();
+                            if (textElement == null) continue;
+
+                            string runText = textElement.Text;
+
+                            if (currentIndex + runText.Length >= placeholderIndex &&
+                                currentIndex <= placeholderIndex + placeholder.Length)
+                            {
+                                // If this is the first run where replacement starts, modify its text
+                                if (!replaced)
+                                {
+                                    // Remove placeholder from the first affected run and insert new value
+                                    int startReplaceIndex = Math.Max(0, placeholderIndex - currentIndex);
+                                    int endReplaceIndex = Math.Min(runText.Length, placeholderIndex + placeholder.Length - currentIndex);
+
+                                    string beforePlaceholder = runText.Substring(0, startReplaceIndex);
+                                    string afterPlaceholder = runText.Substring(endReplaceIndex);
+
+                                    textElement.Text = beforePlaceholder + entryValue + afterPlaceholder;
+                                    replaced = true;
+                                }
+                                else
+                                {
+                                    // Clear text in following runs if they were part of the placeholder
+                                    textElement.Text = "";
+                                }
+                            }
+
+                            currentIndex += runText.Length;
+                        }
+
+                        break; // Stop after first replacement
+                    }
+                }
+
+                // Save changes
+                mainPart.Document.Save();
+            }
+        }
 
         static void CombineDocx(string firstDocx, string secondDocx, string outputDocx)
         {

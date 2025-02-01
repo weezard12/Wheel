@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static Wheel.Logic.Docx.DocxParser;
 
 namespace Wheel.Logic.Docx
 {
@@ -25,6 +26,18 @@ namespace Wheel.Logic.Docx
 
             [JsonPropertyName("values")]
             public List<Value> Values { get; set; }
+
+            public void CopyLocalPageTo(string copyPath)
+            {
+                File.Copy(GetLocalPagePath(Name), copyPath, true);
+            }
+            public void SetupFileValues(string path)
+            {
+
+                foreach (var value in Values)
+                    DocxParser.SetEntryByName(path, value.Name,value.CurrentValue);
+                
+            }
         }
 
         public class Value
