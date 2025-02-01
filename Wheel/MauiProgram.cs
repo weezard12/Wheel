@@ -27,7 +27,7 @@ namespace Wheel
 #endif
 
             // My Logic
-            MyUtils.CreateFolderIfDoesntExist(TempPath); // creates the wheel folder (and for now clears it)
+            MyUtils.CreateFolderIfDoesntExist(TempPath, true); // creates the wheel folder (and for now clears it)
 
             return builder.Build();
         }

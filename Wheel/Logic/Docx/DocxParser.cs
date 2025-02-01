@@ -188,6 +188,63 @@ namespace Wheel.Logic.Docx
             }
         }
 
+        public static void MergeDocx(string firstDocx, string secondDocx)
+        {
+            if (!File.Exists(firstDocx) || !File.Exists(secondDocx))
+            {
+                throw new FileNotFoundException("One or both input files do not exist.");
+            }
+
+            using (WordprocessingDocument mainDoc = WordprocessingDocument.Open(firstDocx, true))
+            {
+                MainDocumentPart mainPart = mainDoc.MainDocumentPart;
+                if (mainPart == null)
+                {
+                    throw new InvalidOperationException("The first document is not a valid .docx file.");
+                }
+
+                using (WordprocessingDocument docToAppend = WordprocessingDocument.Open(secondDocx, false))
+                {
+                    MainDocumentPart partToAppend = docToAppend.MainDocumentPart;
+                    if (partToAppend == null)
+                    {
+                        throw new InvalidOperationException("The second document is not a valid .docx file.");
+                    }
+
+                    // Get the body of both documents
+                    Body mainBody = mainPart.Document.Body;
+                    Body appendBody = partToAppend.Document.Body;
+
+                    if (appendBody != null)
+                    {
+                        // Add a page break before appending content
+                        mainBody.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+
+                        // Append the content
+                        foreach (var element in appendBody.Elements())
+                        {
+                            mainBody.Append(element.CloneNode(true));
+                        }
+
+                        // Save changes
+                        mainPart.Document.Save();
+                    }
+                }
+            }
+        }
+
+        public static void ParseDocx(string inputDocxPath, string outputPath, Aspose.Words.SaveFormat format)
+        {
+            try
+            {
+                Aspose.Words.Document doc = new Aspose.Words.Document(inputDocxPath);
+                doc.Save(outputPath, format);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
     }
 }

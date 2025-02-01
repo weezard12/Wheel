@@ -1,32 +1,26 @@
+using Wheel.Logic.Projects;
+using static Wheel.Logic.Docx.Jsons;
+
 namespace Wheel.UI;
 
 public partial class ProjectValueEntryView : ContentView
 {
-    public string ValueName { get; private set; }
-    public string Value { get; private set; }
+    Value EntryValue { get; set; }
 
-    public string EntryPreview { get; private set; }
-    public int EntryMinRows { get; private set; }
-    public string HelpMessage { get; private set; }
-
-    public ProjectValueEntryView(string valueName, string value = "", string entryPreview = "", int entryMinRows = 1, string helpMessage = "")
+    public ProjectValueEntryView(Value value)
     {
         InitializeComponent();
-        ValueName = valueName;
-        Value = value;
-        EntryPreview = entryPreview;
-        EntryMinRows = entryMinRows;
-        HelpMessage = helpMessage;
+        this.EntryValue = value;
 
-        ValueNameXml.Text = valueName + ":";
+        ValueNameXml.Text = value.DisplayName;
 
-        ValueEntryXml.Text = value;
-        ValueEntryXml.Placeholder = entryPreview;
-        ValueEntryXml.Placeholder = entryPreview;
-        if(entryMinRows > 1)
-        {
-            Grid.SetColumn(ValueEntryXml,0);
-            Grid.SetRow(ValueEntryXml,1);
-        }
+        ValueEntryXml.Text = value.CurrentValue;
+        ValueEntryXml.Placeholder = value.BaseValue;
+    }
+
+    private void ValueEntryXml_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        EntryValue.CurrentValue = ValueEntryXml.Text;
+        AndroidStudioProject.CurrentProject.SaveConfig();
     }
 }

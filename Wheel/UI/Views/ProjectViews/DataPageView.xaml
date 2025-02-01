@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Wheel.UI.Views.ProjectViews.DataPageView">
-    <Grid>
+<ContentView
+    x:Class="Wheel.UI.Views.ProjectViews.DataPageView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <VerticalStackLayout>
 
-        <Label x:Name="PageNameXml" Text="Main Page"/>
-        <VerticalStackLayout x:Name="EntriesLayout">
-            
-        </VerticalStackLayout>
-    </Grid>
+        <Label
+            x:Name="PageNameXml"
+            FontSize="Large"
+            Text="Main Page" />
+        <Border Margin="5">
+            <VerticalStackLayout x:Name="EntriesLayout" Padding="10" Spacing="20"/>
+        </Border>
+
+    </VerticalStackLayout>
 </ContentView>

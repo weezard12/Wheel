@@ -1,5 +1,8 @@
 using Wheel.Logic.Projects;
 using static Wheel.Logic.Projects.AndroidStudioProject;
+using static Wheel.Logic.Docx.Jsons;
+using Page = Wheel.Logic.Docx.Jsons.Page;
+using Wheel.UI.Views.ProjectViews;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
@@ -15,6 +18,10 @@ public partial class MainProjectPage : ContentPage
         base.OnAppearing();
 
         ProjectName.Text = $"Current Project: {CurrentProject.Name}";
+
+        Page mainPage = CurrentProject.Root.GetDocxPage("Main Page");
+        EntriesStackLayout.Children.Clear();
+        EntriesStackLayout.Children.Add(new DataPageView(mainPage));
     }
     private void OnProjectFolderUploaded(Exception? ex)
     {

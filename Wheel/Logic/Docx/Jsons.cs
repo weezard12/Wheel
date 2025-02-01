@@ -5,15 +5,21 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static Wheel.Logic.Docx.DocxParser;
+using static Wheel.Logic.Projects.AndroidStudioProject;
 
 namespace Wheel.Logic.Docx
 {
-    internal class Jsons
+    public class Jsons
     {
         public class DocxRoot
         {
             [JsonPropertyName("pages")]
             public List<Page> Pages { get; set; }
+
+            public Page GetDocxPage(string pageName)
+            {
+                return Pages.FirstOrDefault(name => name.Name == pageName);
+            }
         }
 
         public class Page
@@ -27,9 +33,14 @@ namespace Wheel.Logic.Docx
             [JsonPropertyName("values")]
             public List<Value> Values { get; set; }
 
-            public void CopyLocalPageTo(string copyPath)
+            public void AddPageToFinalDocx()
             {
-                File.Copy(GetLocalPagePath(Name), copyPath, true);
+                if (File.Exists(FinalFilePath))
+                {
+                    MergeDocx(FinalFilePath, GetLocalPagePath(Name));
+                }
+                else
+                    File.Copy(GetLocalPagePath(Name), FinalFilePath, true);
             }
             public void SetupFileValues(string path)
             {

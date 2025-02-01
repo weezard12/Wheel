@@ -8,7 +8,7 @@
         <ScrollView>
             <WebView
                 x:Name="DocxView"
-                HeightRequest="2000"
+                HeightRequest="1000"
                 WidthRequest="800" />
         </ScrollView>
 

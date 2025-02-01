@@ -2,16 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Wheel.Logic.CodeParser;
 using Wheel.Logic.CodeParser.Base;
 using Wheel.UI;
+using static Wheel.Logic.Docx.Jsons;
+using static Wheel.Logic.MyUtils;
 
 namespace Wheel.Logic.Projects
 {
     public class AndroidStudioProject : ProjectBase
     {
         public static new AndroidStudioProject CurrentProject { get; private set; }
+
+        public const string FinalFileName = "Final Prodect.docx";
+        public static string FinalFilePath => FileFromTemp(FinalFileName);
+        public static string ProjectConfig => FileFromTemp("android studio.json");
+        public static string ProjectConfigString => File.ReadAllText(ProjectConfig);
+
+        private DocxRoot _root;
+        public DocxRoot Root { get => GetDocxRoot(); private set => _root = value; }
 
         public override List<ClassFile> ClassFiles { get => GetClassFiles(); set => base.ClassFiles = value; }
         public List<ClassFile> Screens { get => GetScreens(); }
@@ -24,6 +35,8 @@ namespace Wheel.Logic.Projects
         public AndroidStudioProject(string ProjectName) : base(ProjectName)
         {
             CurrentProject = this;
+
+            
         }
 
         public override void SetupAllProjectFiles(string folderPath)
@@ -75,6 +88,25 @@ namespace Wheel.Logic.Projects
                     screens.Add(classFile);
 
             return screens;
+        }
+
+        public void SaveConfig()
+        {
+            string json = JsonSerializer.Serialize<DocxRoot>(Root);
+            File.WriteAllText(ProjectConfig, json);
+        }
+
+
+        public DocxRoot GetDocxRoot()
+        {
+            if (_root == null)
+                _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString);
+
+            return _root;    
+        }
+        public void UpdateDocxRoot()
+        {
+            _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString);
         }
     }
 }

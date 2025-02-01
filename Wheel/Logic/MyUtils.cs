@@ -139,17 +139,6 @@ namespace Wheel.Logic
         }
         #endregion
 
-        public static void ParseDocx(string inputDocxPath, string outputHtmlPath, SaveFormat format)
-        {
-            try
-            {
-                Document doc = new Document(inputDocxPath);
-                doc.Save(outputHtmlPath, format);
-            }
-            catch (Exception ex)
-            {
-                
-            }
-        }
+        
     }
 }

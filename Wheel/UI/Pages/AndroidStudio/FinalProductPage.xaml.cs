@@ -5,13 +5,13 @@ using Wheel.Logic.Docx;
 using static Wheel.Logic.Docx.Jsons;
 using static Wheel.Logic.MyUtils;
 using Page = Wheel.Logic.Docx.Jsons.Page;
+using static Wheel.Logic.Projects.AndroidStudioProject;
+using Wheel.Logic.Projects;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
 public partial class FinalProductPage : ContentPage
 {
-    public const string FinalFileName = "Final Prodect.docx";
-    public static string FinalFilePath => FileFromTemp(FinalFileName);
 	public FinalProductPage()
 	{
 		InitializeComponent();
@@ -23,25 +23,39 @@ public partial class FinalProductPage : ContentPage
 
         UpdateFinalProduct();
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Thread loadViewThread = new Thread(UpdateFinalProduct);
+        loadViewThread.Start();
+    }
     public async void UpdateFinalProduct()
     {
         //if no json file exists it will create it
         if(!File.Exists(FileFromTemp("android studio.json")))
             await CopyLocalFileAsync("Templates\\android studio.json", FileFromTemp("android studio.json"));
 
-        // parces the project json
-        DocxRoot docxRoot = JsonSerializer.Deserialize<DocxRoot>(File.ReadAllText(FileFromTemp("android studio.json")));
+        CurrentProject.UpdateDocxRoot();
 
-        
-        // sets up the finel product file
-        docxRoot.Pages[0].CopyLocalPageTo(FinalFilePath);
-        docxRoot.Pages[0].SetupFileValues(FinalFilePath);
-
-        //bool s = DocxParser.CombineDocx(FileFromTemp("first docx.docx"), FileFromTemp("second docx.docx"));
-        //this.DebugAlert(s.ToString());
-        foreach (Page page in docxRoot.Pages)
+        string pdfPath = FinalFileName + ".pdf";
+        try
         {
-
+            File.Delete(FinalFilePath);
+            File.Delete(pdfPath);
         }
+        catch{ }
+
+        foreach (Page page in CurrentProject.Root.Pages)
+        {
+            page.AddPageToFinalDocx();
+            page.SetupFileValues(FinalFilePath);
+        }
+        DocxParser.ParseDocx(FinalFilePath,FileFromTemp(FinalFileName + ".pdf"),Aspose.Words.SaveFormat.Pdf);
+        await Dispatcher.DispatchAsync(() =>
+        {
+            DocxView.Source = FileFromTemp(FinalFileName + ".pdf");
+        });
+        
+        
     }
 }

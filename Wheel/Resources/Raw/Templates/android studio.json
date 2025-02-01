@@ -2,10 +2,9 @@
   "pages": [
     {
       "name": "Main Page",
-      "idx" : 0,
       "values": [
         {
-          "display_name": "Product Name", 
+          "display_name": "Product Name",
           "name": "project_name",
           "baseValue": "Untitled",
           "currentValue": "Untitled"
@@ -20,16 +19,40 @@
           "display_name": "Publisher ID",
           "name": "publisher_id",
           "baseValue": "00000000",
-          "currentValue": "00000000"
+          "currentValue": "000000000"
         },
         {
           "display_name": "Teacher",
           "name": "teacher",
           "baseValue": "רונית מרציאנו",
           "currentValue": "רונית מרציאנו"
+        },
+        {
+          "display_name": "School",
+          "name": "school",
+          "baseValue": "תיכון יחד מודיעין",
+          "currentValue": "תיכון יחד מודיעין"
+        },
+        {
+          "display_name": "Flag",
+          "name": "flag",
+          "baseValue": "237354",
+          "currentValue": "237354"
+        },
+        {
+          "display_name": "Publish Date",
+          "name": "publish_date",
+          "baseValue": "00/00/2025",
+          "currentValue": "00/00/2025"
         }
+
       ]
+    },
+    {
+      "name": "Table Of Contents",
+      "values": []
     }
+
     
   ]
 }
