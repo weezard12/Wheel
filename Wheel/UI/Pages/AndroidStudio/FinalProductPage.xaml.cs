@@ -7,6 +7,7 @@ using static Wheel.Logic.MyUtils;
 using Page = Wheel.Logic.Docx.Jsons.Page;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using Wheel.Logic.Projects;
+using Wheel.UI.Views;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
@@ -20,6 +21,15 @@ public partial class FinalProductPage : ContentPage
         /*        ParseDocx(FileFromTemp("test.docx"), FileFromTemp("test.pdf"),Aspose.Words.SaveFormat.Pdf);
                 DocxView.Source = FileFromTemp("test.pdf");
                 DocxView.Reload();*/
+        LoadFolderView exportView = new LoadFolderView("Export");
+        exportView.OnSelectedFileSet += (ex) =>
+        {
+            if (ex != null)
+                return;
+            File.Copy(FinalFilePath,Path.Combine(exportView.SelectedFolderPath, CurrentProject.Name + ".docx"));
+        };
+        Grid.SetColumn(exportView, 0);
+        ExportGrid.Add(exportView);
 
         UpdateFinalProduct();
     }
@@ -68,4 +78,5 @@ public partial class FinalProductPage : ContentPage
         
         
     }
+
 }

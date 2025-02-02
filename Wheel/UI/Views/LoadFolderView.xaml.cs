@@ -19,6 +19,10 @@ public partial class LoadFolderView : ContentView
 	{
 		InitializeComponent();
 	}
+    public LoadFolderView(string buttonText) : this()
+    {
+        UploadButton.Text = buttonText;
+    }
     private async void UploadButton_Clicked(object sender, EventArgs e)
     {
         try
