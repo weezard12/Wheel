@@ -32,11 +32,10 @@ namespace Wheel.Logic.Projects
 
         public event Action <AndroidStudioProject> OnProjectLoaded;
 
+
         public AndroidStudioProject(string ProjectName) : base(ProjectName)
         {
             CurrentProject = this;
-
-            
         }
 
         public override void SetupAllProjectFiles(string folderPath)
@@ -107,6 +106,11 @@ namespace Wheel.Logic.Projects
         public void UpdateDocxRoot()
         {
             _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString);
+        }
+
+        public static int GetPageIdxInDocx()
+        {
+
         }
     }
 }

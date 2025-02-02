@@ -28,6 +28,9 @@ namespace Wheel.Logic.Docx
             [JsonPropertyName("name")]
             public string Name { get; set; }
 
+            [JsonPropertyName("id")]
+            public string ID { get; set; }
+
             [JsonPropertyName("idx")]
             public int Index { get; set; }
 
