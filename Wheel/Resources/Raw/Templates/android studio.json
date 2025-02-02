@@ -2,6 +2,7 @@
   "pages": [
     {
       "name": "Main Page",
+      "idx": 0,
       "values": [
         {
           "display_name": "Product Name",
@@ -50,6 +51,7 @@
     },
     {
       "name": "Table Of Contents",
+      "idx": 1,
       "values": []
     }
 

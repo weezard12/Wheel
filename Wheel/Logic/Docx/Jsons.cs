@@ -17,9 +17,13 @@ namespace Wheel.Logic.Docx
             [JsonPropertyName("pages")]
             public List<Page> Pages { get; set; }
 
-            public Page GetDocxPage(string pageName)
+            public Page? GetDocxPage(string pageName)
             {
                 return Pages.FirstOrDefault(name => name.Name == pageName);
+            }
+            public Page? GetDocxPageByID(string pageId)
+            {
+                return Pages.FirstOrDefault(name => name.ID == pageId);
             }
         }
 
@@ -74,12 +78,16 @@ namespace Wheel.Logic.Docx
 
             public void SetValueInDocx(string path)
             {
-                if (CurrentValue.StartsWith("Path\\"))
+                if(CurrentValue != null)
                 {
-                    InsertAPicture(path, FileFromTemp(CurrentValue.Substring(5)));
-                    return;
+                    if (CurrentValue.StartsWith("Path\\"))
+                    {
+                        InsertAPicture(path, FileFromTemp(CurrentValue.Substring(5)));
+                        return;
+                    }
+                    DocxParser.SetEntryByName(path, Name, CurrentValue);
                 }
-                DocxParser.SetEntryByName(path, Name, CurrentValue);
+
             }
         }
     }

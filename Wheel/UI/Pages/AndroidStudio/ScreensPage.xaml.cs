@@ -8,6 +8,8 @@ using Wheel.UI.Views.ProjectViews.AndroidStudio;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using static Wheel.Logic.Docx.Jsons;
 using Page = Wheel.Logic.Docx.Jsons.Page;
+using Wheel.Logic.Docx;
+using static Wheel.Logic.Docx.IDocxPage;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
@@ -15,6 +17,7 @@ public partial class ScreensPage : ContentPage
 {
     public FlowDiagramView ScreensFlowDiagram { get; private set; }
     public AITextViewsHolder TextViewsHolder { get; private set; }
+
 
     public ScreensPage()
 	{
@@ -31,15 +34,6 @@ public partial class ScreensPage : ContentPage
             EntriesGrid.Add(ScreensFlowDiagram);
             EntriesGrid.SetRow(ScreensFlowDiagram, 0);
 
-            TextViewsHolder = new AITextViewsHolder();
-            EntriesGrid.Add(TextViewsHolder);
-            EntriesGrid.SetRow(TextViewsHolder, 1);
-
-            foreach (ClassFile screen in project.Screens)
-            {
-                TextViewsHolder.AddAITextView(new ScreenAITextView(screen));
-            }
-
             project.Root.Pages.Add(new Page()
             {
                 Name = "Screens Diagram",
@@ -51,7 +45,28 @@ public partial class ScreensPage : ContentPage
                 }
             }
             });
-            project.SaveConfig();
+
+
+            TextViewsHolder = new AITextViewsHolder();
+            EntriesGrid.Add(TextViewsHolder);
+            EntriesGrid.SetRow(TextViewsHolder, 1);
+
+            foreach (ClassFile screen in project.Screens)
+            {
+                TextViewsHolder.AddAITextView(new ScreenAITextView(screen));
+                CurrentProject.Root.Pages.Add(new Page()
+                {
+                    ID="screen_" + screen.Name,
+                    Name="Screen Page",
+                    Index = (int) PageType.ScreensAboutPage,
+                    Values = new List<Value> {
+                        new Value() { Name="screen_name", CurrentValue = screen.Name},
+                        new Value() { Name="screen_description", CurrentValue = "No description generated"}
+                    }
+                });
+            }
+            CurrentProject.SaveConfig();
+
         };
     }
     protected override void OnAppearing()

@@ -108,9 +108,5 @@ namespace Wheel.Logic.Projects
             _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString);
         }
 
-        public static int GetPageIdxInDocx()
-        {
-
-        }
     }
 }

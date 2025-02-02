@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Wheel.Logic.CodeParser.Base;
+using static Wheel.Logic.Projects.AndroidStudioProject;
 
 namespace Wheel.UI.Views.ProjectViews.AndroidStudio
 {
@@ -13,9 +14,20 @@ namespace Wheel.UI.Views.ProjectViews.AndroidStudio
 
         private ClassFile ClassFile { get; set; }
 
+        private readonly string _nameInJson;
+
         public ScreenAITextView(ClassFile classFile) : base(classFile.Name)
         {
             this.ClassFile = classFile;
+            _nameInJson = "screen_" + ClassFile.Name;
+            OnGeneratedValidResponse += (responce) =>
+            {
+                if (CurrentProject.Root.GetDocxPageByID(_nameInJson) != null)
+                {
+                    CurrentProject.Root.GetDocxPageByID(_nameInJson).Values[1].CurrentValue = AIResponse;
+                    CurrentProject.SaveConfig();
+                }
+            };
         }
 
 
@@ -42,6 +54,11 @@ Simple Example:
 The screen class:";
 
             return instructions + ClassFile.Content;
+        }
+
+        public override void Generate()
+        {
+            base.Generate();
         }
     }
 }

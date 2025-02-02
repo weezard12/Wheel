@@ -10,6 +10,9 @@ public partial class AITextView : ContentView
     public string AIResponse { get; set; }
 
     public string Title { get => TitleXml.Text; set => SetTitle(value); }
+
+    protected Action<string> OnGeneratedValidResponse { get; set; }
+
 	public AITextView()
 	{
 		InitializeComponent();
@@ -42,6 +45,7 @@ public partial class AITextView : ContentView
         }
         AIResponse = GeminiAPI.GetFullTextFromResponse(await GeminiAPI.GetGeminiResponse(Prompt));
         OutputText.Text = String.IsNullOrEmpty(AIResponse) ? "Error when getting AI response." : AIResponse;
+        OnGeneratedValidResponse.Invoke(OutputText.Text);
     }
 
     private void SetTitle(string value)
