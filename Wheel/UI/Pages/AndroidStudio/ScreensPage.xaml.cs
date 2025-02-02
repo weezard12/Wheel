@@ -13,7 +13,10 @@ namespace Wheel.UI.Pages.AndroidStudio;
 
 public partial class ScreensPage : ContentPage
 {
-	public ScreensPage()
+    public FlowDiagramView ScreensFlowDiagram { get; private set; }
+    public AITextViewsHolder TextViewsHolder { get; private set; }
+
+    public ScreensPage()
 	{
 		InitializeComponent();
 
@@ -24,12 +27,19 @@ public partial class ScreensPage : ContentPage
             Diagram doc = GraphsUtils.GetScreenDiagram(project.ClassFiles);
             GraphsUtils.SaveSvg(Path.Combine(Path.GetTempPath(), "Wheel\\screens_diagram.svg"), doc.ToString());
 
-            EntriesStackLayout.Children.Add(new FlowDiagramView("screens_diagram.svg", graph));
+            ScreensFlowDiagram = new FlowDiagramView("screens_diagram.svg", graph);
+            EntriesGrid.Add(ScreensFlowDiagram);
+            EntriesGrid.SetRow(ScreensFlowDiagram, 0);
+
+            TextViewsHolder = new AITextViewsHolder();
+            EntriesGrid.Add(TextViewsHolder);
+            EntriesGrid.SetRow(TextViewsHolder, 1);
 
             foreach (ClassFile screen in project.Screens)
             {
-                EntriesStackLayout.Children.Add(new ScreenAITextView(screen));
+                TextViewsHolder.AddAITextView(new ScreenAITextView(screen));
             }
+
             project.Root.Pages.Add(new Page()
             {
                 Name = "Screens Diagram",
