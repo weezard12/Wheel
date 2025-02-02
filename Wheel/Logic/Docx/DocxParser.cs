@@ -13,6 +13,7 @@ using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
+
 namespace Wheel.Logic.Docx
 {
     internal class DocxParser
@@ -350,5 +351,23 @@ namespace Wheel.Logic.Docx
             wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
         }
 
+        /// <summary>
+        /// Converts a Word document (.docx) to PDF using Microsoft.Office.Interop.Word.
+        /// </summary>
+        /// <param name="docxPath">Path to the .docx file.</param>
+        /// <param name="pdfPath">Output path for the .pdf file.</param>
+        /// <returns>True if conversion is successful, otherwise false.</returns>
+        public static void ConvertDocxToPdfWithSmallWatermark(string docxPath, string pdfPath)
+        {
+            // Load the .docx file
+            Spire.Doc.Document document = new Spire.Doc.Document();
+            document.LoadFromFile(docxPath);
+
+            // Save the document as a .pdf file
+            document.SaveToFile(pdfPath, Spire.Doc.FileFormat.PDF);
+
+            // Dispose the document object
+            document.Dispose();
+        }
     }
 }

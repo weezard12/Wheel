@@ -37,7 +37,7 @@ public partial class FinalProductPage : ContentPage
 
         CurrentProject.UpdateDocxRoot();
 
-        string pdfPath = FinalFileName + ".pdf";
+        string pdfPath = FinalFilePath + ".pdf";
         try
         {
             File.Delete(FinalFilePath);
@@ -50,7 +50,17 @@ public partial class FinalProductPage : ContentPage
             page.AddPageToFinalDocx();
             page.SetupFileValues(FinalFilePath);
         }
-        DocxParser.ParseDocx(FinalFilePath,FileFromTemp(FinalFileName + ".pdf"),Aspose.Words.SaveFormat.Pdf);
+
+        try
+        {
+            DocxParser.ConvertDocxToPdfWithSmallWatermark(FinalFilePath, pdfPath);
+        }
+        catch
+        {
+            DocxParser.ParseDocx(FinalFilePath, FileFromTemp(pdfPath), Aspose.Words.SaveFormat.Pdf);
+        }
+
+            
         await Dispatcher.DispatchAsync(() =>
         {
             DocxView.Source = FileFromTemp(FinalFileName + ".pdf");
