@@ -41,14 +41,15 @@ namespace Wheel.Logic.Docx
             [JsonPropertyName("values")]
             public List<Value> Values { get; set; }
 
-            public void AddPageToFinalDocx()
+            public async Task<bool> AddPageToFinalDocx()
             {
                 if (File.Exists(FinalFilePath))
                 {
-                    MergeDocx(FinalFilePath, GetLocalPagePath(Name));
+                    await MergeDocx(FinalFilePath, FileFromTemplates(Name)+".docx");
+                    return true;
                 }
                 else
-                    File.Copy(GetLocalPagePath(Name), FinalFilePath, true);
+                    return await CopyLocalFileAsync(GetLocalPagePath(Name), FinalFilePath);
             }
             public void SetupFileValues(string path)
             {
@@ -57,8 +58,12 @@ namespace Wheel.Logic.Docx
                 {
                     value.SetValueInDocx(path);
                 }
-                    
-                
+            }
+            public void SetValueByName(string valueName, string currentValue)
+            {
+                Value editingValue = Values.FirstOrDefault(valuse => valuse.Name == valueName);
+                if(editingValue != null)
+                    editingValue.CurrentValue = currentValue;
             }
         }
 

@@ -9,6 +9,7 @@ using Wheel.Logic.CodeParser.Base;
 using Wheel.Logic.CodeParser.enums;
 using Wheel.UI;
 using Wheel.UI.Views.ProjectViews;
+using static Wheel.Logic.MyUtils;
 
 namespace Wheel.Logic.Projects
 {
@@ -19,6 +20,8 @@ namespace Wheel.Logic.Projects
         public string Name { get; set; }
 
         public bool IsProjectLoaded { get; protected set; }
+
+        public static string TemplatesFolderPath => FileFromTemp("Templates");
 
         public List<ProjectFile> AllProjectFiles { get; set; } = new List<ProjectFile>();
         public virtual List<ClassFile> ClassFiles { get; set; } = new List<ClassFile>();

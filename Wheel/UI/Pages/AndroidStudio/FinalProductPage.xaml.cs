@@ -46,7 +46,7 @@ public partial class FinalProductPage : ContentPage
             await CopyLocalFileAsync("Templates\\android studio.json", FileFromTemp("android studio.json"));
 
         CurrentProject.UpdateDocxRoot();
-
+        
         string pdfPath = FinalFilePath + ".pdf";
         try
         {
@@ -57,10 +57,10 @@ public partial class FinalProductPage : ContentPage
 
         foreach (Page page in CurrentProject.Root.Pages)
         {
-            page.AddPageToFinalDocx();
+            await page.AddPageToFinalDocx();
             page.SetupFileValues(FinalFilePath);
         }
-
+        
         try
         {
             DocxParser.ConvertDocxToPdfWithSmallWatermark(FinalFilePath, pdfPath);

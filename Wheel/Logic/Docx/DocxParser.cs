@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using Wheel.Logic.Projects;
 
 
 namespace Wheel.Logic.Docx
@@ -187,11 +188,13 @@ namespace Wheel.Logic.Docx
             }
         }
 
-        public static void MergeDocx(string firstDocx, string secondDocx)
+        public static async Task MergeDocx(string firstDocx, string secondDocx)
         {
             if (!File.Exists(firstDocx) || !File.Exists(secondDocx))
             {
-                throw new FileNotFoundException("One or both input files do not exist.");
+                MyUtils.CreateFolderIfDoesntExist(ProjectBase.TemplatesFolderPath);
+                await MyUtils.CopyLocalTemplate(secondDocx);
+                
             }
 
             using (WordprocessingDocument mainDoc = WordprocessingDocument.Open(firstDocx, true))
@@ -202,33 +205,42 @@ namespace Wheel.Logic.Docx
                     throw new InvalidOperationException("The first document is not a valid .docx file.");
                 }
 
-                using (WordprocessingDocument docToAppend = WordprocessingDocument.Open(secondDocx, false))
+                // try to open the socond page (if it fails it will copy the local file and trys angin)
+                try
                 {
-                    MainDocumentPart partToAppend = docToAppend.MainDocumentPart;
-                    if (partToAppend == null)
+                    using (WordprocessingDocument docToAppend = WordprocessingDocument.Open(secondDocx, false))
                     {
-                        throw new InvalidOperationException("The second document is not a valid .docx file.");
-                    }
-
-                    // Get the body of both documents
-                    Body mainBody = mainPart.Document.Body;
-                    Body appendBody = partToAppend.Document.Body;
-
-                    if (appendBody != null)
-                    {
-                        // Add a page break before appending content
-                        mainBody.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
-
-                        // Append the content
-                        foreach (var element in appendBody.Elements())
+                        MainDocumentPart partToAppend = docToAppend.MainDocumentPart;
+                        if (partToAppend == null)
                         {
-                            mainBody.Append(element.CloneNode(true));
+                            throw new InvalidOperationException("The second document is not a valid .docx file.");
                         }
 
-                        // Save changes
-                        mainPart.Document.Save();
+                        // Get the body of both documents
+                        Body mainBody = mainPart.Document.Body;
+                        Body appendBody = partToAppend.Document.Body;
+
+                        if (appendBody != null)
+                        {
+                            // Add a page break before appending content
+                            mainBody.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+
+                            // Append the content
+                            foreach (var element in appendBody.Elements())
+                            {
+                                mainBody.Append(element.CloneNode(true));
+                            }
+
+                            // Save changes
+                            mainPart.Document.Save();
+                        }
                     }
                 }
+                catch
+                {
+                }
+
+                
             }
         }
 

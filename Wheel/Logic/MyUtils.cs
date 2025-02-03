@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wheel.Logic.Projects;
 
 
 namespace Wheel.Logic
@@ -15,7 +16,10 @@ namespace Wheel.Logic
         {
             return Path.Combine(MauiProgram.TempPath, filename);
         }
-
+        public static string FileFromTemplates(string filename)
+        {
+            return Path.Combine(ProjectBase.TemplatesFolderPath, filename);
+        }
         public static void CreateFolderIfDoesntExist(string path, bool clearDirectory = false)
         {
             //just in case
@@ -90,7 +94,19 @@ namespace Wheel.Logic
         {
             try
             {
-                File.Copy(localFileName, destinationPath, true);
+                if (File.Exists(destinationPath))
+                    File.Delete(destinationPath);
+
+                // Open the .docx file as a read-only stream from the MAUI resources
+                using Stream inputStream = await FileSystem.OpenAppPackageFileAsync(localFileName);
+                
+                // Create a write stream for the destination file
+                using FileStream outputStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.Read);
+
+                // Copy the file ensuring full integrity
+                await inputStream.CopyToAsync(outputStream);
+                await outputStream.FlushAsync(); // Ensure all data is written before closing
+
                 return true;
             }
             catch (Exception ex)
@@ -99,7 +115,12 @@ namespace Wheel.Logic
                 return false;
             }
         }
-
+        public static async Task CopyLocalTemplate(string templateName)
+        {
+            if (!Path.HasExtension(templateName))
+                templateName += ".docx";
+            await CopyLocalFileAsync(Path.Combine("Templates\\Docx", Path.GetFileName(templateName)), Path.Combine(ProjectBase.TemplatesFolderPath, Path.GetFileName(templateName)));
+        }
         #endregion
 
         #region Views Utils

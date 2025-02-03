@@ -8,7 +8,9 @@ namespace Wheel.UI.Pages.AndroidStudio;
 
 public partial class MainProjectPage : ContentPage
 {
-	public MainProjectPage()
+    private Page _mainPage;
+
+    public MainProjectPage()
 	{
 		InitializeComponent();
         UploadProjectXml.OnSelectedFileSet = new Action<Exception?>(OnProjectFolderUploaded);
@@ -19,10 +21,19 @@ public partial class MainProjectPage : ContentPage
 
         ProjectName.Text = $"Current Project: {CurrentProject.Name}";
 
-        Page mainPage = CurrentProject.Root.GetDocxPage("Main Page");
+        _mainPage = CurrentProject.Root.GetDocxPage("Main Page");
         EntriesStackLayout.Children.Clear();
-        EntriesStackLayout.Children.Add(new DataPageView(mainPage));
+        EntriesStackLayout.Children.Add(new DataPageView(_mainPage));
+
+        SetupMainPageJsonValues();
+        CurrentProject.SaveConfig();
     }
+    private void SetupMainPageJsonValues()
+    {
+        _mainPage.SetValueByName("product_name",CurrentProject.Name);
+        //_mainPage.SetValueByName("publish_date",CurrentProject.Name);
+    }
+
     private void OnProjectFolderUploaded(Exception? ex)
     {
         if (ex != null)
