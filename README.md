@@ -9,7 +9,7 @@ Wheel is a Free and Open Source .NET Multi Platform Application for creating lar
 אני בעצמי תלמיד במגמה ולכן השתדלתי כמה שיותר להכין תוכנה חינמית שתעזור לדור שלי ולדורות הבאים במגמה עם הכנת הטיק פרויקט.  
 בעזרת שימוש בGemini AI, MSAGL, MAUI אני גאה להציג את Wheel התוכנה שתעזור לכם להכין את פרויקט הבגרות בלחיצת כפתור.
 ### איך להוריד?
-נתן להוריד את הגירסה החדשה ביותר [ישירות מכאן](https://github.com/weezard12/Wheel/releases/latest), או באמצעות האינסטולר [RGS Installer](https://github.com/weezard12/RGS-Installer/releases/latest).
+ניתן להוריד את הגירסה החדשה ביותר [ישירות מכאן](https://github.com/weezard12/Wheel/releases/latest), או באמצעות האינסטולר [RGS Installer](https://github.com/weezard12/RGS-Installer/releases/latest).
 ### איך לתרום לפרוייקט?
 הפרוייקט והתוכנה עצמם הם חינמים לחלוטין אך אם אהבתם את ההשקעה ותרצו לתרום אני אעריך זאת מאוד.  
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R71A1ZCO)
