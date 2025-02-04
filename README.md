@@ -1,6 +1,5 @@
 # <img src="https://github.com/user-attachments/assets/8f8b54e8-7cf9-427a-b4a8-0499b0019a62" alt="wheel icon curves" width="120"/> **Wheel**
 
-
 Wheel is a Free and Open Source .NET Multi Platform Application for creating large documents easily from templates and by using AI.
 
 ## Android Studio Project (in Hebrew)
@@ -9,3 +8,5 @@ Wheel is a Free and Open Source .NET Multi Platform Application for creating lar
 בלי לחשוש להוסיף אליה הרבה תוכן ולפתח אותה שכן הם לא יצתרכו לכתוב את התוספות שלהם בתיק הפרוייקט וגודל הפרוייקט כבר אינו משנה.  
 אני בעצמי תלמיד במגמה ולכן השתדלתי כמה שיותר להכין תוכנה חינמית שתעזור לדור שלי ולדורות הבאים במגמה עם הכנת הטיק פרויקט.  
 בעזרת שימוש בGemini AI, MSAGL, MAUI אני גאה להציג את Wheel התוכנה שתעזור לכם להכין את פרויקט הבגרות בלחיצת כפתור.
+### איך להוריד?
+נתן להוריד את הגירסה החדשה ביותר [ישירות מכאן](https://github.com/weezard12/Wheel/releases/latest), או באמצעות האינסטולר [RGS Installer](https://github.com/weezard12/RGS-Installer/releases/latest).
