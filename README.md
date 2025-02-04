@@ -2,7 +2,7 @@
 
 Wheel is a Free and Open Source .NET Multi Platform Application for creating large documents easily from templates and by using AI.
 
-## Android Studio Project (in Hebrew)
+## Android Studio Project (Hebrew)
 וייל נוצר על מנת לחסוך את העבודה המפרכת הכלולה בהכנת תיק פרויקט כחלק מהבגרות בהנדסת תוכנה.  
 מדי שנה מאות תלמידים בכל רחבי הארץ נאלצים לכתוב מסמך באורך עשרות עמודים המתאר את הפרויקט שלהם באנדרואיד סטודיאו, כתיבת המסמך היא משימה סיזיפית שבמקומה היו התלמידים יכולים להשקיע יותר זמן באפליקצייה שלהם,  
 בלי לחשוש להוסיף אליה הרבה תוכן ולפתח אותה שכן הם לא יצתרכו לכתוב את התוספות שלהם בתיק הפרוייקט וגודל הפרוייקט כבר אינו משנה.  
