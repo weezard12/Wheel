@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Wheel.Logic.CodeParser.Base;
 
 namespace Wheel.Logic.CodeParser
@@ -87,6 +88,36 @@ namespace Wheel.Logic.CodeParser
         public static string GetSourceCodePath(string projectPath)
         {
             return Path.Combine(projectPath, "app\\src\\main\\java");
+        }
+
+        public static int? GetMinSdkVersion(string androidManifestText)
+        {
+            try
+            {
+                // Load the XML from the string
+                XDocument xmlDoc = XDocument.Parse(androidManifestText);
+
+                // Get the minSdkVersion from the <uses-sdk> tag
+                XElement usesSdkElement = xmlDoc.Root?.Element("uses-sdk");
+
+                if (usesSdkElement != null)
+                {
+                    XAttribute minSdkAttribute = usesSdkElement.Attribute(XName.Get("minSdkVersion", "http://schemas.android.com/apk/res/android"));
+
+                    if (minSdkAttribute != null && int.TryParse(minSdkAttribute.Value, out int minSdk))
+                    {
+                        return minSdk;
+                    }
+                }
+
+                // If not found, return null
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error parsing AndroidManifest.xml: " + ex.Message);
+                return null;
+            }
         }
     }
 
