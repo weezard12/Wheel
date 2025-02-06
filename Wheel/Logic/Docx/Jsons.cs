@@ -95,7 +95,13 @@ namespace Wheel.Logic.Docx
                         InsertAPicture(path, FileFromTemp(CurrentValue.Substring(5)));
                         return;
                     }
-                    DocxParser.SetEntryByName(path, Name, String.IsNullOrEmpty(CurrentValue) ? "No Value Entered" : CurrentValue);
+                    if(String.IsNullOrEmpty(CurrentValue))
+                        DocxParser.SetEntryByName(path, Name,"No Value Entered");
+
+                    else if(CurrentValue.Contains('\n'))
+                        DocxParser.SetEntryByNameAndAddLines(path, Name, CurrentValue);
+                    else
+                        DocxParser.SetEntryByName(path, Name, CurrentValue);
                 }
 
             }

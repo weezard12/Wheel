@@ -140,6 +140,98 @@ namespace Wheel.Logic.Docx
             }
         }
 
+        public static void SetEntryByNameAndAddLines(string path, string entryName, string entryValue)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("The specified file does not exist.", path);
+
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
+            {
+                MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+                if (mainPart == null)
+                    throw new InvalidOperationException("The document does not contain a main part.");
+
+                var body = mainPart.Document.Body;
+                if (body == null)
+                    throw new InvalidOperationException("The document does not contain a body.");
+
+                string placeholder = $"{{WheelValue({entryName})}}";
+
+                foreach (var para in body.Descendants<Paragraph>())
+                {
+                    var runs = para.Elements<Run>().ToList();
+                    if (!runs.Any()) continue;
+
+                    string fullText = string.Join("", runs.Select(r => r.GetFirstChild<Text>()?.Text ?? ""));
+                    int placeholderIndex = fullText.IndexOf(placeholder);
+
+                    if (placeholderIndex != -1)
+                    {
+                        int currentIndex = 0;
+                        bool replaced = false;
+                        Run firstRun = null;
+                        foreach (var run in runs)
+                        {
+                            var textElement = run.GetFirstChild<Text>();
+                            if (textElement == null) continue;
+
+                            string runText = textElement.Text;
+
+                            if (currentIndex + runText.Length >= placeholderIndex &&
+                                currentIndex <= placeholderIndex + placeholder.Length)
+                            {
+                                if (!replaced)
+                                {
+                                    firstRun = run;
+                                    int startReplaceIndex = Math.Max(0, placeholderIndex - currentIndex);
+                                    int endReplaceIndex = Math.Min(runText.Length, placeholderIndex + placeholder.Length - currentIndex);
+
+                                    string beforePlaceholder = runText.Substring(0, startReplaceIndex);
+                                    string afterPlaceholder = runText.Substring(endReplaceIndex);
+
+                                    // Split by new lines first
+                                    var lines = entryValue.Split('\n');
+                                    textElement.Text = beforePlaceholder + ProcessTabs(lines[0]) + afterPlaceholder;
+
+                                    replaced = true;
+                                }
+                                else
+                                {
+                                    // Clear text in following runs if they were part of the placeholder
+                                    textElement.Text = "";
+                                }
+                            }
+                            currentIndex += runText.Length;
+                        }
+
+                        // Insert new paragraphs for each new line and process tabs
+                        if (firstRun != null)
+                        {
+                            Paragraph parentParagraph = firstRun.Parent as Paragraph;
+                            var lines = entryValue.Split('\n');
+
+                            for (int i = 1; i < lines.Length; i++)
+                            {
+                                Paragraph newParagraph = new Paragraph(new Run(new Text(ProcessTabs(lines[i]))));
+                                body.InsertAfter(newParagraph, parentParagraph);
+                                parentParagraph = newParagraph; // Move reference to new paragraph
+                            }
+                        }
+
+                        break; // Stop after first replacement
+                    }
+                }
+
+                // Save changes
+                mainPart.Document.Save();
+            }
+        }
+
+        private static string ProcessTabs(string input)
+        {
+            return input.Replace("\t", "    "); // Replace tab with 4 spaces (or customize as needed)
+        }
+
         static void CombineDocx(string firstDocx, string secondDocx, string outputDocx)
         {
             if (!File.Exists(firstDocx) || !File.Exists(secondDocx))
