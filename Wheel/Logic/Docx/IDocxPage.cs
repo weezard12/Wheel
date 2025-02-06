@@ -15,6 +15,7 @@ namespace Wheel.Logic.Docx
             TableOfContents = 1,
             ScreensDiagramPage = 2,
             ScreensAboutPage = 3,
+            SourceCodePage = 4,
         }
     }
 }

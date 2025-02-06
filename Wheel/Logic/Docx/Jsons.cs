@@ -25,6 +25,11 @@ namespace Wheel.Logic.Docx
             {
                 return Pages.FirstOrDefault(name => name.ID == pageId);
             }
+
+            public bool DoesPageExist(string pageId)
+            {
+                return Pages.FirstOrDefault(name => name.ID == pageId) != null;
+            }
         }
 
         public class Page
@@ -90,7 +95,7 @@ namespace Wheel.Logic.Docx
                         InsertAPicture(path, FileFromTemp(CurrentValue.Substring(5)));
                         return;
                     }
-                    DocxParser.SetEntryByName(path, Name, CurrentValue);
+                    DocxParser.SetEntryByName(path, Name, String.IsNullOrEmpty(CurrentValue) ? "No Value Entered" : CurrentValue);
                 }
 
             }

@@ -53,6 +53,38 @@
       "name": "Table Of Contents",
       "idx": 1,
       "values": []
+    },
+    {
+      "name": "Introduction",
+      "idx": 2,
+      "values": [
+        {
+          "display_name": "App Name",
+          "name": "project_name",
+          "baseValue": "Your app name"
+        },
+        {
+          "display_name": "App Description",
+          "name": "project_description",
+          "baseValue": "Short summury of your app"
+        },
+        {
+          "display_name": "Target Audience",
+          "name": "target_audience",
+          "baseValue": "For what aoudience this app was made"
+        },
+        {
+          "display_name": "Reasons for choosing the topic",
+          "name": "target_audience",
+          "baseValue": "reasons_for_the_topic"
+        }
+
+      ]
+    },
+    {
+      "name": "Limitations",
+      "idx": 1,
+      "values": []
     }
 
   ]

@@ -9,6 +9,7 @@ namespace Wheel.UI.Pages.AndroidStudio;
 public partial class MainProjectPage : ContentPage
 {
     private Page _mainPage;
+    private Page _introductionPage;
 
     public MainProjectPage()
 	{
@@ -22,9 +23,10 @@ public partial class MainProjectPage : ContentPage
         ProjectName.Text = $"Current Project: {CurrentProject.Name}";
 
         _mainPage = CurrentProject.Root.GetDocxPage("Main Page");
+        _introductionPage = CurrentProject.Root.GetDocxPage("Introduction");
         EntriesStackLayout.Children.Clear();
         EntriesStackLayout.Children.Add(new DataPageView(_mainPage));
-
+        EntriesStackLayout.Children.Add(new DataPageView(_introductionPage));
         SetupMainPageJsonValues();
         CurrentProject.SaveConfig();
     }

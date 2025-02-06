@@ -8,6 +8,8 @@ using Page = Wheel.Logic.Docx.Jsons.Page;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using Wheel.Logic.Projects;
 using Wheel.UI.Views;
+using Wheel.Logic.CodeParser.Base;
+using static Wheel.Logic.Docx.IDocxPage;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
@@ -44,6 +46,30 @@ public partial class FinalProductPage : ContentPage
         //if no json file exists it will create it
         if(!File.Exists(FileFromTemp("android studio.json")))
             await CopyLocalFileAsync("Templates\\android studio.json", FileFromTemp("android studio.json"));
+
+        int a = CurrentProject.AllProjectFiles.Count;
+        int b = CurrentProject.ClassFiles.Count;
+        // add source code files
+        foreach (ProjectFile file in CurrentProject.AllProjectFiles)
+        {
+            if(file is ContentProjectFile contentFile)
+                if (!CurrentProject.Root.DoesPageExist(contentFile.Name))
+                {
+                    CurrentProject.Root.Pages.Add(new Page()
+                    {
+                        ID = contentFile.Name,
+                        Name = "Source Code File",
+                        Index = (int) PageType.SourceCodePage,
+                        Values = new List<Value>()
+                        {
+                            new Value(){ Name = "file_name", CurrentValue = contentFile.Name },
+                            new Value(){ Name = "file_content", CurrentValue = contentFile.Content },
+                        }
+                        
+                    });
+                }
+        }
+        CurrentProject.SaveConfig();
 
         CurrentProject.UpdateDocxRoot();
         
