@@ -89,6 +89,16 @@ namespace Wheel.Logic
             }
             CreateFileIfDoesntExist(FileFromTemp("log.txt"), sout);
         }
+        public static void DebugError(params string[] message)
+        {
+            List<string> errorMessage = message.ToList();
+            errorMessage.Insert(0, $"{GetCurrentTimeAsString()} Error: ");
+            DebugLog(errorMessage.ToArray());
+        }
+        public static void DebugError(Exception ex)
+        {
+            DebugError($"{ex} \n {ex.Message}");
+        }
 
         public static async Task<bool> CopyLocalFileAsync(string localFileName, string destinationPath)
         {
@@ -160,6 +170,17 @@ namespace Wheel.Logic
         }
         #endregion
 
-        
+        #region Other Utils
+        public static string GetCurrentTimeAsString(string format = "hh:mm tt")
+        {
+            // Get the current date and time
+            DateTime currentTime = DateTime.Now;
+
+            // Format the time according to the specified format
+            string timeString = currentTime.ToString(format);
+
+            return timeString;
+        }
+        #endregion
     }
 }

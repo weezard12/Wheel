@@ -12,6 +12,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf;
 using PdfDocument = PdfSharp.Pdf.PdfDocument;
+using Windows.UI.ViewManagement;
 
 
 
@@ -80,72 +81,79 @@ namespace Wheel.Logic.Docx
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("The specified file does not exist.", path);
-
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
+            try
             {
-                MainDocumentPart mainPart = wordDoc.MainDocumentPart;
-                if (mainPart == null)
-                    throw new InvalidOperationException("The document does not contain a main part.");
-
-                var body = mainPart.Document.Body;
-                if (body == null)
-                    throw new InvalidOperationException("The document does not contain a body.");
-
-                string placeholder = $"{{WheelValue({entryName})}}";
-
-                foreach (var para in body.Descendants<Paragraph>())
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
                 {
-                    var runs = para.Elements<Run>().ToList();
-                    if (!runs.Any()) continue;
+                    MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+                    if (mainPart == null)
+                        throw new InvalidOperationException("The document does not contain a main part.");
 
-                    string fullText = string.Join("", runs.Select(r => r.GetFirstChild<Text>()?.Text ?? ""));
-                    int placeholderIndex = fullText.IndexOf(placeholder);
+                    var body = mainPart.Document.Body;
+                    if (body == null)
+                        throw new InvalidOperationException("The document does not contain a body.");
 
-                    if (placeholderIndex != -1)
+                    string placeholder = $"{{WheelValue({entryName})}}";
+
+                    foreach (var para in body.Descendants<Paragraph>())
                     {
+                        var runs = para.Elements<Run>().ToList();
+                        if (!runs.Any()) continue;
 
-                        int currentIndex = 0;
-                        bool replaced = false;
-                        foreach (var run in runs)
+                        string fullText = string.Join("", runs.Select(r => r.GetFirstChild<Text>()?.Text ?? ""));
+                        int placeholderIndex = fullText.IndexOf(placeholder);
+
+                        if (placeholderIndex != -1)
                         {
-                            var textElement = run.GetFirstChild<Text>();
-                            if (textElement == null) continue;
 
-                            string runText = textElement.Text;
-
-                            if (currentIndex + runText.Length >= placeholderIndex &&
-                                currentIndex <= placeholderIndex + placeholder.Length)
+                            int currentIndex = 0;
+                            bool replaced = false;
+                            foreach (var run in runs)
                             {
-                                // If this is the first run where replacement starts, modify its text
-                                if (!replaced)
-                                {
-                                    // Remove placeholder from the first affected run and insert new value
-                                    int startReplaceIndex = Math.Max(0, placeholderIndex - currentIndex);
-                                    int endReplaceIndex = Math.Min(runText.Length, placeholderIndex + placeholder.Length - currentIndex);
+                                var textElement = run.GetFirstChild<Text>();
+                                if (textElement == null) continue;
 
-                                    string beforePlaceholder = runText.Substring(0, startReplaceIndex);
-                                    string afterPlaceholder = runText.Substring(endReplaceIndex);
+                                string runText = textElement.Text;
 
-                                    textElement.Text = beforePlaceholder + entryValue + afterPlaceholder;
-                                    replaced = true;
-                                }
-                                else
+                                if (currentIndex + runText.Length >= placeholderIndex &&
+                                    currentIndex <= placeholderIndex + placeholder.Length)
                                 {
-                                    // Clear text in following runs if they were part of the placeholder
-                                    textElement.Text = "";
+                                    // If this is the first run where replacement starts, modify its text
+                                    if (!replaced)
+                                    {
+                                        // Remove placeholder from the first affected run and insert new value
+                                        int startReplaceIndex = Math.Max(0, placeholderIndex - currentIndex);
+                                        int endReplaceIndex = Math.Min(runText.Length, placeholderIndex + placeholder.Length - currentIndex);
+
+                                        string beforePlaceholder = runText.Substring(0, startReplaceIndex);
+                                        string afterPlaceholder = runText.Substring(endReplaceIndex);
+
+                                        textElement.Text = beforePlaceholder + entryValue + afterPlaceholder;
+                                        replaced = true;
+                                    }
+                                    else
+                                    {
+                                        // Clear text in following runs if they were part of the placeholder
+                                        textElement.Text = "";
+                                    }
                                 }
+
+                                currentIndex += runText.Length;
                             }
 
-                            currentIndex += runText.Length;
+                            break; // Stop after first replacement
                         }
-
-                        break; // Stop after first replacement
                     }
-                }
 
-                // Save changes
-                mainPart.Document.Save();
+                    // Save changes
+                    mainPart.Document.Save();
+                }
             }
+            catch (Exception ex)
+            {
+                MyUtils.DebugError(ex);
+            }
+            
         }
 
         public static void SetEntryByNameAndAddLines(string path, string entryName, string entryValue)
@@ -442,21 +450,6 @@ namespace Wheel.Logic.Docx
             }
         }
 
-        public static void ParseDocx(string inputDocxPath, string outputPath, Aspose.Words.SaveFormat format)
-        {
-            try
-            {
-                Aspose.Words.Document doc = new Aspose.Words.Document(inputDocxPath);
-                doc.Save(outputPath, format);
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-
-
         public static void InsertAPicture(string document, string fileName)
         {
             using (WordprocessingDocument wordprocessingDocument = WordprocessingDocument.Open(document, true))
@@ -554,6 +547,7 @@ namespace Wheel.Logic.Docx
             wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
         }
 
+        #region Convert Docx to PDF
         /// <summary>
         /// Converts a Word document (.docx) to PDF using Microsoft.Office.Interop.Word.
         /// </summary>
@@ -573,6 +567,37 @@ namespace Wheel.Logic.Docx
             document.Dispose();
         }
 
+        /// <summary>
+        /// Uses Aspose.Words to convert a docx file into different file types with big watermark
+        /// </summary>
+        /// <param name="inputDocxPath"></param>
+        /// <param name="outputPath"></param>
+        /// <param name="format"></param>
+        public static void ParseDocx(string inputDocxPath, string outputPath, Aspose.Words.SaveFormat format)
+        {
+            try
+            {
+                Aspose.Words.Document doc = new Aspose.Words.Document(inputDocxPath);
+                doc.Save(outputPath, format);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public static void ConvertDocxToPdfWithWord(string inputPath, string outputPath)
+        {
+            dynamic wordApp = Activator.CreateInstance(MauiProgram.wordType);
+            wordApp.Visible = false;
+
+            dynamic doc = wordApp.Documents.Open(inputPath);
+            doc.ExportAsFixedFormat(outputPath, 17);  // 17 = wdExportFormatPDF
+
+            doc.Close(false);
+            wordApp.Quit();
+        }
+        #endregion
 
         // DOES NOT WORK
         public static void RemoveTextFromPdf(string inputPath, string outputPath, string textToRemove)

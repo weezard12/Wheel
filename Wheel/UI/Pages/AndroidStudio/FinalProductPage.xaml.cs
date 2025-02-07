@@ -47,8 +47,6 @@ public partial class FinalProductPage : ContentPage
         if(!File.Exists(FileFromTemp("android studio.json")))
             await CopyLocalFileAsync("Templates\\android studio.json", FileFromTemp("android studio.json"));
 
-        int a = CurrentProject.AllProjectFiles.Count;
-        int b = CurrentProject.ClassFiles.Count;
         // add source code files
         foreach (ProjectFile file in CurrentProject.AllProjectFiles)
         {
@@ -86,17 +84,28 @@ public partial class FinalProductPage : ContentPage
             await page.AddPageToFinalDocx();
             page.SetupFileValues(FinalFilePath);
         }
-        
-        try
-        {
-            DocxParser.ConvertDocxToPdfWithSmallWatermark(FinalFilePath, pdfPath);
-        }
-        catch
-        {
-            DocxParser.ParseDocx(FinalFilePath, FileFromTemp(pdfPath), Aspose.Words.SaveFormat.Pdf);
-        }
 
-        DocxParser.RemoveTextFromPdf(pdfPath, pdfPath + "no.pdf", "The");
+        bool converted = false;
+        if(MauiProgram.IsWordInstalled)
+            try
+            {
+                DocxParser.ConvertDocxToPdfWithWord(FinalFilePath, pdfPath);
+                    converted = true;
+            }
+            catch
+            {
+
+            }
+
+        if(!converted)
+            try
+            {
+                DocxParser.ConvertDocxToPdfWithSmallWatermark(FinalFilePath, pdfPath);
+            }
+            catch
+            {
+                DocxParser.ParseDocx(FinalFilePath, FileFromTemp(pdfPath), Aspose.Words.SaveFormat.Pdf);
+            }
 
         await Dispatcher.DispatchAsync(() =>
         {

@@ -7,6 +7,11 @@ namespace Wheel
     public static class MauiProgram
     {
         public static readonly string TempPath = Path.Combine(Path.GetTempPath(),"Wheel");
+
+
+        public static readonly Type wordType = Type.GetTypeFromProgID("Word.Application");
+        public static bool IsWordInstalled => wordType != null;
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
