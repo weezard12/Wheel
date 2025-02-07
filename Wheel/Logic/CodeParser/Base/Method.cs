@@ -10,7 +10,12 @@ namespace Wheel.Logic.CodeParser.Base
     public class Method : INameable
     {
         public string Name { get; set; }
-        public List<Variable> Parameters { get; set; }
+        public List<Variable> Parameters { get; set; } = new List<Variable>();
 
+        public override string ToString()
+        {
+            string parameterString = string.Join(", ", Parameters.Select(p => $"{p.Type} {p.Name}"));
+            return $"{Name}({parameterString})";
+        }
     }
 }

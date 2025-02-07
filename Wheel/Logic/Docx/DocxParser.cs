@@ -267,7 +267,6 @@ namespace Wheel.Logic.Docx
                 column1Values = temp;
             }
 
-
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
             {
                 MainDocumentPart mainPart = wordDoc.MainDocumentPart;
@@ -280,7 +279,8 @@ namespace Wheel.Logic.Docx
 
                 string placeholder = $"{{WheelValue({entryName})}}";
 
-                foreach (var para in body.Descendants<Paragraph>())
+                var paragraphs = body.Descendants<Paragraph>().ToList();
+                foreach (var para in paragraphs)
                 {
                     var runs = para.Elements<Run>().ToList();
                     if (!runs.Any()) continue;
@@ -290,18 +290,23 @@ namespace Wheel.Logic.Docx
 
                     if (placeholderIndex != -1)
                     {
-                        // Remove the paragraph containing the placeholder
+                        // Create a table to replace the placeholder
+                        Table table = CreateTable(column1Values, column2Values);
+
+                        // Insert a paragraph before the table to ensure separation
+                        Paragraph newParagraph = new Paragraph(new Run(new Break()));
+
+                        // Replace paragraph with table
+                        body.InsertBefore(newParagraph, para);
+                        body.InsertAfter(table, newParagraph);
+
+                        // Remove the placeholder paragraph
                         para.Remove();
 
-                        // Insert the table at the same position
-                        Table table = CreateTable(column1Values, column2Values);
-                        body.Append(table);
-
-                        break; // Stop after first replacement
+                        break; // Stop after the first replacement
                     }
                 }
 
-                // Save changes
                 mainPart.Document.Save();
             }
         }
@@ -345,6 +350,7 @@ namespace Wheel.Logic.Docx
 
             return table;
         }
+
 
         static void CombineDocx(string firstDocx, string secondDocx, string outputDocx)
         {

@@ -21,6 +21,10 @@ public partial class ClassesPage : ContentPage
                 variablesTable.Row1.Insert(0,"תיאור התכונה");
                 variablesTable.Row2.Insert(0,"שם התכונה");
 
+                TableValue methodsTable = new TableValue() { Name = "methods_table", Row2 = classFile.Methods.Select(m => m.ToString()).ToList() };
+                methodsTable.Row1.Insert(0, "תיאור הפעולה");
+                methodsTable.Row2.Insert(0, "שם הפעולה");
+
                 CurrentProject.Root.Pages.Add(new Page()
                 {
                     ID = "class_" + classFile.Name,
@@ -31,7 +35,8 @@ public partial class ClassesPage : ContentPage
                         new Value() { Name="class_description", CurrentValue = classFile.Name},
 
 
-                        variablesTable
+                        variablesTable,
+                        methodsTable
                     }
                 });
             }
