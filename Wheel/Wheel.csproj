@@ -127,6 +127,9 @@
 	  <MauiXaml Update="UI\Views\ProjectViews\DataPageView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UI\Views\ProjectViews\MyProgressView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\VectorViews\DiagramEdgeView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

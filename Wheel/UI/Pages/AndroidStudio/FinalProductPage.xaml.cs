@@ -43,10 +43,16 @@ public partial class FinalProductPage : ContentPage
     }
     public async void UpdateFinalProduct()
     {
+        ConvertToPdfProgressBar.MaxValue = 8;
+        ConvertToPdfProgressBar.ResetProgress();
+
+        ConvertToPdfProgressBar.StepProgress("Locating Config file");
         //if no json file exists it will create it
-        if(!File.Exists(FileFromTemp("android studio.json")))
+        if (!File.Exists(FileFromTemp("android studio.json")))
             await CopyLocalFileAsync("Templates\\android studio.json", FileFromTemp("android studio.json"));
 
+
+        ConvertToPdfProgressBar.StepProgress("Generating Source Classes");
         // add source code files
         foreach (ProjectFile file in CurrentProject.AllProjectFiles)
         {
@@ -67,10 +73,12 @@ public partial class FinalProductPage : ContentPage
                     });
                 }
         }
-        CurrentProject.SaveConfig();
+        ConvertToPdfProgressBar.StepProgress("Saving and Updating Config file");
 
+        CurrentProject.SaveConfig();
         CurrentProject.UpdateDocxRoot();
-        
+
+        ConvertToPdfProgressBar.StepProgress("Clearing Old PDF");
         string pdfPath = FinalFilePath + ".pdf";
         try
         {
@@ -79,12 +87,14 @@ public partial class FinalProductPage : ContentPage
         }
         catch{ }
 
+        ConvertToPdfProgressBar.StepProgress("Adding Pages to Final DOCX file");
         foreach (Page page in CurrentProject.Root.Pages)
         {
             await page.AddPageToFinalDocx();
             page.SetupFileValues(FinalFilePath);
         }
 
+        ConvertToPdfProgressBar.StepProgress("Converting DOCX file to PDF");
         bool converted = false;
         if(MauiProgram.IsWordInstalled)
             try
@@ -107,12 +117,14 @@ public partial class FinalProductPage : ContentPage
                 DocxParser.ParseDocx(FinalFilePath, FileFromTemp(pdfPath), Aspose.Words.SaveFormat.Pdf);
             }
 
+        ConvertToPdfProgressBar.StepProgress("Refreshing View");
         await Dispatcher.DispatchAsync(() =>
         {
             DocxView.Source = FileFromTemp(FinalFileName + ".pdf");
         });
-        
-        
+
+
+        ConvertToPdfProgressBar.StepProgress("All Ready, W_W");
     }
 
 }

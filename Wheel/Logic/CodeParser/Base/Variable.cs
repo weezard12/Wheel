@@ -12,5 +12,10 @@ namespace Wheel.Logic.CodeParser.Base
         public string Name { get; set; }
         public string Type { get; set; }
         public string BaseValue { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0} {1}", Type, Name);
+        }
     }
 }

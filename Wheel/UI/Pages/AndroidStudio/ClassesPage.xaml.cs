@@ -17,6 +17,10 @@ public partial class ClassesPage : ContentPage
         {
             foreach (ClassFile classFile in project.ClassFiles)
             {
+                TableValue variablesTable  = new TableValue() { Name = "properties_table", Row2 = classFile.Variables.Select(v => v.ToString()).ToList() };
+                variablesTable.Row1.Insert(0,"תיאור התכונה");
+                variablesTable.Row2.Insert(0,"שם התכונה");
+
                 CurrentProject.Root.Pages.Add(new Page()
                 {
                     ID = "class_" + classFile.Name,
@@ -25,8 +29,9 @@ public partial class ClassesPage : ContentPage
                     Values = new List<ValueBase> {
                         new Value() { Name="class_name", CurrentValue = classFile.Name},
                         new Value() { Name="class_description", CurrentValue = classFile.Name},
-                        new TableValue() { Name="properties_table", Row1 = classFile.Variables.Select(v => v.Name).ToList(), },
-                        
+
+
+                        variablesTable
                     }
                 });
             }
