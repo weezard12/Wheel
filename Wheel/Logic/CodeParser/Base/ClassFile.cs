@@ -7,8 +7,8 @@ namespace Wheel.Logic.CodeParser.Base
     //
     public class ClassFile : ContentProjectFile
     {
-        List<Variable> Variables { get; set; } = new List<Variable>();
-        List<Method> Methods { get; set; } = new List<Method>();
+        public List<Variable> Variables { get; set; } = new List<Variable>();
+        public List<Method> Methods { get; set; } = new List<Method>();
 
         /// <summary>
         /// List of all the classes that this class extends from.

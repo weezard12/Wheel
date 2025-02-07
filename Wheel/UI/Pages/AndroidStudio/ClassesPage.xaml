@@ -5,9 +5,8 @@
              Title="ClassesPage"
              >
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <ScrollView>
+            
+        </ScrollView>
     </VerticalStackLayout>
 </ContentPage>

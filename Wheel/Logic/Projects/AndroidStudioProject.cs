@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aspose.Words.LowCode;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,7 +92,11 @@ namespace Wheel.Logic.Projects
 
         public void SaveConfig()
         {
-            string json = JsonSerializer.Serialize<DocxRoot>(Root);
+            var options = new JsonSerializerOptions()
+            {
+                Converters = { new ValueBaseConverter() }
+            };
+            string json = JsonSerializer.Serialize<DocxRoot>(Root, options);
             File.WriteAllText(ProjectConfig, json);
         }
 
@@ -99,13 +104,25 @@ namespace Wheel.Logic.Projects
         public DocxRoot GetDocxRoot()
         {
             if (_root == null)
-                _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString);
+            {
+
+                var options = new JsonSerializerOptions()
+                {
+                    Converters = { new ValueBaseConverter() }
+                };
+                _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString, options);
+
+            }
 
             return _root;    
         }
         public void UpdateDocxRoot()
         {
-            _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString);
+            var options = new JsonSerializerOptions()
+            {
+                Converters = { new ValueBaseConverter() }
+            };
+            _root = JsonSerializer.Deserialize<DocxRoot>(ProjectConfigString, options);
         }
 
     }

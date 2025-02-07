@@ -232,6 +232,93 @@ namespace Wheel.Logic.Docx
             return input.Replace("\t", "    "); // Replace tab with 4 spaces (or customize as needed)
         }
 
+
+        public static void SetEntryByName(string path, string entryName, string[] column1Values, string[] column2Values)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("The specified file does not exist.", path);
+
+            if (column1Values.Length != column2Values.Length)
+                throw new ArgumentException("Both columns must have the same number of values.");
+
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
+            {
+                MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+                if (mainPart == null)
+                    throw new InvalidOperationException("The document does not contain a main part.");
+
+                var body = mainPart.Document.Body;
+                if (body == null)
+                    throw new InvalidOperationException("The document does not contain a body.");
+
+                string placeholder = $"{{WheelValue({entryName})}}";
+
+                foreach (var para in body.Descendants<Paragraph>())
+                {
+                    var runs = para.Elements<Run>().ToList();
+                    if (!runs.Any()) continue;
+
+                    string fullText = string.Join("", runs.Select(r => r.GetFirstChild<Text>()?.Text ?? ""));
+                    int placeholderIndex = fullText.IndexOf(placeholder);
+
+                    if (placeholderIndex != -1)
+                    {
+                        // Remove the paragraph containing the placeholder
+                        para.Remove();
+
+                        // Insert the table at the same position
+                        Table table = CreateTable(column1Values, column2Values);
+                        body.Append(table);
+
+                        break; // Stop after first replacement
+                    }
+                }
+
+                // Save changes
+                mainPart.Document.Save();
+            }
+        }
+
+        private static Table CreateTable(string[] column1Values, string[] column2Values)
+        {
+            Table table = new Table();
+
+            // Define table properties (borders)
+            TableProperties tblProperties = new TableProperties(
+                new TableBorders(
+                    new TopBorder() { Val = BorderValues.Single, Size = 12 },
+                    new BottomBorder() { Val = BorderValues.Single, Size = 12 },
+                    new LeftBorder() { Val = BorderValues.Single, Size = 12 },
+                    new RightBorder() { Val = BorderValues.Single, Size = 12 },
+                    new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 12 },
+                    new InsideVerticalBorder() { Val = BorderValues.Single, Size = 12 }
+                )
+            );
+            table.AppendChild(tblProperties);
+
+            // Add table rows
+            for (int i = 0; i < column1Values.Length; i++)
+            {
+                TableRow row = new TableRow();
+
+                // Create first cell
+                TableCell cell1 = new TableCell(new Paragraph(new Run(new Text(column1Values[i]))));
+                cell1.Append(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Auto }));
+
+                // Create second cell
+                TableCell cell2 = new TableCell(new Paragraph(new Run(new Text(column2Values[i]))));
+                cell2.Append(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Auto }));
+
+                // Add cells to row
+                row.Append(cell1, cell2);
+
+                // Add row to table
+                table.Append(row);
+            }
+
+            return table;
+        }
+
         static void CombineDocx(string firstDocx, string secondDocx, string outputDocx)
         {
             if (!File.Exists(firstDocx) || !File.Exists(secondDocx))

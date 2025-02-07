@@ -1,6 +1,7 @@
 namespace Wheel.UI.Views.ProjectViews;
 
 using Page = Wheel.Logic.Docx.Jsons.Page;
+using Value = Wheel.Logic.Docx.Jsons.Value;
 public partial class DataPageView : ContentView
 {
     Page DataPage { get; set; }
@@ -19,11 +20,15 @@ public partial class DataPageView : ContentView
     private void UpdateValueEntries()
     {
         EntriesLayout.Children.Clear();
-        foreach (var value in DataPage.Values)
+        foreach (var valueBase in DataPage.Values)
         {
-            ProjectValueEntryView projectValueEntry = new ProjectValueEntryView(value);
-            PageEntries.Add(projectValueEntry);
-            EntriesLayout.Children.Add(projectValueEntry);
+            if(valueBase is Value value)
+            {
+                ProjectValueEntryView projectValueEntry = new ProjectValueEntryView(value);
+                PageEntries.Add(projectValueEntry);
+                EntriesLayout.Children.Add(projectValueEntry);
+            }
+
         }
     }
 

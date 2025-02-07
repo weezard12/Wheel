@@ -37,7 +37,7 @@ public partial class ScreensPage : ContentPage
             project.Root.Pages.Add(new Page()
             {
                 Name = "Screens Diagram",
-                Values = new List<Value>()
+                Values = new List<ValueBase>()
             {
                 new Value()
                 {
@@ -59,7 +59,7 @@ public partial class ScreensPage : ContentPage
                     ID="screen_" + screen.Name,
                     Name="Screen Page",
                     Index = (int) PageType.ScreensAboutPage,
-                    Values = new List<Value> {
+                    Values = new List<ValueBase> {
                         new Value() { Name="screen_name", CurrentValue = screen.Name},
                         new Value() { Name="screen_description", CurrentValue = "No description generated"}
                     }

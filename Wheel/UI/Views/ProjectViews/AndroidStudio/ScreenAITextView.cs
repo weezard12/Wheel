@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Wheel.Logic.CodeParser.Base;
 using static Wheel.Logic.Projects.AndroidStudioProject;
+using static Wheel.Logic.Docx.Jsons;
 
 namespace Wheel.UI.Views.ProjectViews.AndroidStudio
 {
@@ -24,7 +25,7 @@ namespace Wheel.UI.Views.ProjectViews.AndroidStudio
             {
                 if (CurrentProject.Root.GetDocxPageByID(_nameInJson) != null)
                 {
-                    CurrentProject.Root.GetDocxPageByID(_nameInJson).Values[1].CurrentValue = AIResponse;
+                    ((Value)CurrentProject.Root.GetDocxPageByID(_nameInJson).Values[1]).CurrentValue = AIResponse;
                     CurrentProject.SaveConfig();
                 }
             };

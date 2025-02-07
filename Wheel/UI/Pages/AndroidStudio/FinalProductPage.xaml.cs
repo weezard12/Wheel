@@ -60,7 +60,7 @@ public partial class FinalProductPage : ContentPage
                         ID = contentFile.Name,
                         Name = "Source Code File",
                         Index = (int) PageType.SourceCodePage,
-                        Values = new List<Value>()
+                        Values = new List<ValueBase>()
                         {
                             new Value(){ Name = "file_name", CurrentValue = contentFile.Name },
                             new Value(){ Name = "file_content", CurrentValue = contentFile.Content },
