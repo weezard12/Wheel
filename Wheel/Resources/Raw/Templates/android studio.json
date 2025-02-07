@@ -75,8 +75,8 @@
         },
         {
           "display_name": "Reasons for choosing the topic",
-          "name": "target_audience",
-          "baseValue": "reasons_for_the_topic"
+          "name": "reasons_for_the_topic",
+          "baseValue": "Why did you chose this topic"
         }
 
       ]

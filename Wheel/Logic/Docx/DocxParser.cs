@@ -238,8 +238,19 @@ namespace Wheel.Logic.Docx
             if (!File.Exists(path))
                 throw new FileNotFoundException("The specified file does not exist.", path);
 
-            if (column1Values.Length != column2Values.Length)
-                throw new ArgumentException("Both columns must have the same number of values.");
+            if (column1Values.Length > column2Values.Length)
+            {
+                string[] temp = new string[column1Values.Length];
+                Array.Copy(column2Values, temp, column2Values.Length);
+                column2Values = temp;
+            }
+            else if (column1Values.Length < column2Values.Length)
+            {
+                string[] temp = new string[column2Values.Length];
+                Array.Copy(column1Values, temp, column1Values.Length);
+                column1Values = temp;
+            }
+
 
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
             {
