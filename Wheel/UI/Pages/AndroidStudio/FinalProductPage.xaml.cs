@@ -96,7 +96,8 @@ public partial class FinalProductPage : ContentPage
             DocxParser.ParseDocx(FinalFilePath, FileFromTemp(pdfPath), Aspose.Words.SaveFormat.Pdf);
         }
 
-            
+        DocxParser.RemoveTextFromPdf(pdfPath, pdfPath + "no.pdf", "The");
+
         await Dispatcher.DispatchAsync(() =>
         {
             DocxView.Source = FileFromTemp(FinalFileName + ".pdf");
