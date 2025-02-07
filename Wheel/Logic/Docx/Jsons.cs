@@ -99,20 +99,20 @@ namespace Wheel.Logic.Docx
 
             public override void SetValueInDocx(string path)
             {
-                if (!string.IsNullOrEmpty(CurrentValue))
+                string setValue = string.IsNullOrEmpty(CurrentValue) ? BaseValue : CurrentValue;
+
+                if (setValue.StartsWith("Path\\"))
                 {
-                    if (CurrentValue.StartsWith("Path\\"))
-                    {
-                        InsertAPicture(path, FileFromTemp(CurrentValue.Substring(5)));
-                        return;
-                    }
-                    if (string.IsNullOrEmpty(CurrentValue))
-                        DocxParser.SetEntryByName(path, Name, "No Value Entered");
-                    else if (CurrentValue.Contains('\n'))
-                        DocxParser.SetEntryByNameAndAddLines(path, Name, CurrentValue);
-                    else
-                        DocxParser.SetEntryByName(path, Name, CurrentValue);
+                    InsertAPicture(path, FileFromTemp(setValue.Substring(5)));
+                    return;
                 }
+                if (string.IsNullOrEmpty(setValue))
+                    DocxParser.SetEntryByName(path, Name, "No Value Entered");
+                else if (setValue.Contains('\n'))
+                    DocxParser.SetEntryByNameAndAddLines(path, Name, setValue);
+                else
+                    DocxParser.SetEntryByName(path, Name, setValue);
+
             }
         }
 
