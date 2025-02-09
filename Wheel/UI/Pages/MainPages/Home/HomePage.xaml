@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Wheel.UI.HomePage"
-             Title="HomePage"
-             xmlns:local="clr-namespace:Wheel.UI">
+<ContentPage
+    x:Class="Wheel.UI.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Wheel.UI"
+    Title="HomePage">
     <VerticalStackLayout>
         <HorizontalStackLayout>
-                <local:WheelIcon/>
-                <Label
-            Text="Donate!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-            </HorizontalStackLayout>
-            
-        <Grid >
-            <Border BackgroundColor="Black" 
-                Padding="10">
+            <local:WheelIcon />
+            <Label
+                FontSize="Medium"
+                HorizontalOptions="Center"
+                Text="Donate!"
+                VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <Grid>
+            <Border Padding="10" BackgroundColor="Black">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" Stroke="Transparent"/>
+                    <RoundRectangle CornerRadius="20" Stroke="Transparent" />
                 </Border.StrokeShape>
                 <Grid x:Name="ProjectGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <local:ProjectActionView Grid.Column="0"/>
-                    <local:CreateNewProjectView Grid.Column="1"/>
+                    <local:ProjectActionView Grid.Column="0" />
+                    <local:CreateNewProjectView Grid.Column="1" />
                 </Grid>
             </Border>
         </Grid>
-        
+
 
 
     </VerticalStackLayout>
