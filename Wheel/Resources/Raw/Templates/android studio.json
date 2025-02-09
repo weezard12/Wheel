@@ -56,7 +56,7 @@
     },
     {
       "name": "Introduction",
-      "idx": 2,
+      "idx": 1,
       "values": [
         {
           "display_name": "App Name",
@@ -84,7 +84,23 @@
     {
       "name": "Limitations",
       "idx": 1,
-      "values": []
+      "values": [
+        {
+          "display_name": "What this app request from your phone",
+          "name": "special_requests",
+          "baseValue": "Access to Music, Photos..."
+        },
+        {
+          "display_name": "Android Minumum SDK Version",
+          "name": "nim_sdk_version",
+          "baseValue": "(Leave empty for Auto Detection)"
+        },
+        {
+          "display_name": "Devices on which the system was tested",
+          "name": "phones_tested",
+          "baseValue": "Pixel 2 API Emulator"
+        }
+      ]
     }
 
   ]

@@ -87,6 +87,8 @@ public partial class FinalProductPage : ContentPage
         }
         catch{ }
 
+        CurrentProject.Root.Pages.Sort();
+
         ConvertToPdfProgressBar.StepProgress("Adding Pages to Final DOCX file");
         foreach (Page page in CurrentProject.Root.Pages)
         {

@@ -13,10 +13,11 @@ namespace Wheel.Logic.Docx
         {
             MainPage = 0,
             TableOfContents = 1,
-            ScreensDiagramPage = 2,
-            ScreensAboutPage = 3,
-            SourceCodePage = 4,
-            ClassPage = 5,
+            ScreensDiagramPage,
+            ScreensAboutPage,
+            ClassesPage,
+            SourceCodePage,
+            HowToPlay
         }
     }
 }

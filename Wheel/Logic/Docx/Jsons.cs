@@ -34,7 +34,7 @@ namespace Wheel.Logic.Docx
             }
         }
 
-        public class Page
+        public class Page : IComparable<Page>
         {
             [JsonPropertyName("name")]
             public string Name { get; set; }
@@ -56,6 +56,11 @@ namespace Wheel.Logic.Docx
                     return true;
                 }
                 return await CopyLocalFileAsync(GetLocalPagePath(Name), FinalFilePath);
+            }
+
+            public int CompareTo(Page other)
+            {
+                return this.Index.CompareTo(other.Index);
             }
 
             public void SetupFileValues(string path)

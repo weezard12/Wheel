@@ -29,7 +29,7 @@ public partial class ClassesPage : ContentPage
                 {
                     ID = "class_" + classFile.Name,
                     Name = "Class Page",
-                    Index = (int)PageType.ClassPage,
+                    Index = (int)PageType.ClassesPage,
                     Values = new List<ValueBase> {
                         new Value() { Name="class_name", CurrentValue = classFile.Name},
                         new Value() { Name="class_description", CurrentValue = classFile.Name},

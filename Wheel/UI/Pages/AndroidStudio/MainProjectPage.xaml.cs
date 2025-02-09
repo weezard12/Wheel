@@ -3,6 +3,7 @@ using static Wheel.Logic.Projects.AndroidStudioProject;
 using static Wheel.Logic.Docx.Jsons;
 using Page = Wheel.Logic.Docx.Jsons.Page;
 using Wheel.UI.Views.ProjectViews;
+using Wheel.Logic.CodeParser;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 
@@ -10,6 +11,7 @@ public partial class MainProjectPage : ContentPage
 {
     private Page _mainPage;
     private Page _introductionPage;
+    private Page _limitationsPage;
 
     public MainProjectPage()
 	{
@@ -24,11 +26,20 @@ public partial class MainProjectPage : ContentPage
 
         _mainPage = CurrentProject.Root.GetDocxPage("Main Page");
         _introductionPage = CurrentProject.Root.GetDocxPage("Introduction");
+        _limitationsPage = CurrentProject.Root.GetDocxPage("Limitations");
+
         EntriesStackLayout.Children.Clear();
         EntriesStackLayout.Children.Add(new DataPageView(_mainPage));
         EntriesStackLayout.Children.Add(new DataPageView(_introductionPage));
+        EntriesStackLayout.Children.Add(new DataPageView(_limitationsPage));
         SetupMainPageJsonValues();
         CurrentProject.SaveConfig();
+
+        CurrentProject.OnProjectLoaded += (project) =>
+        {
+            //_limitationsPage.SetValueByName("min_sdk_version", AndroidStudioParser.GetMinSdkVersion());
+            
+        };
     }
     private void SetupMainPageJsonValues()
     {
@@ -47,18 +58,5 @@ public partial class MainProjectPage : ContentPage
         DisplayAlert("Project Loading", "Enjoy the Auto Generated Project", "W! OK");
 
         CurrentProject.SetupAllProjectFiles(UploadProjectXml.SelectedFolderPath);
-/*        // generate the svg
-        string projectPath = UploadProjectXml.SelectedFolderPath;
-        string sourceCodePath = GetSourceCodePath(projectPath);
-
-        List<ClassFile> classNames = GetClassNames(sourceCodePath);
-        SetExtensionList(classNames);
-
-        Graph graph = GraphsUtils.GetScreenGraph(classNames);
-        Diagram doc = GraphsUtils.GetScreenDiagram(classNames);
-        GraphsUtils.SaveSvg(Path.Combine(Path.GetTempPath(),"Wheel\\screens_diagram.svg"), doc.ToString());
-
-        Project.SetupProjectClasses(classNames);
-        EntriesStackLayout.Children.Add(new FlowDiagramView("screens_diagram.svg", graph));*/
     }
 }

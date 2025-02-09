@@ -14,7 +14,7 @@
                 Text="Current Project: Unknown"
                 VerticalOptions="Center" />
 
-            <Label Text="Upload a local project to get started" />
+            <Label Text="Upload a local Android Studio project to get started" />
             <local:LoadFolderView
                 x:Name="UploadProjectXml"
                 HeightRequest="50"
