@@ -37,6 +37,7 @@ public partial class ScreensPage : ContentPage
             project.Root.Pages.Add(new Page()
             {
                 Name = "Screens Diagram",
+                Index = (int) PageType.ScreensDiagramPage,
                 Values = new List<ValueBase>()
             {
                 new Value()
