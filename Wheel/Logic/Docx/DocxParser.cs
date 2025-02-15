@@ -6,13 +6,10 @@ using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Wheel.Logic.Projects;
-using UglyToad.PdfPig;
-using UglyToad.PdfPig.Content;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf;
 using PdfDocument = PdfSharp.Pdf.PdfDocument;
-using Windows.UI.ViewManagement;
 
 
 
@@ -605,39 +602,5 @@ namespace Wheel.Logic.Docx
         }
         #endregion
 
-        // DOES NOT WORK
-        public static void RemoveTextFromPdf(string inputPath, string outputPath, string textToRemove)
-        {
-            using (PdfDocument document = PdfReader.Open(inputPath, PdfDocumentOpenMode.Modify))
-            {
-                using (PdfDocument newDocument = new PdfDocument())
-                using (PdfDocument originalDocument = PdfReader.Open(inputPath, PdfDocumentOpenMode.Import))
-                using (PdfDocument copyDocument = new PdfDocument())
-                {
-                    // Iterate through all pages
-                    for (int i = 0; i < document.PageCount; i++)
-                    {
-                        PdfPage originalPage = originalDocument.Pages[i];
-                        PdfPage newPage = newDocument.AddPage(originalPage);
-                        XGraphics gfx = XGraphics.FromPdfPage(newPage);
-
-                        // Extract text using PdfPig
-                        using (UglyToad.PdfPig.PdfDocument pdfPigDoc = UglyToad.PdfPig.PdfDocument.Open(inputPath))
-                        {
-                            UglyToad.PdfPig.Content.Page pdfPigPage = pdfPigDoc.GetPage(i + 1);
-                            string extractedText = pdfPigPage.Text;
-
-                            // Replace unwanted text
-                            string modifiedText = extractedText.Replace(textToRemove, "");
-
-                            // Draw modified text back
-                            gfx.DrawString(modifiedText, new XFont("Arial", 12), XBrushes.Black, new XPoint(50, 50));
-                        }
-                    }
-
-                    newDocument.Save(outputPath);
-                }
-            }
-        }
     }
 }

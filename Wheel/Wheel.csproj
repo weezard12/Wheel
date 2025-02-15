@@ -72,7 +72,6 @@
 		<PackageReference Include="Microsoft.Msagl" Version="1.1.6" />
 		<PackageReference Include="Microsoft.Msagl.Drawing" Version="1.1.6" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="PdfPig" Version="0.1.9" />
 		<PackageReference Include="PDFsharp" Version="6.1.1" />
 		<PackageReference Include="Spire.Doc" Version="13.1.4" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="28.1.38" />
