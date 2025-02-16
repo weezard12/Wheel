@@ -17,15 +17,20 @@ namespace Wheel
             var builder = MauiApp.CreateBuilder();
             builder
             .UseMauiApp<App>()
-            .UseMauiCommunityToolkit(options =>
+            .UseMauiCommunityToolkit(
+            options =>
             {
-                options.SetShouldEnableSnackbarOnWindows(true); // Enable Snackbar for Windows
-            })
-                .ConfigureFonts(fonts =>
+                try
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+                    options.SetShouldEnableSnackbarOnWindows(true); // Enable Snackbar for Windows (only works on MSIX with an administrator)
+                }
+                catch { }
+            })
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            });
 
 #if DEBUG
     		builder.Logging.AddDebug();

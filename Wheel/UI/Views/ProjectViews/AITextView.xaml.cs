@@ -27,8 +27,13 @@ public partial class AITextView : ContentView
         await Clipboard.SetTextAsync(OutputText.Text);
 
         // Use Snackbar instead of Toast (Works on Windows)
-        var snackbar = Snackbar.Make("Text copied to clipboard!", null, "OK", TimeSpan.FromSeconds(2));
-        await snackbar.Show();
+        try
+        {
+            var snackbar = Snackbar.Make("Text copied to clipboard!", null, "OK", TimeSpan.FromSeconds(2));
+            await snackbar.Show();
+        }
+        catch (Exception ex) { }
+
     }
 
     private void Generate_Clicked(object sender, EventArgs e)
