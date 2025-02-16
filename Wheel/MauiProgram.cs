@@ -20,11 +20,8 @@ namespace Wheel
             .UseMauiCommunityToolkit(
             options =>
             {
-                try
-                {
-                    options.SetShouldEnableSnackbarOnWindows(true); // Enable Snackbar for Windows (only works on MSIX with an administrator)
-                }
-                catch { }
+                // Enable Snackbar for Windows (only works on MSIX with an Administrator!) else it will crush
+                //options.SetShouldEnableSnackbarOnWindows(true); 
             })
             .ConfigureFonts(fonts =>
             {
