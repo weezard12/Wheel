@@ -208,7 +208,10 @@ namespace Wheel.Logic.Docx
 
                                     // Split by new lines first
                                     var lines = entryValue.Split('\n');
-                                    textElement.Text = beforePlaceholder + ProcessTabs(lines[0]) + afterPlaceholder;
+
+                                    // Set first line
+                                    run.RemoveAllChildren<Text>();
+                                    run.Append(CreateRunWithTabs(beforePlaceholder + lines[0] + afterPlaceholder));
 
                                     replaced = true;
                                 }
@@ -231,7 +234,7 @@ namespace Wheel.Logic.Docx
                             {
                                 Paragraph newParagraph = new Paragraph(
                                     new ParagraphProperties(paraProps.OuterXml),  // Preserve alignment
-                                    new Run(new Text(ProcessTabs(lines[i])))
+                                    new Run(CreateRunWithTabs(lines[i]))  // Convert tabs properly
                                 );
 
                                 body.InsertAfter(newParagraph, parentParagraph);
@@ -248,11 +251,29 @@ namespace Wheel.Logic.Docx
             }
         }
 
-
-        private static string ProcessTabs(string input)
+        /// <summary>
+        /// Creates a run element where tab characters are properly represented in the DOCX file.
+        /// </summary>
+        private static Run CreateRunWithTabs(string input)
         {
-            return input.Replace("\t", "    "); // Replace tab with 4 spaces (or customize as needed)
+            Run run = new Run();
+            string[] parts = input.Split('\t');
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(parts[i]))
+                {
+                    run.Append(new Text(parts[i]) { Space = SpaceProcessingModeValues.Preserve });
+                }
+                if (i < parts.Length - 1)
+                {
+                    run.Append(new TabChar()); // Add actual tab character
+                }
+            }
+
+            return run;
         }
+
 
 
         public static void SetEntryByName(string path, string entryName, string[] column1Values, string[] column2Values)
