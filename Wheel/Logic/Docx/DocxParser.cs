@@ -276,22 +276,19 @@ namespace Wheel.Logic.Docx
 
 
 
-        public static void SetEntryByName(string path, string entryName, string[] column1Values, string[] column2Values)
+        public static void SetEntryByName(string path, string entryName, string[] column1Values, string[] column2Values, bool alignRight = true)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("The specified file does not exist.", path);
 
+            // Ensure both columns have the same length
             if (column1Values.Length > column2Values.Length)
             {
-                string[] temp = new string[column1Values.Length];
-                Array.Copy(column2Values, temp, column2Values.Length);
-                column2Values = temp;
+                Array.Resize(ref column2Values, column1Values.Length);
             }
             else if (column1Values.Length < column2Values.Length)
             {
-                string[] temp = new string[column2Values.Length];
-                Array.Copy(column1Values, temp, column1Values.Length);
-                column1Values = temp;
+                Array.Resize(ref column1Values, column2Values.Length);
             }
 
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
@@ -317,10 +314,10 @@ namespace Wheel.Logic.Docx
 
                     if (placeholderIndex != -1)
                     {
-                        // Create a table to replace the placeholder
-                        Table table = CreateTable(column1Values, column2Values);
+                        // Create a table with specified alignment
+                        Table table = CreateTable(column1Values, column2Values, alignRight);
 
-                        // Insert a paragraph before the table to ensure separation
+                        // Insert a paragraph before the table for separation
                         Paragraph newParagraph = new Paragraph(new Run(new Break()));
 
                         // Replace paragraph with table
@@ -338,11 +335,14 @@ namespace Wheel.Logic.Docx
             }
         }
 
-        private static Table CreateTable(string[] column1Values, string[] column2Values)
+        /// <summary>
+        /// Creates a table with the given column values and alignment.
+        /// </summary>
+        private static Table CreateTable(string[] column1Values, string[] column2Values, bool alignRight = true)
         {
             Table table = new Table();
 
-            // Define table properties (borders)
+            // Define table properties (borders & alignment)
             TableProperties tblProperties = new TableProperties(
                 new TableBorders(
                     new TopBorder() { Val = BorderValues.Single, Size = 12 },
@@ -351,8 +351,13 @@ namespace Wheel.Logic.Docx
                     new RightBorder() { Val = BorderValues.Single, Size = 12 },
                     new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 12 },
                     new InsideVerticalBorder() { Val = BorderValues.Single, Size = 12 }
-                )
+                ),
+                new TableJustification()
+                {
+                    Val = alignRight ? TableRowAlignmentValues.Right : TableRowAlignmentValues.Left
+                }
             );
+
             table.AppendChild(tblProperties);
 
             // Add table rows
@@ -377,6 +382,7 @@ namespace Wheel.Logic.Docx
 
             return table;
         }
+
 
 
         static void CombineDocx(string firstDocx, string secondDocx, string outputDocx)
