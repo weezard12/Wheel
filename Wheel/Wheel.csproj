@@ -130,6 +130,9 @@
 	  <MauiXaml Update="UI\Views\ProjectViews\MyProgressView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UI\Views\ThemeSwitch.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\VectorViews\DiagramEdgeView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -15,7 +15,7 @@
                 VerticalOptions="Center" />
         </HorizontalStackLayout>
 
-        <Grid>
+        <VerticalStackLayout>
             <Border Padding="10" BackgroundColor="Black">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="20" Stroke="Transparent" />
@@ -29,7 +29,9 @@
                     <local:CreateNewProjectView Grid.Column="1" />
                 </Grid>
             </Border>
-        </Grid>
+            <local:ThemeSwitch/>
+        </VerticalStackLayout>
+        
 
 
 
