@@ -483,8 +483,13 @@ namespace Wheel.Logic.Docx
             }
         }
 
-        public static void InsertAPicture(string document, string fileName)
+        public static void InsertAPicture(string document, string fileName, int scale = 1)
         {
+            if (scale <= 0)
+            {
+                throw new ArgumentException("Scale must be greater than 0.", nameof(scale));
+            }
+
             using (WordprocessingDocument wordprocessingDocument = WordprocessingDocument.Open(document, true))
             {
                 if (wordprocessingDocument.MainDocumentPart is null)
@@ -501,17 +506,25 @@ namespace Wheel.Logic.Docx
                     imagePart.FeedData(stream);
                 }
 
-                AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart));
+                AddImageToBody(wordprocessingDocument, mainPart.GetIdOfPart(imagePart), scale);
             }
         }
 
-        static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId)
+        static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, int scale)
         {
+            // Base dimensions (in EMUs - English Metric Units)
+            long baseCx = 990000L; // Width
+            long baseCy = 792000L; // Height
+
+            // Apply scaling factor
+            long scaledCx = baseCx * scale;
+            long scaledCy = baseCy * scale;
+
             // Define the reference of the image.
             var element =
                  new Drawing(
                      new DW.Inline(
-                         new DW.Extent() { Cx = 990000L, Cy = 792000L },
+                         new DW.Extent() { Cx = scaledCx, Cy = scaledCy },
                          new DW.EffectExtent()
                          {
                              LeftEdge = 0L,
@@ -528,7 +541,7 @@ namespace Wheel.Logic.Docx
                              new A.GraphicFrameLocks() { NoChangeAspect = true }),
                          new A.Graphic(
                              new A.GraphicData(
-            new PIC.Picture(
+                                 new PIC.Picture(
                                      new PIC.NonVisualPictureProperties(
                                          new PIC.NonVisualDrawingProperties()
                                          {
@@ -551,11 +564,11 @@ namespace Wheel.Logic.Docx
                                              A.BlipCompressionValues.Print
                                          },
                                          new A.Stretch(
-            new A.FillRectangle())),
+                                             new A.FillRectangle())),
                                      new PIC.ShapeProperties(
                                          new A.Transform2D(
                                              new A.Offset() { X = 0L, Y = 0L },
-                                             new A.Extents() { Cx = 990000L, Cy = 792000L }),
+                                             new A.Extents() { Cx = scaledCx, Cy = scaledCy }),
                                          new A.PresetGeometry(
                                              new A.AdjustValueList()
                                          )
@@ -579,6 +592,7 @@ namespace Wheel.Logic.Docx
             // Append the reference to body, the element should be in a Run.
             wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
         }
+
 
         #region Convert Docx to PDF
         /// <summary>

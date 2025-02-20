@@ -108,7 +108,7 @@ namespace Wheel.Logic.Docx
 
                 if (setValue.StartsWith("Path\\"))
                 {
-                    InsertAPicture(path, FileFromTemp(setValue.Substring(5)));
+                    InsertAPicture(path, FileFromTemp(setValue.Substring(5)),5);
                     return;
                 }
                 if (string.IsNullOrEmpty(setValue))
