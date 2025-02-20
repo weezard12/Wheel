@@ -43,27 +43,36 @@ namespace Wheel.Logic.CodeParser.Base
         {
             Variables.Clear();
 
-            // Remove all method bodies before processing
-            string classContent = Regex.Replace(Content, @"\{[^{}]*\}", "{}");
+            // Remove method bodies to exclude local variables
+            string classContent = Regex.Replace(Content, @"\b(public|private|protected|static|\s)*\s+\w+\s+\w+\s*\([^)]*\)\s*\{[^{}]*\}", "");
 
             // Regular Expression to capture Java class-level variable declarations
-            string pattern = @"(?:private|protected|public|static|\s)*\s*(\w+)\s+(\w+)\s*(?:=\s*([^;]+))?;";
-            Regex regex = new Regex(pattern);
+            string pattern = @"(?:private|protected|public|static|final|\s)+\s+(\w+)\s+(\w+)\s*(?:=\s*([^;]+))?\s*;";
 
+            Regex regex = new Regex(pattern);
             MatchCollection matches = regex.Matches(classContent);
+
             foreach (Match match in matches)
             {
                 if (match.Groups.Count >= 3)
                 {
+                    string type = match.Groups[1].Value;
+                    string name = match.Groups[2].Value;
+
+                    // Ignore return statements
+                    if (name.Equals("return", StringComparison.OrdinalIgnoreCase) || type.Equals("return", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
                     Variables.Add(new Variable
                     {
-                        Type = match.Groups[1].Value,   // Data type (e.g., int, String)
-                        Name = match.Groups[2].Value,   // Variable name
+                        Type = type,   // Data type (e.g., int, String)
+                        Name = name,   // Variable name
                         BaseValue = match.Groups[3].Success ? match.Groups[3].Value.Trim() : null // Initial value if exists
                     });
                 }
             }
         }
+
 
         private void SetupMethodsFromContent()
         {
