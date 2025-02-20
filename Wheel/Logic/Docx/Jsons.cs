@@ -106,6 +106,9 @@ namespace Wheel.Logic.Docx
             {
                 string setValue = string.IsNullOrEmpty(CurrentValue) ? BaseValue : CurrentValue;
 
+                if (setValue == null)
+                    return;
+
                 if (setValue.StartsWith("Path\\"))
                 {
                     InsertAPicture(path, FileFromTemp(setValue.Substring(5)),5);
