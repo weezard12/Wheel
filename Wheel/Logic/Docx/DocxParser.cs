@@ -183,6 +183,10 @@ namespace Wheel.Logic.Docx
                         int currentIndex = 0;
                         bool replaced = false;
                         Run firstRun = null;
+
+                        // Get paragraph properties (alignment)
+                        ParagraphProperties paraProps = para.ParagraphProperties?.CloneNode(true) as ParagraphProperties ?? new ParagraphProperties();
+
                         foreach (var run in runs)
                         {
                             var textElement = run.GetFirstChild<Text>();
@@ -217,7 +221,7 @@ namespace Wheel.Logic.Docx
                             currentIndex += runText.Length;
                         }
 
-                        // Insert new paragraphs for each new line and process tabs
+                        // Insert new paragraphs for each new line and retain alignment
                         if (firstRun != null)
                         {
                             Paragraph parentParagraph = firstRun.Parent as Paragraph;
@@ -225,7 +229,11 @@ namespace Wheel.Logic.Docx
 
                             for (int i = 1; i < lines.Length; i++)
                             {
-                                Paragraph newParagraph = new Paragraph(new Run(new Text(ProcessTabs(lines[i]))));
+                                Paragraph newParagraph = new Paragraph(
+                                    new ParagraphProperties(paraProps.OuterXml),  // Preserve alignment
+                                    new Run(new Text(ProcessTabs(lines[i])))
+                                );
+
                                 body.InsertAfter(newParagraph, parentParagraph);
                                 parentParagraph = newParagraph; // Move reference to new paragraph
                             }
@@ -239,6 +247,7 @@ namespace Wheel.Logic.Docx
                 mainPart.Document.Save();
             }
         }
+
 
         private static string ProcessTabs(string input)
         {

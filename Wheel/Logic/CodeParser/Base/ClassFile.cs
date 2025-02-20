@@ -70,7 +70,7 @@ namespace Wheel.Logic.CodeParser.Base
             Methods.Clear();
 
             // Regular Expression to match Java methods
-            string pattern = @"(?:public|private|protected|static|\s)*\s+(\w+)\s+(\w+)\s*\(([^)]*)\)\s*\{?";
+            string pattern = @"(?:public|private|protected|static|\s)*\s+(\w+)\s+(\w+)\s*\(([^)]*)\)\s*\{";
             Regex regex = new Regex(pattern);
             MatchCollection matches = regex.Matches(Content);
 
@@ -78,9 +78,25 @@ namespace Wheel.Logic.CodeParser.Base
             {
                 if (match.Groups.Count >= 3)
                 {
-                    List<Variable> parameters = new List<Variable>();
+                    string returnType = match.Groups[1].Value;
+                    string methodName = match.Groups[2].Value;
                     string parametersString = match.Groups[3].Value.Trim();
 
+                    // **Skip Control Flow Statements**
+                    if (Regex.IsMatch(methodName, @"^(if|for|while|switch|catch|try|do|else)$", RegexOptions.IgnoreCase))
+                        continue;
+
+                    // **Extract Method Body**
+                    string methodPattern = $@"{Regex.Escape(match.Value)}([\s\S]*?)\}}";
+                    Match methodBodyMatch = Regex.Match(Content, methodPattern);
+                    string methodBody = methodBodyMatch.Success ? methodBodyMatch.Groups[1].Value.Trim() : "";
+
+                    // **Detect Simple Getters and Setters**
+                    if (IsSimpleGetter(methodName, methodBody) || IsSimpleSetter(methodName, methodBody))
+                        continue;
+
+                    // Parse method parameters
+                    List<Variable> parameters = new List<Variable>();
                     if (!string.IsNullOrEmpty(parametersString))
                     {
                         string[] paramPairs = parametersString.Split(',');
@@ -101,11 +117,33 @@ namespace Wheel.Logic.CodeParser.Base
 
                     Methods.Add(new Method
                     {
-                        Name = match.Groups[2].Value, // Method name
+                        Name = methodName,
                         Parameters = parameters
                     });
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if a method is a simple getter (e.g., `getX() { return x; }`).
+        /// </summary>
+        private bool IsSimpleGetter(string methodName, string methodBody)
+        {
+            if (!methodName.StartsWith("get")) return false;
+
+            // Match: return <some_variable>;
+            return Regex.IsMatch(methodBody, @"^\s*return\s+\w+;\s*$");
+        }
+
+        /// <summary>
+        /// Checks if a method is a simple setter (e.g., `setX(value) { this.x = value; }`).
+        /// </summary>
+        private bool IsSimpleSetter(string methodName, string methodBody)
+        {
+            if (!methodName.StartsWith("set")) return false;
+
+            // Match: this.<some_variable> = parameter;
+            return Regex.IsMatch(methodBody, @"^\s*this\.\w+\s*=\s*\w+;\s*$");
         }
 
         public override string ToString()
