@@ -7,10 +7,12 @@ using Wheel.Logic.CodeParser.enums;
 
 namespace Wheel.Logic.CodeParser.Base
 {
-    public class Method : INameable
+    public class Method : INameable, IContent
     {
         public string Name { get; set; }
+        public string Content { get; set; }
         public List<Variable> Parameters { get; set; } = new List<Variable>();
+        
 
         public override string ToString()
         {

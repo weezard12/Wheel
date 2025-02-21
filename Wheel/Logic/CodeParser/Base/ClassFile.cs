@@ -78,7 +78,7 @@ namespace Wheel.Logic.CodeParser.Base
         {
             Methods.Clear();
 
-            // Regular Expression to match Java methods
+            // Regular Expression to match Java methods with opening '{'
             string pattern = @"(?:public|private|protected|static|\s)*\s+(\w+)\s+(\w+)\s*\(([^)]*)\)\s*\{";
             Regex regex = new Regex(pattern);
             MatchCollection matches = regex.Matches(Content);
@@ -95,10 +95,8 @@ namespace Wheel.Logic.CodeParser.Base
                     if (Regex.IsMatch(methodName, @"^(if|for|while|switch|catch|try|do|else)$", RegexOptions.IgnoreCase))
                         continue;
 
-                    // **Extract Method Body**
-                    string methodPattern = $@"{Regex.Escape(match.Value)}([\s\S]*?)\}}";
-                    Match methodBodyMatch = Regex.Match(Content, methodPattern);
-                    string methodBody = methodBodyMatch.Success ? methodBodyMatch.Groups[1].Value.Trim() : "";
+                    // **Extract the Full Method Body**
+                    string methodBody = ExtractMethodBody(Content, match.Index);
 
                     // **Detect Simple Getters and Setters**
                     if (IsSimpleGetter(methodName, methodBody) || IsSimpleSetter(methodName, methodBody))
@@ -127,11 +125,41 @@ namespace Wheel.Logic.CodeParser.Base
                     Methods.Add(new Method
                     {
                         Name = methodName,
-                        Parameters = parameters
+                        Parameters = parameters,
+                        Content = methodBody // Store the full method body
                     });
                 }
             }
         }
+
+        /// <summary>
+        /// Extracts the full method body, handling nested brackets.
+        /// </summary>
+        private string ExtractMethodBody(string content, int startIndex)
+        {
+            int openBraces = 0;
+            int endIndex = -1;
+
+            for (int i = startIndex; i < content.Length; i++)
+            {
+                if (content[i] == '{') openBraces++;
+                if (content[i] == '}') openBraces--;
+
+                if (openBraces == 0 && endIndex == -1 && i > startIndex)
+                {
+                    endIndex = i;
+                    break;
+                }
+            }
+
+            if (endIndex > startIndex)
+            {
+                return content.Substring(startIndex, endIndex - startIndex + 1).Trim();
+            }
+
+            return string.Empty;
+        }
+
 
         /// <summary>
         /// Checks if a method is a simple getter (e.g., `getX() { return x; }`).
