@@ -11,7 +11,7 @@ namespace Wheel.Logic.AI
     internal class GeminiAPI
     {
         private const string ApiKey = "";
-        private const string ApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=YOUR_API_KEY";
+        private const string ApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY";
 
         public static async Task<string> GetGeminiResponse(string prompt)
         {
