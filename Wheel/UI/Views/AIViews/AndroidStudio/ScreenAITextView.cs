@@ -7,7 +7,7 @@ using Wheel.Logic.CodeParser.Base;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using static Wheel.Logic.Docx.Jsons;
 
-namespace Wheel.UI.Views.ProjectViews.AndroidStudio
+namespace Wheel.UI.Views.AIViews.AndroidStudio
 {
     internal class ScreenAITextView : AITextView
     {
@@ -19,7 +19,7 @@ namespace Wheel.UI.Views.ProjectViews.AndroidStudio
 
         public ScreenAITextView(ClassFile classFile) : base(classFile.Name)
         {
-            this.ClassFile = classFile;
+            ClassFile = classFile;
             _nameInJson = "screen_" + ClassFile.Name;
             OnGeneratedValidResponse += (responce) =>
             {

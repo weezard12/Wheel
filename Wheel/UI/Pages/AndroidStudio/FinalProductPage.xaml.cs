@@ -15,7 +15,10 @@ namespace Wheel.UI.Pages.AndroidStudio;
 
 public partial class FinalProductPage : ContentPage
 {
-	public FinalProductPage()
+    private Thread _loadViewThread;
+
+
+    public FinalProductPage()
 	{
 		InitializeComponent();
         //DocxView.Source = new HtmlWebViewSource { Html = MyUtils.ConvertDocxToHtml("C:\\Users\\User1\\AppData\\Local\\Temp\\Wheel\\final_product.docx") };
@@ -38,8 +41,8 @@ public partial class FinalProductPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        Thread loadViewThread = new Thread(UpdateFinalProduct);
-        loadViewThread.Start();
+        _loadViewThread = new Thread(UpdateFinalProduct);
+        _loadViewThread.Start();
     }
     public async void UpdateFinalProduct()
     {

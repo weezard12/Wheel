@@ -118,10 +118,13 @@
 	  <MauiXaml Update="UI\Views\ProjectActionView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Views\ProjectViews\AITextView.xaml">
+	  <MauiXaml Update="UI\Views\AIViews\AITableView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="UI\Views\ProjectViews\AITextViewsHolder.xaml">
+	  <MauiXaml Update="UI\Views\AIViews\AITextView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UI\Views\AIViews\AITextViewsHolder.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\ProjectViews\ClassView.xaml">

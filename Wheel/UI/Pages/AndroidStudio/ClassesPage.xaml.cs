@@ -4,7 +4,6 @@ using static Wheel.Logic.Docx.Jsons;
 using Page = Wheel.Logic.Docx.Jsons.Page;
 using Wheel.Logic.Docx;
 using static Wheel.Logic.Docx.IDocxPage;
-using Wheel.UI.Views.ProjectViews.AndroidStudio;
 using Wheel.Logic.CodeParser.Base;
 
 public partial class ClassesPage : ContentPage
@@ -38,7 +37,7 @@ public partial class ClassesPage : ContentPage
                     Index = (int)PageType.ClassesPage,
                     Values = new List<ValueBase> {
                         new Value() { Name="class_name", CurrentValue = classFile.Name},
-                        new Value() { Name="class_description", CurrentValue = classFile.Description},
+                        new Value() { Name="class_description", CurrentValue = classFile.Description, BaseValue = "No description generated"},
 
 
                         variablesTable,

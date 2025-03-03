@@ -7,7 +7,7 @@ using Wheel.Logic.CodeParser.Base;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using static Wheel.Logic.Docx.Jsons;
 
-namespace Wheel.UI
+namespace Wheel.UI.Views.AIViews.AndroidStudio
 {
     class ClassDescriptionAIView : AITextView
     {
@@ -19,7 +19,7 @@ namespace Wheel.UI
 
         public ClassDescriptionAIView(ClassFile classFile) : base("Class Description")
         {
-            this.ClassFile = classFile;
+            ClassFile = classFile;
             _nameInJson = "class_" + ClassFile.Name;
             OnGeneratedValidResponse += (responce) =>
             {
@@ -38,8 +38,9 @@ namespace Wheel.UI
         {
             string instructions =
 @"Analyze the following Java class and provide a concise summary of its purpose and functionality.
-Focus on the general role of the class within the application, its primary responsibilities, and how it interacts with other components.
-Do not include specific method details or implementation logic. The response should start immediately without any introductory phrases.
+Clearly define the class's role within the application, its primary responsibilities, and how it interacts with other components.
+Avoid discussing specific method details or implementation logic. Begin the response immediately without introductory phrases or uncertain language.
+Ensure that all statements are definitive and assertive, without using words like: ""it likely"" or ""probably"".
 
 Class Content:";
             return instructions + ClassFile.Content;

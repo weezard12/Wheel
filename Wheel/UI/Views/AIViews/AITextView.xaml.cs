@@ -49,8 +49,9 @@ public partial class AITextView : ContentView
         {
             return;
         }
-        AIResponse = GeminiAPI.GetFullTextFromResponse(await GeminiAPI.GetGeminiResponse(Prompt));
-        OutputText.Text = String.IsNullOrEmpty(AIResponse) ? "Error when getting AI response." : AIResponse;
+        string jsonResponce = await GeminiAPI.GetGeminiResponse(Prompt);
+        AIResponse = GeminiAPI.GetFullTextFromResponse(jsonResponce);
+        OutputText.Text = String.IsNullOrEmpty(AIResponse) ? "Error when getting AI response.\n" + jsonResponce : AIResponse;
         OnGeneratedValidResponse.Invoke(OutputText.Text);
     }
 

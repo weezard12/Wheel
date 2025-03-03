@@ -79,6 +79,24 @@ namespace Wheel.Logic.Docx
                     editingValue.CurrentValue = currentValue;
                 }
             }
+
+            public void SetTableValueByName(string tableName, string valueName, string currentValue)
+            {
+                var editingTable = Values.OfType<TableValue>().FirstOrDefault(v => v.Name == tableName);
+                if (editingTable != null)
+                {
+                    int indexOfValue = -1;
+                    indexOfValue = editingTable.Row2.IndexOf(valueName);
+
+                    if(indexOfValue != -1)
+                    {
+                        while (indexOfValue >= editingTable.Row1.Count)
+                            editingTable.Row1.Add(String.Empty);
+                        editingTable.Row1[indexOfValue] = currentValue;
+                    }
+                        
+                }
+            }
         }
 
 

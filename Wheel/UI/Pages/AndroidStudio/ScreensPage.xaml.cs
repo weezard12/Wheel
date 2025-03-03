@@ -4,12 +4,12 @@ using Wheel.Logic;
 using Wheel.Logic.CodeParser.Base;
 using Wheel.Logic.Graphs;
 using Wheel.UI.Views.ProjectViews;
-using Wheel.UI.Views.ProjectViews.AndroidStudio;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using static Wheel.Logic.Docx.Jsons;
 using Page = Wheel.Logic.Docx.Jsons.Page;
 using Wheel.Logic.Docx;
 using static Wheel.Logic.Docx.IDocxPage;
+using Wheel.UI.Views.AIViews.AndroidStudio;
 
 namespace Wheel.UI.Pages.AndroidStudio;
 

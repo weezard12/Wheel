@@ -4,10 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Wheel.UI">
-    <Border>
+    <Border Margin="10">
         <VerticalStackLayout>
-            <Label x:Name="ClassName" Text="Class Name" />
+            <Label
+                x:Name="ClassName"
+                FontSize="Large"
+                Text="Class Name" />
             <local:AITextViewsHolder x:Name="AIViewsHolder" />
+
         </VerticalStackLayout>
     </Border>
 </ContentView>
