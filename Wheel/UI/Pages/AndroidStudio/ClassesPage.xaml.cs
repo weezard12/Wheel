@@ -9,6 +9,8 @@ using Wheel.Logic.CodeParser.Base;
 
 public partial class ClassesPage : ContentPage
 {
+    private ClassView _classView;
+
     public ClassesPage()
     {
         InitializeComponent();
@@ -17,6 +19,10 @@ public partial class ClassesPage : ContentPage
         {
             foreach (ClassFile classFile in project.ClassFiles)
             {
+
+                _classView = new ClassView(classFile);
+                EntriesGrid.Add(_classView);
+
                 TableValue variablesTable  = new TableValue() { Name = "properties_table", Row2 = classFile.Variables.Select(v => v.ToString()).ToList() };
                 variablesTable.Row1.Insert(0,"תיאור התכונה");
                 variablesTable.Row2.Insert(0,"שם התכונה");
@@ -32,7 +38,7 @@ public partial class ClassesPage : ContentPage
                     Index = (int)PageType.ClassesPage,
                     Values = new List<ValueBase> {
                         new Value() { Name="class_name", CurrentValue = classFile.Name},
-                        new Value() { Name="class_description", CurrentValue = classFile.Name},
+                        new Value() { Name="class_description", CurrentValue = classFile.Description},
 
 
                         variablesTable,

@@ -124,6 +124,9 @@
 	  <MauiXaml Update="UI\Views\ProjectViews\AITextViewsHolder.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UI\Views\ProjectViews\ClassView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\ProjectViews\DataPageView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -1,8 +1,10 @@
-namespace Wheel.UI.Views.ProjectViews;
+using Wheel.UI.Views.ProjectViews;
+
+namespace Wheel.UI;
 
 public partial class AITextViewsHolder : ContentView
 {
-	public  List<AITextView> TextViews { get; private set; } = new List<AITextView>();
+	public List<AITextView> TextViews { get; private set; } = new List<AITextView>();
 	public AITextViewsHolder()
 	{
 		InitializeComponent();
@@ -24,5 +26,11 @@ public partial class AITextViewsHolder : ContentView
     {
         TextViews.Remove(textView);
         EntriesLayout.Children.Remove(textView);
+    }
+
+    public void RemoveAllAITextView()
+    {
+		TextViews.Clear();
+		EntriesLayout.Children.Clear();
     }
 }

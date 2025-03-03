@@ -2,7 +2,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Wheel.Logic.AI;
 
-namespace Wheel.UI.Views.ProjectViews;
+namespace Wheel.UI;
 
 public partial class AITextView : ContentView
 {
@@ -17,9 +17,10 @@ public partial class AITextView : ContentView
 	{
 		InitializeComponent();
 	}
-    public AITextView(string title) : this()
+    public AITextView(string title, string prompt = "") : this()
     {
         this.Title = title;
+        this.Prompt = prompt;
     }
 
     private async void Copy_Clicked(object sender, EventArgs e)
