@@ -215,5 +215,21 @@ namespace Wheel.Logic.CodeParser.Base
             string r = JsonSerializer.Serialize(new ClassFile() { Variables = this.Variables });
             return r;
         }
+
+        /// <summary>
+        /// Removes all Java import statements from the provided class content.
+        /// </summary>
+        /// <param name="javaClassContent">A string containing the full content of a Java class.</param>
+        /// <returns>A string of the Java class content with import statements removed.</returns>
+        public string GetClassWithoutImports()
+        {
+            // Regular expression to match Java import statements.
+            // This pattern matches lines that start with optional whitespace, the "import" keyword,
+            // one or more whitespace characters, any characters up until a semicolon, and then the end of the line.
+            string pattern = @"^\s*import\s+.*?;\s*$";
+
+            // Use RegexOptions.Multiline to ensure the pattern applies to each line individually.
+            return Regex.Replace(Content, pattern, string.Empty, RegexOptions.Multiline);
+        }
     }
 }

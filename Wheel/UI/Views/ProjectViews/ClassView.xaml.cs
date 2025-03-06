@@ -83,7 +83,7 @@ Expected JSON Response:
         ""description"": ""`difficulty` is a String that represents the current game difficulty level (e.g., \""easy\"", \""medium\"", \""hard\""). It influences game parameters such as board size and number of mines and affects leaderboard placement.""
     }}
   ]
-}}", ClassFile.Content, ClassFile.GetVariablesAsJson());
+}}", ClassFile.GetClassWithoutImports(), ClassFile.GetVariablesAsJson());
 
         tableView.UseOverritePrompt = true;
 
