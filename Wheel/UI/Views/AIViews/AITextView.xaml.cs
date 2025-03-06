@@ -1,10 +1,11 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Wheel.Logic.AI;
+using Wheel.UI.Views.AIViews;
 
 namespace Wheel.UI;
 
-public partial class AITextView : ContentView
+public partial class AITextView : ContentView, IAIViewHolder
 {
     public virtual string Prompt { get; set; }
     public string AIResponse { get; set; }
@@ -13,7 +14,10 @@ public partial class AITextView : ContentView
 
     protected Action<string> OnGeneratedValidResponse { get; set; }
 
-	public AITextView()
+    public List<IAIViewHolder> AIViews { get => null; set => throw new NotImplementedException(); }
+
+
+    public AITextView()
 	{
 		InitializeComponent();
 	}
@@ -45,10 +49,9 @@ public partial class AITextView : ContentView
     }
     public virtual async void Generate()
     {
-        if (Prompt == null || Prompt.Equals(String.Empty))
-        {
+        if (String.IsNullOrEmpty(Prompt))
             return;
-        }
+        
         string jsonResponce = await GeminiAPI.GetGeminiResponse(Prompt);
         AIResponse = GeminiAPI.GetFullTextFromResponse(jsonResponce);
         OutputText.Text = String.IsNullOrEmpty(AIResponse) ? "Error when getting AI response.\n" + jsonResponce : AIResponse;
@@ -66,5 +69,16 @@ public partial class AITextView : ContentView
         TitleXml.Text = value;
         TitleXml.IsVisible = true;
         
+    }
+
+    void IAIViewHolder.Generate_Clicked(object sender, EventArgs e)
+    {
+        Generate_Clicked(sender, e);
+    }
+
+    public void SetOutputText(string text)
+    {
+        OutputText.Text = String.IsNullOrEmpty(text) ? "Error when getting AI response.\n" : text;
+        OnGeneratedValidResponse.Invoke(OutputText.Text);
     }
 }

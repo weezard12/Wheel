@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Wheel.Logic.CodeParser.enums;
 
 namespace Wheel.Logic.CodeParser.Base
@@ -8,6 +10,7 @@ namespace Wheel.Logic.CodeParser.Base
     //
     public class ClassFile : ContentProjectFile
     {
+        [JsonPropertyName("variables")]
         public List<Variable> Variables { get; set; } = new List<Variable>();
         public List<Method> Methods { get; set; } = new List<Method>();
 
@@ -15,6 +18,15 @@ namespace Wheel.Logic.CodeParser.Base
         /// List of all the classes that this class extends from.
         /// </summary>
         public List<ProjectFile> ExtentsFrom { get; set; }
+
+
+        /// <summary>
+        /// Empty Constructor for Json deserilization
+        /// </summary>
+        public ClassFile() : base("Empty Constructor - No Name", "Empty Constructor - No Content")
+        {
+
+        }
 
         public ClassFile(string fileName, string content) : base(fileName, content)
         {
@@ -186,6 +198,17 @@ namespace Wheel.Logic.CodeParser.Base
         public override string ToString()
         {
             return string.Format("Class Name: {0}, Path: {1}. Content: \n{2}", Name, Path, Content);
+        }
+        public string GetVariablesAsString()
+        {
+            string r = String.Empty;
+            if (Variables.Count == 0)
+                return r;
+            foreach (Variable variable in Variables)
+                r += variable.ToString() + ", ";
+            
+            r.Substring(0, r.Length - 2);
+            return r;
         }
     }
 }

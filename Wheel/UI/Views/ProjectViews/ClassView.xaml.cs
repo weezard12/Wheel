@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls;
 using Microsoft.Msagl.Core.ProjectionSolver;
 using Wheel.Logic.CodeParser.Base;
 using Wheel.UI.Views.AIViews.AndroidStudio;
@@ -26,7 +27,47 @@ public partial class ClassView : ContentView
 
         AITableView tableView = new AITableView();
         tableView.GetTable().IsVisible = false;
+        tableView.OverritePrompt = String.Format(
+@"Analyze the following Java class and its variables. For each variable, provide a concise summary of its purpose and role within the class.
 
+Clearly define its type, intended usage, and significance within the application's logic.
+Explain how it interacts with other components but avoid discussing specific operations or implementation details.
+Begin the response immediately without introductory phrases or uncertain language.
+Ensure that all statements are definitive and assertive, without using words like 'it likely' or 'probably'.
+The response must be a valid JSON object, formatted as follows:
+
+{{
+  ""variables"": [
+    {{
+      ""name"": ""variable_name"",
+      ""description"": ""A detailed and assertive explanation of the variable’s type, purpose, and role in the application.""
+    }}
+  ]
+}}
+
+Java Class:
+{0}
+
+List of Variables:
+{1}
+
+Example Input for a Single Variable:
+Variable: int goal
+
+Expected JSON Response:
+
+{{
+  ""variables"": [
+    {{
+      ""name"": ""goal"",
+      ""type"": ""int"",
+      ""description"": ""`goal` is an integer that represents the target value required to achieve a specific achievement. It defines the numeric milestone which the application tracks. The `goal` interacts with other parts of the application by providing a threshold against which progress or performance is measured, ultimately determining when an achievement is unlocked.""
+    }}
+  ]
+}}
+", ClassFile.Content, ClassFile.GetVariablesAsString());
+
+        tableView.UseOverritePrompt = true;
 
         //TableView.SetTitle("Values");
         tableView.AddSection(new TableSection("Values"));

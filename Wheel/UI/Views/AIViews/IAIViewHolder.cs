@@ -8,6 +8,7 @@ namespace Wheel.UI.Views.AIViews
 {
     public interface IAIViewHolder
     {
-        public List<AITextView> AIViews { get; set; }
+        public List<IAIViewHolder> AIViews { get; set; }
+        public void Generate_Clicked(object sender, EventArgs e);
     }
 }

@@ -1,12 +1,18 @@
 using Microsoft.Maui;
+using System.Text.Json;
+using Wheel.Logic;
+using Wheel.Logic.AI;
+using Wheel.Logic.CodeParser.Base;
 using Wheel.UI.Views.AIViews;
 
 namespace Wheel.UI;
 
 public partial class AITableView : ContentView, IAIViewHolder
 {
-    public List<AITextView> AIViews { get; set; } = new List<AITextView>();
+    public List<IAIViewHolder> AIViews { get; set; } = new List<IAIViewHolder>();
 	public TableView GetTable() => Table;
+	public string OverritePrompt { get; set; }
+	public bool UseOverritePrompt { get; set; }
 
     public AITableView()
 	{
@@ -38,5 +44,54 @@ public partial class AITableView : ContentView, IAIViewHolder
     private void ToggleTableViewClicked(object sender, EventArgs e)
     {
 		Table.IsVisible = !Table.IsVisible;
+    }
+
+    public async void Generate_Clicked(object sender, EventArgs e)
+    {
+		if(!String.IsNullOrEmpty(OverritePrompt))
+		{
+			if (UseOverritePrompt)
+			{
+                string jsonResponce = await GeminiAPI.GetGeminiResponse(OverritePrompt);
+                string responce = GeminiAPI.GetFullTextFromResponse(jsonResponce);
+				if (responce.StartsWith("```json"))
+				{
+                    responce = responce.Substring(8, responce.Length-11);
+                }
+					
+				try
+				{
+					ClassFile classFile = JsonSerializer.Deserialize<ClassFile>(responce);
+					foreach (IAIViewHolder viewHolder in AIViews)
+					{
+						if (viewHolder is AITextView textView)
+						{
+							foreach (Variable variable in classFile.Variables)
+							{
+								if (textView.Title.Equals(variable.ToString()))
+								{
+                                    textView.SetOutputText(variable.Description);
+									break;
+                                }
+									
+                            }
+							
+						}
+					}
+
+
+                }
+				catch(Exception ex)
+				{
+                    MyUtils.DebugError(responce);
+                }
+                    
+                return;
+			}
+		}
+
+        foreach (IAIViewHolder viewHolder in AIViews)
+            viewHolder.Generate_Clicked(sender, e);
+
     }
 }
