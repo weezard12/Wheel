@@ -75,6 +75,7 @@ public partial class AITableView : ContentView, IAIViewHolder
 								if (textView.Title.Equals(variable.ToString()))
 								{
 									textView.SetOutputText(variable.Description);
+									textView.OnGeneratedValidResponse?.Invoke(variable.Description);
 									break;
 								}
 

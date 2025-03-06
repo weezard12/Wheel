@@ -27,7 +27,7 @@ namespace Wheel.UI.Views.AIViews.AndroidStudio
             {
                 if (CurrentProject.Root.GetDocxPageByID(_pageNameInJson) != null)
                 {
-                    CurrentProject.Root.GetDocxPageByID(_pageNameInJson).SetTableValueByName("properties_table", property, AIResponse);
+                    CurrentProject.Root.GetDocxPageByID(_pageNameInJson).SetTableValueByName("properties_table", property, responce);
                     CurrentProject.SaveConfig();
                 }
 

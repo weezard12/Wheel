@@ -12,7 +12,7 @@ public partial class AITextView : ContentView, IAIViewHolder
 
     public string Title { get => TitleXml.Text; set => SetTitle(value); }
 
-    protected Action<string> OnGeneratedValidResponse { get; set; }
+    public Action<string> OnGeneratedValidResponse { get; set; }
 
     public List<IAIViewHolder> AIViews { get => null; set => throw new NotImplementedException(); }
 
