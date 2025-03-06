@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Wheel.Logic.CodeParser.enums;
@@ -208,6 +208,11 @@ namespace Wheel.Logic.CodeParser.Base
                 r += variable.ToString() + ", ";
             
             r.Substring(0, r.Length - 2);
+            return r;
+        }
+        public string GetVariablesAsJson()
+        {
+            string r = JsonSerializer.Serialize(new ClassFile() { Variables = this.Variables });
             return r;
         }
     }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using static Wheel.Logic.Docx.DocxParser;
 using static Wheel.Logic.Projects.AndroidStudioProject;
 using static Wheel.Logic.MyUtils;
+using System.Text.RegularExpressions;
 
 namespace Wheel.Logic.Docx
 {
@@ -208,6 +209,17 @@ namespace Wheel.Logic.Docx
 
                 writer.WriteEndObject();
             }
+        }
+        public static string EscapeJsonString(string inputJson)
+        {
+            // Regular expression to match unescaped double quotes
+            string pattern = @"(?<!\\)""";
+            string replacement = @"\""";
+
+            // Replace unescaped double quotes with escaped ones
+            string escapedJson = Regex.Replace(inputJson, pattern, replacement);
+
+            return escapedJson;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Text.Json;
 using Wheel.Logic;
 using Wheel.Logic.AI;
 using Wheel.Logic.CodeParser.Base;
+using Wheel.Logic.Docx;
 using Wheel.UI.Views.AIViews;
 
 namespace Wheel.UI;
@@ -58,11 +59,14 @@ public partial class AITableView : ContentView, IAIViewHolder
 				{
                     responce = responce.Substring(8, responce.Length-11);
                 }
-					
+
+				bool triedFixingJson = false;
+				parseJson:
 				try
 				{
 					ClassFile classFile = JsonSerializer.Deserialize<ClassFile>(responce);
-					foreach (IAIViewHolder viewHolder in AIViews)
+                    MyUtils.DebugLog(responce);
+                    foreach (IAIViewHolder viewHolder in AIViews)
 					{
 						if (viewHolder is AITextView textView)
 						{
@@ -70,21 +74,26 @@ public partial class AITableView : ContentView, IAIViewHolder
 							{
 								if (textView.Title.Equals(variable.ToString()))
 								{
-                                    textView.SetOutputText(variable.Description);
+									textView.SetOutputText(variable.Description);
 									break;
-                                }
-									
-                            }
-							
+								}
+
+							}
+
 						}
 					}
 
 
-                }
-				catch(Exception ex)
+				}
+				catch (Exception ex)
 				{
-                    MyUtils.DebugError(responce);
-                }
+					
+					if (triedFixingJson)
+						return;
+					triedFixingJson = true;
+					responce = Jsons.EscapeJsonString(responce);
+					goto parseJson;
+				}
                     
                 return;
 			}
