@@ -4,7 +4,18 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="ClassesPage">
-    <ScrollView>
-        <VerticalStackLayout x:Name="EntriesGrid" />
-    </ScrollView>
+
+    <Grid>
+        <Label
+            x:Name="LoadProjectFirst"
+            FontSize="Large"
+            HorizontalOptions="Center"
+            Text="Please load your Android Studio project (in the `Project` tab)"
+            VerticalOptions="Center" />
+        <ScrollView>
+            <VerticalStackLayout x:Name="EntriesGrid" />
+        </ScrollView>
+    </Grid>
+
+
 </ContentPage>

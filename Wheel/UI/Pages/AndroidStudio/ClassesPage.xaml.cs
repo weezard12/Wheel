@@ -16,6 +16,8 @@ public partial class ClassesPage : ContentPage
 
         CurrentProject.OnProjectLoaded += (project) =>
         {
+            LoadProjectFirst.IsVisible = false;
+
             foreach (ClassFile classFile in project.ClassFiles)
             {
 

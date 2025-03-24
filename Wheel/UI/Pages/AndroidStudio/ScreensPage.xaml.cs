@@ -25,6 +25,7 @@ public partial class ScreensPage : ContentPage
 
         CurrentProject.OnProjectLoaded += (project) =>
         {
+            LoadProjectFirst.IsVisible = false;
 
             Graph graph = GraphsUtils.GetScreenGraph(project.ClassFiles);
             Diagram doc = GraphsUtils.GetScreenDiagram(project.ClassFiles);
