@@ -335,6 +335,7 @@ namespace Wheel.Logic.Docx
             }
         }
 
+
         /// <summary>
         /// Creates a table with the given column values and alignment.
         /// </summary>
@@ -344,6 +345,7 @@ namespace Wheel.Logic.Docx
 
             // Define table properties (borders & alignment)
             TableProperties tblProperties = new TableProperties(
+                new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct }, // Set full-width table
                 new TableBorders(
                     new TopBorder() { Val = BorderValues.Single, Size = 12 },
                     new BottomBorder() { Val = BorderValues.Single, Size = 12 },
@@ -360,23 +362,18 @@ namespace Wheel.Logic.Docx
 
             table.AppendChild(tblProperties);
 
-            // Add table rows
             for (int i = 0; i < column1Values.Length; i++)
             {
                 TableRow row = new TableRow();
 
-                // Create first cell
+                // Define column widths for better alignment
                 TableCell cell1 = new TableCell(new Paragraph(new Run(new Text(column1Values[i]))));
-                cell1.Append(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Auto }));
+                cell1.Append(new TableCellProperties(new TableCellWidth() { Width = "50%", Type = TableWidthUnitValues.Pct })); // 50% width
 
-                // Create second cell
                 TableCell cell2 = new TableCell(new Paragraph(new Run(new Text(column2Values[i]))));
-                cell2.Append(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Auto }));
+                cell2.Append(new TableCellProperties(new TableCellWidth() { Width = "50%", Type = TableWidthUnitValues.Pct })); // 50% width
 
-                // Add cells to row
                 row.Append(cell1, cell2);
-
-                // Add row to table
                 table.Append(row);
             }
 
