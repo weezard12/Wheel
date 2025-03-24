@@ -27,6 +27,9 @@ namespace Wheel.Logic.Projects
 
         public override List<ClassFile> ClassFiles { get => GetClassFiles(); set => base.ClassFiles = value; }
         public List<ClassFile> Screens { get => GetScreens(); }
+        public List<ClassFile> Services { get => GetServices(); }
+        public List<ContentProjectFile> LayoutFiles { get => GetLayoutFiles(); }
+
 
         public string Path { get; private set; }
         public string SourceCodePath { get; private set; }
@@ -49,15 +52,18 @@ namespace Wheel.Logic.Projects
             AllProjectFiles.Clear();
             foreach (var file in files)
             {
-                ContentProjectFile projectFile;
+                ProjectFile projectFile;
                 switch (System.IO.Path.GetExtension(file))
                 {
                     case ".java":
                         projectFile = ClassFile.GetClassFromText(File.ReadAllText(file));
                         break;
+                    case ".xml":
+                        projectFile = new ContentProjectFile(file);
+                        break;
 
                     default:
-                        projectFile = new ContentProjectFile(file);
+                        projectFile = new ProjectFile(file);
                         break;
                 }
                 AllProjectFiles.Add(projectFile);
@@ -88,6 +94,26 @@ namespace Wheel.Logic.Projects
                     screens.Add(classFile);
 
             return screens;
+        }
+
+        private List<ClassFile> GetServices()
+        {
+            List<ClassFile> services = new List<ClassFile>();
+            foreach (ClassFile classFile in ClassFiles)
+                if (classFile.ExtentsFrom.Contains(new SourceClass("Service")))
+                    services.Add(classFile);
+
+            return services;
+        }
+
+        private List<ContentProjectFile> GetLayoutFiles()
+        {
+            List<ContentProjectFile> layoutFile = new List<ContentProjectFile>();
+            foreach (ClassFile classFile in AllProjectFiles)
+                if (classFile.Extension.Equals("xml"))
+                    layoutFile.Add(classFile);
+
+            return layoutFile;
         }
 
         public void SaveConfig()

@@ -87,7 +87,7 @@ namespace Wheel.Logic.CodeParser
         }
         public static string GetSourceCodePath(string projectPath)
         {
-            return Path.Combine(projectPath, "app\\src\\main\\java");
+            return Path.Combine(projectPath, "app\\src\\main");
         }
 
         public static int? GetMinSdkVersion(string androidManifestText)
