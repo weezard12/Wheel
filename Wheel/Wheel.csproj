@@ -106,6 +106,9 @@
 	  <MauiXaml Update="UI\Pages\AndroidStudio\ScreensPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UI\Pages\AndroidStudio\ServicesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UI\Views\CreateNewProjectView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
