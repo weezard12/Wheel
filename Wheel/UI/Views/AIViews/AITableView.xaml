@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <VerticalStackLayout>
         <Button
+            x:Name="ToggleTableViewButton"
             Clicked="ToggleTableViewClicked"
             HorizontalOptions="Start"
             Text="Toggle Table View"

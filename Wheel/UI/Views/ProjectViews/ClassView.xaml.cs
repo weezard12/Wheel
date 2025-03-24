@@ -25,9 +25,10 @@ public partial class ClassView : ContentView
 
         AIViewsHolder.AddAITextView(new ClassDescriptionAIView(ClassFile));
 
-        AITableView tableView = new AITableView();
-        tableView.GetTable().IsVisible = false;
-        tableView.OverritePrompt = String.Format(
+        // Variables Table
+        AITableView variablesTableView = new AITableView("Toggle Variables Table");
+        variablesTableView.GetTable().IsVisible = false;
+        variablesTableView.OverritePrompt = String.Format(
 @"Analyze the following Java class and its variables. For each variable, provide a concise summary of its purpose and role within the class and replace its description.
 
 Clearly define its type, intended usage, and significance within the application's logic.
@@ -85,19 +86,116 @@ Expected JSON Response:
   ]
 }}", ClassFile.GetClassWithoutImports(), ClassFile.GetVariablesAsJson());
 
-        tableView.UseOverritePrompt = true;
+        variablesTableView.UseOverritePrompt = true;
 
-        //TableView.SetTitle("Values");
-        tableView.AddSection(new TableSection("Values"));
-/*		if(ClassFile.Variables.Count > 0)
-			TableView.AddAIView(0, new ClassPropertyAIView(ClassFile, ClassFile.Variables[0].Name));
-        if (ClassFile.Variables.Count > 1)
-            TableView.AddAIView(0, new ClassPropertyAIView(ClassFile, ClassFile.Variables[1].Name));*/
+        variablesTableView.AddSection(new TableSection("Values"));
 
         foreach (Variable variable in ClassFile.Variables)
         {
-            tableView.AddAIView(0, new ClassPropertyAIView(ClassFile, variable.ToString()));
+            variablesTableView.AddAIView(0, new ClassPropertyAIView(ClassFile, variable.ToString()));
 		}
-        AIViewsHolder.AddAITextView(tableView);
+        AIViewsHolder.AddAITextView(variablesTableView);
+        variablesTableView.Padding = new Thickness(0, 0, 0, 10);
+
+        // Methods Table
+        AITableView methodsTableView = new AITableView("Toggle Methods Table");
+        methodsTableView.GetTable().IsVisible = false;
+        methodsTableView.OverritePrompt = String.Format(
+@"Analyze the following Java class and its methods. For each method, provide a concise summary of its purpose and role within the class and replace its description.
+
+Clearly define its return type, parameters, intended functionality, and significance within the application's logic.
+Explain how it interacts with other components but avoid discussing specific operations or implementation details.
+Begin the response immediately without introductory phrases or uncertain language.
+Ensure that all statements are definitive and assertive, without using words like 'it likely' or 'probably'.
+The response must be a valid JSON object, formatted as follows:
+
+{{
+  ""methods"": [
+    {{
+      ""name"": ""method name"",
+      ""returnType"": ""method return type"",
+      ""parameters"": [
+        {{
+          ""name"": ""parameter name"",
+          ""type"": ""parameter type""
+        }}
+      ],
+      ""description"": ""A detailed and assertive explanation of the method’s purpose, functionality, and role in the application.""
+    }}
+  ]
+}}
+
+Java Class:
+{0}
+
+List of Methods:
+{1}
+
+Example Input for two Methods:
+{{
+  ""methods"": [
+    {{
+      ""name"": ""calculateScore"",
+      ""returnType"": ""int"",
+      ""parameters"": [
+        {{
+          ""name"": ""points"",
+          ""type"": ""int""
+        }},
+        {{
+          ""name"": ""multiplier"",
+          ""type"": ""double""
+        }}
+      ],
+      ""description"": """"
+    }},
+    {{
+      ""name"": ""resetGame"",
+      ""returnType"": ""void"",
+      ""parameters"": [],
+      ""description"": """"
+    }}
+  ]
+}}
+
+Expected JSON Response:
+
+{{
+  ""methods"": [
+    {{
+      ""name"": ""calculateScore"",
+      ""returnType"": ""int"",
+      ""parameters"": [
+        {{
+          ""name"": ""points"",
+          ""type"": ""int""
+        }},
+        {{
+          ""name"": ""multiplier"",
+          ""type"": ""double""
+        }}
+      ],
+      ""description"": ""`calculateScore` is a method that computes the final score based on the given points and multiplier. It takes an integer `points`, representing base points, and a double `multiplier`, which scales the points based on performance. The method returns an integer representing the calculated score. It plays a key role in determining the player's final score after an action or game session.""
+    }},
+    {{
+      ""name"": ""resetGame"",
+      ""returnType"": ""void"",
+      ""parameters"": [],
+      ""description"": ""`resetGame` is a method that resets all game parameters to their initial state. It clears the current game state and prepares the system for a new session. This method is crucial for restarting a game without needing to reload the application.""
+    }}
+  ]
+}}"
+, ClassFile.GetClassWithoutImports(), ClassFile.GetMethodsAsJson());
+
+        methodsTableView.UseOverritePrompt = true;
+
+        methodsTableView.AddSection(new TableSection("Methods"));
+
+        foreach (Method method in ClassFile.Methods)
+        {
+            methodsTableView.AddAIView(0, new ClassMethodAIView(ClassFile, method.ToString()));
+        }
+        AIViewsHolder.AddAITextView(methodsTableView);
+        methodsTableView.Padding = new Thickness(0, 0, 0, 10);
     }
 }

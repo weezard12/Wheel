@@ -5,6 +5,7 @@ using Wheel.Logic.AI;
 using Wheel.Logic.CodeParser.Base;
 using Wheel.Logic.Docx;
 using Wheel.UI.Views.AIViews;
+using Wheel.UI.Views.AIViews.AndroidStudio;
 
 namespace Wheel.UI;
 
@@ -20,8 +21,12 @@ public partial class AITableView : ContentView, IAIViewHolder
 		InitializeComponent();
 	}
 
+    public AITableView(string lableName) : this()
+    {
+		ToggleTableViewButton.Text = lableName;
+    }
 
-	public void SetTitle(string title)
+    public void SetTitle(string title)
 	{
 		Root.Title = title;
 	}
@@ -68,20 +73,33 @@ public partial class AITableView : ContentView, IAIViewHolder
                     MyUtils.DebugLog(responce);
                     foreach (IAIViewHolder viewHolder in AIViews)
 					{
-						if (viewHolder is AITextView textView)
+						if (viewHolder is ClassPropertyAIView variablesTextView)
 						{
 							foreach (Variable variable in classFile.Variables)
 							{
-								if (textView.Title.Equals(variable.ToString()))
+								if (variablesTextView.Title.Equals(variable.ToString()))
 								{
-									textView.SetOutputText(variable.Description);
-									textView.OnGeneratedValidResponse?.Invoke(variable.Description);
+									variablesTextView.SetOutputText(variable.Description);
+									variablesTextView.OnGeneratedValidResponse?.Invoke(variable.Description);
 									break;
 								}
 
 							}
 
 						}
+						else if (viewHolder is ClassMethodAIView methodsTextView)
+						{
+                            foreach (Method method in classFile.Methods)
+                            {
+                                if (methodsTextView.Title.Equals(method.ToString()))
+                                {
+                                    methodsTextView.SetOutputText(method.Description);
+                                    methodsTextView.OnGeneratedValidResponse?.Invoke(method.Description);
+                                    break;
+                                }
+
+                            }
+                        }
 					}
 
 

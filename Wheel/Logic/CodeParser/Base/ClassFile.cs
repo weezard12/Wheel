@@ -12,6 +12,7 @@ namespace Wheel.Logic.CodeParser.Base
     {
         [JsonPropertyName("variables")]
         public List<Variable> Variables { get; set; } = new List<Variable>();
+        [JsonPropertyName("methods")]
         public List<Method> Methods { get; set; } = new List<Method>();
 
         /// <summary>
@@ -213,6 +214,11 @@ namespace Wheel.Logic.CodeParser.Base
         public string GetVariablesAsJson()
         {
             string r = JsonSerializer.Serialize(new ClassFile() { Variables = this.Variables });
+            return r;
+        }
+        public string GetMethodsAsJson()
+        {
+            string r = JsonSerializer.Serialize(new ClassFile() { Methods = this.Methods });
             return r;
         }
 
