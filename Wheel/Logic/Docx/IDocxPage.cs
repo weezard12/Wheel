@@ -17,6 +17,7 @@ namespace Wheel.Logic.Docx
             ScreensAboutPage,
             ClassesPage,
             SourceCodePage,
+            LayoutSourceCodePage,
             HowToPlay
         }
     }

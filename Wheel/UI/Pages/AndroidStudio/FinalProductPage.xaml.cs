@@ -62,11 +62,20 @@ public partial class FinalProductPage : ContentPage
             if(file is ContentProjectFile contentFile)
                 if (!CurrentProject.Root.DoesPageExist(contentFile.Name))
                 {
+                    // Sets up the order of the content files in the docx
+                    int index = (int) PageType.SourceCodePage;
+                    switch (contentFile.Extension)
+                    {
+                        case "xml":
+                            index = (int)PageType.LayoutSourceCodePage;
+                            break;
+                    }
+
                     CurrentProject.Root.Pages.Add(new Page()
                     {
                         ID = contentFile.Name,
                         Name = "Source Code File",
-                        Index = (int) PageType.SourceCodePage,
+                        Index = index,
                         Values = new List<ValueBase>()
                         {
                             new Value(){ Name = "file_name", CurrentValue = contentFile.Name },
