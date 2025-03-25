@@ -113,13 +113,6 @@ The response must be a valid JSON object, formatted as follows:
   ""methods"": [
     {{
       ""name"": ""method name"",
-      ""returnType"": ""method return type"",
-      ""parameters"": [
-        {{
-          ""name"": ""parameter name"",
-          ""type"": ""parameter type""
-        }}
-      ],
       ""description"": ""A detailed and assertive explanation of the method’s purpose, functionality, and role in the application.""
     }}
   ]
@@ -164,23 +157,10 @@ Expected JSON Response:
   ""methods"": [
     {{
       ""name"": ""calculateScore"",
-      ""returnType"": ""int"",
-      ""parameters"": [
-        {{
-          ""name"": ""points"",
-          ""type"": ""int""
-        }},
-        {{
-          ""name"": ""multiplier"",
-          ""type"": ""double""
-        }}
-      ],
       ""description"": ""`calculateScore` is a method that computes the final score based on the given points and multiplier. It takes an integer `points`, representing base points, and a double `multiplier`, which scales the points based on performance. The method returns an integer representing the calculated score. It plays a key role in determining the player's final score after an action or game session.""
     }},
     {{
       ""name"": ""resetGame"",
-      ""returnType"": ""void"",
-      ""parameters"": [],
       ""description"": ""`resetGame` is a method that resets all game parameters to their initial state. It clears the current game state and prepares the system for a new session. This method is crucial for restarting a game without needing to reload the application.""
     }}
   ]

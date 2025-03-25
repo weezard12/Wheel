@@ -82,12 +82,43 @@ namespace Wheel.Logic
 
         public static void DebugLog(params string[] message)
         {
-            string sout = String.Empty;
-            foreach (string s in message)
+            string logDirectory = FileFromTemp("Logs");
+            CreateFolderIfDoesntExist(logDirectory);
+
+            // Generate timestamped log filename
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string logFilePath = Path.Combine(logDirectory, $"log_{timestamp}.txt");
+
+            // Combine messages into a single string
+            string sout = string.Join("\n", message);
+
+            // Write the log message to a new file
+            File.WriteAllText(logFilePath, sout);
+
+            // Cleanup old logs (keep max 20)
+            CleanupOldLogs(logDirectory);
+        }
+
+        private static void CleanupOldLogs(string logDirectory)
+        {
+            try
             {
-                sout += s +"\n";
+                var logFiles = Directory.GetFiles(logDirectory, "log_*.txt")
+                                        .OrderBy(File.GetCreationTime)
+                                        .ToList();
+
+                if (logFiles.Count > 20)
+                {
+                    foreach (var file in logFiles.Take(logFiles.Count - 20))
+                    {
+                        File.Delete(file);
+                    }
+                }
             }
-            CreateFileIfDoesntExist(FileFromTemp("log.txt"), sout);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error cleaning up logs: {ex.Message}");
+            }
         }
         public static void DebugError(params string[] message)
         {
